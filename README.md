@@ -1,0 +1,273 @@
+# 置信度驱动的智能体递归自我改进
+
+> 「智能人机交互」课程设计 · 选题 3 · 参考工作：Reflexion (Shinn et al., NeurIPS 2023)
+
+本仓库研究一个核心问题：**如何让基于工具调用的 LLM 智能体在多步执行过程中，估计每一步的置信度、据此自主触发验证与纠错，并把纠错经验递归地沉淀回后续执行。**
+
+研究对象是 **API-Bank level-3 多步工具调用任务**，主模型为 **Qwen3-8B**（本地 vLLM 部署）。选择本地模型的决定性理由：本项目需要 **token 级 logprob** 作为置信度信号源，而 vLLM 的 OpenAI 兼容接口原生支持 `logprobs`。
+
+---
+
+## 1. 研究内容
+
+官方口径的三步研究内容（本项目不可改口径，只做具体化与形式化）：
+
+1. **步骤级置信度估计与校准** —— 结合推理过程、工具调用、执行结果获取并校准置信度，用于识别薄弱环节、分配验证资源。
+2. **自主验证与纠错** —— 针对低置信或异常变化步骤，触发信息补充、工具验证、局部重试、计划调整；研究适用条件，减少错误传播。
+3. **递归改进与评估** —— 独立验证并筛选纠错经验，以记忆/策略更新/训练改进后续执行；评估成功率、泛化能力与开销。
+
+三个可检验子问题：**Q1** 选择性预测（置信度能否定位错误步骤）· **Q2** 预算约束下的验证资源分配 · **Q3** 递归改进与跨任务形态泛化。
+
+> 对照基线：Self-RAG 式**轻量离散反思标记复现**。核心论点是"校准的数值置信度 > 离散反思标记"，所有对比必须 **cost-matched（等预算）**。
+
+---
+
+## 2. 项目环境
+
+### 2.1 硬件
+
+- 8 × NVIDIA RTX 3090（24GB，合计 192GB 显存）
+- **无 NVLink**，跨卡通信走 PCIe → 优先**数据并行**（多副本），张量并行 TP ≤ 2
+- 温度是硬约束：3090 的 GDDR6X 显存结温不经 `nvidia-smi` 暴露，持续满载有掉卡风险
+
+### 2.2 部署环境（两套，均已配置）
+
+| 项目 | 新服务器（当前主力） | 旧服务器 |
+|---|---|---|
+| 登录 | `stu20412@10.99.8.204` | `lh@210.77.30.42` |
+| GPU 可用性 | 8 × 3090；**约定最多用 2 张，GPU 6 被他人占用** | 8 × 3090；**GPU 0 / 3 已故障** |
+| 驱动 / CUDA | 550.163.01 / **CUDA 12.4** | 580.82.07 / **CUDA 13.0** |
+| 工作目录 | `/home/stu20412/confagent/{code,data,models,logs,outputs,results}` | `/home1/lh/confagent/{code,data,models,logs,outputs}` |
+| conda | `~/miniconda3`，环境 `confagent`（Python 3.11） | `/home1/lh/miniconda`，环境 `confagent` |
+| vLLM / torch | `vllm==0.19.1` / `torch 2.10.0+cu12` | `vllm==0.31.0` / `torch 2.13.0+cu130` |
+| 网络 | ModelScope / hf-mirror / 清华源 / 华为源 均可达，GitHub 可直连 | HF / GitHub 直连被墙 |
+
+> ⚠️ **版本兼容判据**：`torch.version.cuda` 必须与驱动支持的 CUDA 大版本一致。cu13 分支的 vLLM（≥ 0.20.0）**需要驱动 ≥ 580**，因此新服务器只能用 cu12 分支（最新为 `vllm==0.19.1`）。
+
+### 2.3 环境安装
+
+```bash
+# 1) 创建环境
+conda create -n confagent python=3.11 -y
+conda activate confagent
+
+# 2) 安装 vLLM（新服务器用 cu12 分支）
+pip install vllm==0.19.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+# 3) 本项目依赖
+pip install openai numpy scikit-learn matplotlib paramiko
+
+# 4) 【必做】卸载 datasets 与 pyarrow —— 见第 7 节已知问题
+pip uninstall -y datasets pyarrow
+```
+
+**conda 26.x 注意**：默认频道需接受 ToS 会报 `CondaToSNonInteractiveError`，写 `~/.condarc` 改用清华镜像即可。
+
+**网络加速**（旧服务器）：HuggingFace / GitHub 直连被墙，使用 `hf-mirror.com`、`ghfast.top`、ModelScope；pip 装大包用华为源 `https://repo.huaweicloud.com/repository/pypi/simple`。
+
+---
+
+## 3. 数据集：API-Bank
+
+| 项目 | 说明 |
+|---|---|
+| 来源 | API-Bank (Li et al., 2023) |
+| 使用 split | **level-3 test**（多步 API 调用链），文件 `test-data/level-3.json` |
+| 训练 split | `training-data/lv3-train.json` |
+| 放置路径 | `~/confagent/data/api-bank/` |
+
+### 3.1 单条记录结构
+
+```jsonc
+{
+  "requirement": "用户自然语言需求",
+  "apis": [                                   // gold 调用链（逐步）
+    {
+      "api_name": "QueryMeeting",
+      "input":    { "user_name": "Tom" },
+      "output":   { "output": {...} },         // 环境真实返回
+      "exception": null
+    }
+  ],
+  "response": "期望的最终回复"
+}
+```
+
+查看数据集统计：
+
+```bash
+python code/apibank_env.py --data-dir ~/confagent/data/api-bank
+```
+
+### 3.2 确定性重放环境（无需实现真实 API）
+
+API-Bank 的 level-3 记录链已保存每步 `(api_name, input) -> output`，因此本项目把它当作**确定性重放环境**：
+
+- 模型调用与 gold 调用**匹配** → 返回记录中的真实 output
+- 模型调用**不匹配** → 返回异常，并分类失败原因（`wrong_api` / `wrong_value` / `missing_arg` / `extra_call` / `search_miss`）
+
+### 3.3 步骤可靠性标签 `y_t` 的构造（答辩必被问）
+
+自由文本参数（如 `EmailReminder.content`）无法逐字复现，若用精确字符串匹配会产生大量**假阴性**，直接污染校准标签。因此采用**字段感知匹配**：
+
+| 字段类型 | 判定规则 |
+|---|---|
+| 结构化字段（时间/地点/收件人/ID/姓名） | 严格匹配（时间做规范化：`2021-01-01 10:00` ≡ `2021-01-01 10:00:00`） |
+| 自由文本字段（长句、多词） | 只查"非空 + 主题相关"（与 gold 至少 1 个有意义词重叠），不评判措辞 |
+
+同时输出两套标签用于**敏感性分析**：`matched_gold`（宽松口径，主标签）与 `strict_matched_gold`（严格口径，全字段精确匹配）。模型重试会导致步骤位置与 gold 错位，因此采用**按 `api_name` 贪心对齐**而非位置对齐。
+
+---
+
+## 4. 模型：Qwen3-8B
+
+| 项目 | 说明 |
+|---|---|
+| 模型 | Qwen3-8B（指令微调版） |
+| 部署 | 本地 vLLM，OpenAI 兼容接口 |
+| 路径 | `~/confagent/models/Qwen3-8B`（约 15.3GB） |
+
+下载（ModelScope 示例）：
+
+```bash
+pip install modelscope
+modelscope download --model Qwen/Qwen3-8B --local_dir ~/confagent/models/Qwen3-8B
+```
+
+服务端需开启工具调用解析：`--enable-auto-tool-choice --tool-call-parser hermes`。
+
+---
+
+## 5. 运行步骤
+
+### 步骤 0 · 启动 vLLM 服务
+
+```bash
+# 单卡
+GPU=1 PORT=8000 bash code/run_vllm.sh
+
+# 多卡多副本（每个副本独占一张卡，端口递增）
+bash code/launch_replicas.sh "1 2" 8000        # GPU 1,2 -> 端口 8000,8001
+```
+
+> ⚠️ `code/*.sh` 中的路径与 conda 激活语句目前**硬编码为旧服务器**（`/home1/lh/...`）。在新服务器运行时需改为 `/home/stu20412/confagent/...` 与 `source ~/miniconda3/etc/profile.d/conda.sh`。
+
+### 步骤 1 · 验证 logprob 可用性（项目第一道技术关卡）
+
+确认 vLLM 能**同时**返回 `tool_calls` 解析结果与 token 级 `logprob`：
+
+```bash
+python code/verify_logprobs.py --base-url http://localhost:8000/v1 --model Qwen3-8B
+```
+
+### 步骤 2 · 批量采集轨迹
+
+```bash
+python code/run_batch.py \
+  --endpoints localhost:8000,localhost:8001 \
+  --limit 50 --concurrency 2 \
+  --out results/traj_main.jsonl
+```
+
+或一条命令完成"起副本 → 跑批 → 报温度"：
+
+```bash
+bash code/run_experiment.sh "1 2" 8000 --limit 50 --concurrency 2 --tag seed0
+```
+
+常用参数：`--distractors N`（注入 N 个干扰 API 提高难度）、`--self-report`（采集自陈置信度）、`--consistency-k K`（多采样一致性）、`--no-thinking`（关闭思维链）。
+
+### 步骤 3 · 置信度校准评估
+
+```bash
+python code/calibration.py --traj results/traj_main.jsonl --out-dir outputs
+```
+
+输出 ECE / MCE / Brier / NLL / AUROC / AURC、可靠性图与风险—覆盖率曲线，并做消融 **A1**（哪种置信度信号最可校准）与 **A2**（哪种校准方法最有效）。
+
+### 步骤 4 · 本地复盘（零第三方依赖）
+
+```bash
+python code/analyze_results.py results/traj_main_clean.jsonl
+```
+
+### 温度管理（必做）
+
+```bash
+sudo nvidia-smi -pl 250                  # 降功耗上限，最有效的降温手段
+nohup bash code/thermal_watch.sh &       # 后台温度监控
+```
+
+运行协议：vLLM 长期驻留不反复启停；只用 2–3 张卡并行；温度阈值 ≤ 70°C；任务间冷却 ≥ 5s。
+
+---
+
+## 6. 目录结构与文件职责
+
+```
+.
+├── README.md                     # 本文件
+├── 项目进展与分工说明_组内同步.md    # 组内分工与进度同步
+├── code/                         # 全部源码
+└── results/                      # 实验轨迹数据（trajectory.jsonl 快照）
+```
+
+### code/
+
+| 文件 | 职责 |
+|---|---|
+| `trajectory.py` | **全组唯一的轨迹格式定义**。`TrajectoryStep` / `Trajectory` / `TrajectoryWriter`，受控词表校验，JSONL 追加写入，错误传播率计算 |
+| `apibank_env.py` | API-Bank 加载器 + 确定性 mock 环境。字段感知匹配、双口径标签、按 api_name 贪心对齐、失败原因分类 |
+| `react_agent.py` | ReAct 主循环 + 步骤级置信度提取。推理段 logprob 特征（geo_mean_prob 等）、多采样一致性、自陈置信度、重复调用熔断 |
+| `run_batch.py` | 多卡并行批处理。任务分片到多个 vLLM 端点、干扰 API 注入、`ThermalGuard` 温度保护 |
+| `calibration.py` | 校准评估（研究内容一核心分析）。ECE/Brier/NLL/AUROC/AURC、温度缩放/Platt/Isotonic、可靠性图与风险—覆盖率曲线 |
+| `analyze_results.py` | 纯 Python 结果分析（无第三方依赖），用于本地复盘已采集轨迹 |
+| `run_vllm.sh` | 启动单个 vLLM 服务（Qwen3-8B，单卡） |
+| `launch_replicas.sh` | 在指定 GPU 组上启动多个 vLLM 副本 |
+| `stop_replicas.sh` | 停止 vLLM 副本并等待显存释放 |
+| `run_experiment.sh` | 一条命令跑一轮实验（起副本 → 跑批 → 报温度） |
+| `thermal_watch.sh` | GPU 温度后台监控，超阈值写告警日志 |
+| `vllm_serve_patched.py` | vLLM 启动包装器：绕过"某张 GPU 故障导致 vLLM 无法启动"（NVML 容错补丁） |
+| `verify_logprobs.py` | 技术验证：vLLM 能否同时返回 tool_call 与 token logprob |
+| `remote_helper.py` | 基于 paramiko 的密码认证 SSH 助手，用于迁移/远程运维 |
+
+### results/
+
+| 文件 | 说明 |
+|---|---|
+| `traj_pilot.jsonl` | 小规模 pilot（8 任务） |
+| `traj_vanilla.jsonl` | vanilla ReAct 基线（5 任务） |
+| `traj_main_seed0.jsonl` | 主实验 seed=0（67 轨迹） |
+| `traj_main_clean.jsonl` | 清洗后主实验集（50 轨迹） |
+
+轨迹 schema（`trajectory.py` 定义）：
+
+```
+task_id, step_id, action_type, action_input, observation,
+confidence, confidence_source, verified, correction,
+cost_tokens, cost_calls, final_success
+```
+
+---
+
+## 7. 已知问题与重要结论
+
+### 7.1 环境类
+
+- **pyarrow 26 的 jemalloc 后台线程导致 vLLM 段错误**（`SIGSEGV`，报 `Model architectures ['Qwen3ForCausalLM'] failed to be inspected`，子进程退出码 139）。崩溃点飘忽不定，`gdb` 可抓到 `jemalloc_bg_thd ... libarrow.so.2600` 原生栈。
+  **解决方案**：卸载 `datasets` 与 `pyarrow`（vLLM 仅在 `bench` 附加项中需要，非硬依赖）。环境变量 `MALLOC_CONF` / `ARROW_DEFAULT_MEMORY_POOL` 均无效。
+
+### 7.2 方法类
+
+- **工具调用段的 token logprob 恒为 0**（约束解码强制概率≈1），不含不确定性信息 → **不能用工具调用参数 logprob 作步骤置信度**，只能从**推理段（`<think>`）**提取。
+- **回灌历史时必须剥离 `<think>` 段**，否则模型认为"已经想过了"，推理段只剩 1–2 个 token，置信度假性变成 1.000。
+- **【重要负面结果】推理段 token logprob 无法区分正确/错误步骤**：198 步全量下 AUROC 仅 0.51–0.54（接近随机），风险—覆盖率曲线平坦。必须改用自陈置信度 / 多采样一致性 / 环境信号。
+- **教训：小样本 pilot 的校准指标不可信**（8 任务 pilot 的 AUROC 0.79–0.84，全量掉到 0.54）。
+
+---
+
+## 8. 参考文献
+
+- Shinn et al. *Reflexion: Language Agents with Verbal Reinforcement Learning.* NeurIPS 2023.
+- Asai et al. *Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection.* ICLR 2024.
+- Li et al. *API-Bank: A Comprehensive Benchmark for Tool-Augmented LLMs.* EMNLP 2023.
