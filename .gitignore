@@ -1,0 +1,30 @@
+# 本地环境与个人数据（禁止上传）
+.workbuddy-ai/
+
+# Python 编译缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 大文件：模型权重 / 数据集 / 课程材料原件
+models/
+data/
+*.safetensors
+*.bin
+课程设计选题_2026.pdf
+
+# 日志与系统垃圾
+*.log
+logs/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 内部工作文档（仅本地保留，不纳入仓库）
+中期答辩一周冲刺计划.md
+中期答辩内容提纲.md
+旧服务器gpu42_目录结构分析.md
+研究内容一_阶段性结论与下一步.md
+选题3_任务与数据集选型建议.md
+选题3_任务类型适配性分析.md
+选题3_研究方案与SelfRAG对比分析.md
