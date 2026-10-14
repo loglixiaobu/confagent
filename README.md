@@ -1,16 +1,14 @@
 # 置信度驱动的智能体递归自我改进
 
-> 「智能人机交互」课程设计 · 选题 3 · 参考工作：Reflexion (Shinn et al., NeurIPS 2023)
-
 本仓库研究一个核心问题：**如何让基于工具调用的 LLM 智能体在多步执行过程中，估计每一步的置信度、据此自主触发验证与纠错，并把纠错经验递归地沉淀回后续执行。**
 
-研究对象是 **API-Bank level-3 多步工具调用任务**，主模型为 **Qwen3-8B**（本地 vLLM 部署）。选择本地模型的决定性理由：本项目需要 **token 级 logprob** 作为置信度信号源，而 vLLM 的 OpenAI 兼容接口原生支持 `logprobs`。
+研究对象是 **API-Bank level-3 多步工具调用任务**，主模型为 **Qwen3-8B**（本地 vLLM 部署）。本项目**初始测试的是token 级 logprob** 作为置信度信号源，而 vLLM 的 OpenAI 兼容接口原生支持 `logprobs`，也可以选择其他的信号
 
 ---
 
 ## 1. 研究内容
 
-官方口径的三步研究内容（本项目不可改口径，只做具体化与形式化）：
+官方口径的三步研究内容：
 
 1. **步骤级置信度估计与校准** —— 结合推理过程、工具调用、执行结果获取并校准置信度，用于识别薄弱环节、分配验证资源。
 2. **自主验证与纠错** —— 针对低置信或异常变化步骤，触发信息补充、工具验证、局部重试、计划调整；研究适用条件，减少错误传播。
@@ -18,40 +16,18 @@
 
 三个可检验子问题：**Q1** 选择性预测（置信度能否定位错误步骤）· **Q2** 预算约束下的验证资源分配 · **Q3** 递归改进与跨任务形态泛化。
 
-> 对照基线：Self-RAG 式**轻量离散反思标记复现**。核心论点是"校准的数值置信度 > 离散反思标记"，所有对比必须 **cost-matched（等预算）**。
-
 ---
 
 ## 2. 项目环境
 
-### 2.1 硬件
-
-- 8 × NVIDIA RTX 3090（24GB，合计 192GB 显存）
-- **无 NVLink**，跨卡通信走 PCIe → 优先**数据并行**（多副本），张量并行 TP ≤ 2
-- 温度是硬约束：3090 的 GDDR6X 显存结温不经 `nvidia-smi` 暴露，持续满载有掉卡风险
-
-### 2.2 部署环境（两套，均已配置）
-
-| 项目 | 新服务器（当前主力） | 旧服务器 |
-|---|---|---|
-| 登录 | `stu20412@10.99.8.204` | `lh@210.77.30.42` |
-| GPU 可用性 | 8 × 3090；**约定最多用 2 张，GPU 6 被他人占用** | 8 × 3090；**GPU 0 / 3 已故障** |
-| 驱动 / CUDA | 550.163.01 / **CUDA 12.4** | 580.82.07 / **CUDA 13.0** |
-| 工作目录 | `/home/stu20412/confagent/{code,data,models,logs,outputs,results}` | `/home1/lh/confagent/{code,data,models,logs,outputs}` |
-| conda | `~/miniconda3`，环境 `confagent`（Python 3.11） | `/home1/lh/miniconda`，环境 `confagent` |
-| vLLM / torch | `vllm==0.19.1` / `torch 2.10.0+cu12` | `vllm==0.31.0` / `torch 2.13.0+cu130` |
-| 网络 | ModelScope / hf-mirror / 清华源 / 华为源 均可达，GitHub 可直连 | HF / GitHub 直连被墙 |
-
-> ⚠️ **版本兼容判据**：`torch.version.cuda` 必须与驱动支持的 CUDA 大版本一致。cu13 分支的 vLLM（≥ 0.20.0）**需要驱动 ≥ 580**，因此新服务器只能用 cu12 分支（最新为 `vllm==0.19.1`）。
-
-### 2.3 环境安装
+### 环境安装
 
 ```bash
 # 1) 创建环境
 conda create -n confagent python=3.11 -y
 conda activate confagent
 
-# 2) 安装 vLLM（新服务器用 cu12 分支）
+# 2) 安装 vLLM
 pip install vllm==0.19.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 3) 本项目依赖
@@ -62,8 +38,6 @@ pip uninstall -y datasets pyarrow
 ```
 
 **conda 26.x 注意**：默认频道需接受 ToS 会报 `CondaToSNonInteractiveError`，写 `~/.condarc` 改用清华镜像即可。
-
-**网络加速**（旧服务器）：HuggingFace / GitHub 直连被墙，使用 `hf-mirror.com`、`ghfast.top`、ModelScope；pip 装大包用华为源 `https://repo.huaweicloud.com/repository/pypi/simple`。
 
 ---
 
@@ -106,7 +80,7 @@ API-Bank 的 level-3 记录链已保存每步 `(api_name, input) -> output`，�
 - 模型调用与 gold 调用**匹配** → 返回记录中的真实 output
 - 模型调用**不匹配** → 返回异常，并分类失败原因（`wrong_api` / `wrong_value` / `missing_arg` / `extra_call` / `search_miss`）
 
-### 3.3 步骤可靠性标签 `y_t` 的构造（答辩必被问）
+### 3.3 步骤可靠性标签 `y_t` 的构造
 
 自由文本参数（如 `EmailReminder.content`）无法逐字复现，若用精确字符串匹配会产生大量**假阴性**，直接污染校准标签。因此采用**字段感知匹配**：
 
@@ -191,15 +165,6 @@ python code/calibration.py --traj results/traj_main.jsonl --out-dir outputs
 python code/analyze_results.py results/traj_main_clean.jsonl
 ```
 
-### 温度管理（必做）
-
-```bash
-sudo nvidia-smi -pl 250                  # 降功耗上限，最有效的降温手段
-nohup bash code/thermal_watch.sh &       # 后台温度监控
-```
-
-运行协议：vLLM 长期驻留不反复启停；只用 2–3 张卡并行；温度阈值 ≤ 70°C；任务间冷却 ≥ 5s。
-
 ---
 
 ## 6. 目录结构与文件职责
@@ -229,7 +194,6 @@ nohup bash code/thermal_watch.sh &       # 后台温度监控
 | `thermal_watch.sh` | GPU 温度后台监控，超阈值写告警日志 |
 | `vllm_serve_patched.py` | vLLM 启动包装器：绕过"某张 GPU 故障导致 vLLM 无法启动"（NVML 容错补丁） |
 | `verify_logprobs.py` | 技术验证：vLLM 能否同时返回 tool_call 与 token logprob |
-| `remote_helper.py` | 基于 paramiko 的密码认证 SSH 助手，用于迁移/远程运维 |
 
 ### results/
 
@@ -263,6 +227,8 @@ cost_tokens, cost_calls, final_success
 - **回灌历史时必须剥离 `<think>` 段**，否则模型认为"已经想过了"，推理段只剩 1–2 个 token，置信度假性变成 1.000。
 - **【重要负面结果】推理段 token logprob 无法区分正确/错误步骤**：198 步全量下 AUROC 仅 0.51–0.54（接近随机），风险—覆盖率曲线平坦。必须改用自陈置信度 / 多采样一致性 / 环境信号。
 - **教训：小样本 pilot 的校准指标不可信**（8 任务 pilot 的 AUROC 0.79–0.84，全量掉到 0.54）。
+
+下一步，我们测试其他的信号，例如自陈置信度，多采样一致性等等信号，争取找个一到二个AUROC高的信号
 
 ---
 
