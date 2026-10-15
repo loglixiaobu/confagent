@@ -1,0 +1,14 @@
+{
+  "version": "new-signals-public-collection-summary-v1",
+  "successful_requests": 792,
+  "failed_requests": 0,
+  "samples": 594,
+  "no_tool_samples": 29,
+  "multiple_tool_samples": 8,
+  "truncated_samples": 0,
+  "prompt_tokens": 621282,
+  "completion_tokens": 23729,
+  "total_tokens": 645011,
+  "usage_records": 792,
+  "successful_responses_without_usage": 0
+}

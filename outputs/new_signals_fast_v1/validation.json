@@ -1,0 +1,49 @@
+{
+  "version": "new-signals-public-validation-v1",
+  "complete": true,
+  "cpu_tests_passed": 48,
+  "report_command_check_passed": true,
+  "new_model_requests_during_publication": 0,
+  "evaluation_bootstrap_replicates": 1000,
+  "fixed_calls": 198,
+  "correct": 158,
+  "errors": 40,
+  "self_reports": 198,
+  "sampled_actions": 594,
+  "original_successful_requests": 792,
+  "missing_scores": 0,
+  "original_no_tool_samples": 29,
+  "original_multiple_tool_samples": 8,
+  "original_truncated_samples": 0,
+  "all_published_scores_recomputed_from_compact_samples": true,
+  "labels_and_original_logprob_unchanged": true,
+  "all_cohorts_and_confidence_intervals_match_original_experiment": true,
+  "unchanged_method_functions": [
+    "legacy_tool",
+    "reconstruct",
+    "self_messages",
+    "parse_self",
+    "equivalent",
+    "sample_action",
+    "digest",
+    "sha"
+  ],
+  "portable_collector_changes": "configurable paths/endpoints, lazy model-client imports, optional external health gate, prebuilt-state loading",
+  "new_calibrator_fitted": false,
+  "public_code_sha256": {
+    "code/collect_new_signals.py": "ef3fa1cbb52090c8dc463c448189f4d882555daf0af136d60d18c3f5c69b644e",
+    "code/evaluate_new_signals.py": "696eb195612d4a2a6977477aed649db95795e0eff90fb389d6da6ad2548c8901"
+  },
+  "artifact_sha256": {
+    "protocol.json": "d4f7a3f41b8c2031c78b106750516097154ba63fc20ab72ba92cd5c7f0ae3db2",
+    "collection_summary.json": "7de4f13bce9a97ea360b607086026efc0c96a1dcb7c6c2905690529476c9dbb0",
+    "scores.jsonl": "8b48e67ea5bf74176cd791ea8ca70baafbe618f71399d7e7bf1362453981b33b",
+    "sample_actions.jsonl": "d7a9d13611b2b9d2842b5866ac36adf6866837a4acde035a795062b51842a575",
+    "states.jsonl": "30dec9e8df12ad6be726574a280360321d9b1db570276f77d351d92773ebec3c",
+    "new_signal_metrics.json": "e4a53c9cd64d9a93545d4364622dbba36eff557bde4edeaadf9581113af8d4d4",
+    "new_signal_metrics.csv": "6b93d9654669ca2d7059e373ad9b9a0942bd39bf96f1f84e8924ec4f179b1784",
+    "joined_scores.csv": "a0b0ae4978d3c0fe416583c2266a461f3a1f4ef9656529b0c478e6e831265ec6",
+    "new_signal_comparison.png": "6a9b8fb35ac03c2ce3543a9b1b24e0fa86128a99cc1b278f228f2552e807c3dd",
+    "新信号评估.md": "43454e75b8ba1fd8e37d0493e7b0532c2fe62b3d4a0b5c5d4917d046e627f050"
+  }
+}

@@ -35,3 +35,12 @@ outputs/**/events_binary.jsonl
 *.joblib
 .env
 .env.*
+
+# Keep portable confidence scores and compact samples, not inference runtime data
+outputs/**/requests.jsonl
+outputs/**/thermal*.json*
+outputs/**/*.pid
+outputs/**/environment.json
+outputs/**/run_status.json
+outputs/**/server_startup.*
+outputs/**/cpu_validation.log

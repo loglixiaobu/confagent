@@ -257,3 +257,24 @@ cost_tokens, cost_calls, final_success
 - `geo_mean_prob` AUROC 为 **0.6351**；去重后为 **0.6980**。这是标签修订后的重评结果，不代表模型能力提升。
 
 标签明细、指标和图表位于 [`outputs/legacy_binary_v2/`](outputs/legacy_binary_v2/)。
+
+## 最新进展：自陈置信度与多采样一致性初筛
+
+在清洗后的 **198 步（158 正确、40 错误）** 上补采两个新信号，固定原调用和标签，不执行新工具。完整结果见 [自陈置信度与多采样一致性评估](outputs/new_signals_fast_v1/新信号评估.md)。
+
+| 信号 | AUROC | 优先检查最低分 20% 的错误捕获率 |
+|---|---:|---:|
+| 原 logprob | 0.6351 | 29.0% |
+| 自陈置信度 | 0.7172 | 33.4% |
+| 多采样一致性（K=3） | **0.8812** | **68.7%** |
+
+一致性去重后 AUROC 为 **0.8793**。同分跨过抽查预算时，捕获率按随机顺序的期望计算。本轮使用重建上下文、关闭思考的快速初筛；尚未拟合校准器，也没有独立数据验证。
+
+| 新文件 | 作用 |
+|---|---|
+| [`code/collect_new_signals.py`](code/collect_new_signals.py) | 重建调用前状态，补采自陈分数和 3 次独立动作；不执行工具 |
+| [`code/evaluate_new_signals.py`](code/evaluate_new_signals.py) | 固定标签计算 AUROC、配对区间、错误捕获率和去重结果，生成报告与图 |
+| [`code/README_new_signals.md`](code/README_new_signals.md) | 信号定义、文件说明、CPU 复算及重新采集方法 |
+| `tests/test_new_signal_collection.py`、`tests/test_new_signal_evaluation.py`、`tests/test_published_new_signals.py` | 分别检查上下文隔离与动作匹配、统计口径、公开结果与样本的一致性 |
+
+[`outputs/new_signals_fast_v1/`](outputs/new_signals_fast_v1/) 保存逐步 `scores.jsonl`、精简采样动作 `sample_actions.jsonl`、模型可见状态 `states.jsonl`、冻结协议 `protocol.json`，以及指标 JSON/CSV、逐步对应 CSV、对比图、采集汇总和校验记录。**已有分数可直接用 CPU 复算指标，无需模型服务或完整 API-Bank 数据。**
