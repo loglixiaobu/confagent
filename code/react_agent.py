@@ -36,6 +36,7 @@ logprob 恒为 0.0000（概率 ≈ 1），**不含任何不确定性信息**。
 
 from __future__ import annotations
 
+from pathlib import Path
 import argparse
 import json
 import math
@@ -639,8 +640,8 @@ def main() -> None:
     ap = argparse.ArgumentParser(description="ReAct 循环 + 步骤级置信度提取")
     ap.add_argument("--base-url", default="http://localhost:8000/v1")
     ap.add_argument("--model", default="Qwen3-8B")
-    ap.add_argument("--data-dir", default="/home1/lh/confagent/data/api-bank")
-    ap.add_argument("--out", default="/home1/lh/confagent/outputs/traj_vanilla.jsonl")
+    ap.add_argument("--data-dir", default=str(Path(__file__).resolve().parents[1] / 'data/api-bank'))
+    ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / 'outputs/traj_vanilla.jsonl'))
     ap.add_argument("--limit", type=int, default=3)
     ap.add_argument("--offset", type=int, default=0)
     ap.add_argument("--max-steps", type=int, default=12)

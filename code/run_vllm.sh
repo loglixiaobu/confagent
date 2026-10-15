@@ -1,4 +1,5 @@
 #!/bin/bash
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
 # ============================================================================
 # 启动 vLLM 服务（Qwen3-8B，单卡）
 #
@@ -13,16 +14,16 @@
 
 set -e
 
-source /home1/lh/miniconda/etc/profile.d/conda.sh
+source "${CONDA_SH:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate confagent
 
-MODEL_PATH="${MODEL_PATH:-/home1/lh/confagent/models/Qwen3-8B}"
+MODEL_PATH="${MODEL_PATH:-${PROJECT_ROOT}/models/Qwen3-8B}"
 SERVED_NAME="${SERVED_NAME:-Qwen3-8B}"
 GPU="${GPU:-0}"
 PORT="${PORT:-8000}"
 MAX_LEN="${MAX_LEN:-16384}"
 GMU="${GMU:-0.90}"
-LOG="/home1/lh/confagent/logs/vllm_gpu${GPU}_port${PORT}.log"
+LOG="${PROJECT_ROOT}/logs/vllm_gpu${GPU}_port${PORT}.log"
 
 export CUDA_VISIBLE_DEVICES="${GPU}"
 
@@ -58,7 +59,7 @@ for i in $(seq 1 60); do
     echo
     echo
     echo "下一步："
-    echo "  python /home1/lh/confagent/code/verify_logprobs.py --base-url http://localhost:${PORT}/v1"
+    echo "  python ${PROJECT_ROOT}/code/verify_logprobs.py --base-url http://localhost:${PORT}/v1"
     exit 0
   fi
   sleep 5

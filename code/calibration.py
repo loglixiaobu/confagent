@@ -21,6 +21,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 import argparse
 import json
 import math
@@ -315,8 +316,8 @@ def plot_reliability(results: Dict[str, Tuple[np.ndarray, np.ndarray]],
 # ---------------------------------------------------------------------------
 def main() -> None:
     ap = argparse.ArgumentParser(description="步骤级置信度校准评估")
-    ap.add_argument("--traj", default="/home1/lh/confagent/outputs/traj_pilot.jsonl")
-    ap.add_argument("--out-dir", default="/home1/lh/confagent/outputs")
+    ap.add_argument("--traj", default=str(Path(__file__).resolve().parents[1] / 'outputs/traj_pilot.jsonl'))
+    ap.add_argument("--out-dir", default=str(Path(__file__).resolve().parents[1] / 'outputs'))
     ap.add_argument("--label", default="y", choices=["y", "y_strict"])
     ap.add_argument("--calib-ratio", type=float, default=0.5,
                     help="按任务切分，前多少比例的任务作为校准集")

@@ -1,0 +1,64 @@
+{
+  "version": "legacy-binary-v2",
+  "calls": 198,
+  "call_labels": {
+    "正确": 158,
+    "错误": 40
+  },
+  "error_types": {
+    "unverified_units": 1,
+    "tool_retrieval_failure": 2,
+    "unsupported_arguments": 24,
+    "distance_unit_conversion": 2,
+    "missing_prerequisite": 2,
+    "unsupported_value_change": 3,
+    "unsupported_conversion": 6
+  },
+  "error_reasons": {
+    "humidity_unit_not_resolved": 1,
+    "search_no_result": 1,
+    "fabricated_meeting_location": 9,
+    "kilometers_not_converted_to_meters": 2,
+    "calculation_before_all_counts_observed": 2,
+    "fabricated_checkout_date": 5,
+    "unverified_coordinate_sign_change": 3,
+    "unsupported_salary_period_conversion": 6,
+    "fabricated_travel_inputs": 10,
+    "retrieval_capability_mismatch": 1
+  },
+  "call_label_transitions": {
+    "1->1": 80,
+    "0->1": 78,
+    "1->0": 7,
+    "0->0": 33
+  },
+  "recorded_no_tool_responses": 18,
+  "end_response_labels": {
+    "错误": 9,
+    "正确": 9
+  },
+  "end_response_scores_recorded": 0,
+  "labeled_model_events": 216,
+  "tasks": 50,
+  "task_labels": {
+    "正确": 14,
+    "错误": 36
+  },
+  "old_task_success_count": 13,
+  "task_transitions": {
+    "1->1": 5,
+    "0->0": 28,
+    "0->1": 9,
+    "1->0": 8
+  },
+  "runner_endings_not_model_stop_events": 32,
+  "source_sha256": "fe6e484abce858d214601990e05d86567232ab74f2bb0155b16945a10383c4df",
+  "protocol_sha256": "0b90f0737336128df102ef2be67b156869c186827a24337b406117bb6171ab99",
+  "artifact_sha256": {
+    "calls_binary.jsonl": "1e98a6a80fd87c4e4db9e2daf6d1f3af93415cb43dfbafd7cde5a3fca9930b43",
+    "end_responses_binary.jsonl": "8c70014216824c40391d627f0aba91b1faa6c158236deac86a1ca248281af818",
+    "task_outcomes_binary.jsonl": "cf9332fe0f21988241199cdae80fd5c960c0d66cbcf316779e03588dbea3adc8"
+  },
+  "gpu_used": false,
+  "model_requests": 0
+}

@@ -124,7 +124,7 @@ GPU=1 PORT=8000 bash code/run_vllm.sh
 bash code/launch_replicas.sh "1 2" 8000        # GPU 1,2 -> 端口 8000,8001
 ```
 
-> ⚠️ `code/*.sh` 中的路径与 conda 激活语句目前**硬编码为旧服务器**（`/home1/lh/...`）。在新服务器运行时需改为 `/home/stu20412/confagent/...` 与 `source ~/miniconda3/etc/profile.d/conda.sh`。
+> 运行前请按自己的环境配置项目目录与 conda 环境。
 
 ### 步骤 1 · 验证 logprob 可用性（项目第一道技术关卡）
 
@@ -288,3 +288,44 @@ verification_result / correction_type / correction_outcome / budget_before / bud
 - Shinn et al. *Reflexion: Language Agents with Verbal Reinforcement Learning.* NeurIPS 2023.
 - Asai et al. *Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection.* ICLR 2024.
 - Li et al. *API-Bank: A Comprehensive Benchmark for Tool-Augmented LLMs.* EMNLP 2023.
+
+## 最新进展：二元标签修订与 logprob 重新评估
+
+最新完成的是 [二元标签修订与 logprob 重新评估](outputs/legacy_binary_v2/二元标签与logprob评估.md)：对已有执行轨迹进行标签清洗，再使用原有 logprob 重新计算指标，没有训练新模型。前文初始实验统计保留为历史，本节为最新标注口径。
+
+新增代码：
+
+| 文件 | 作用 |
+|---|---|
+| `code/relabel_binary_steps.py` | 将调用和任务结束结果标为正确／错误，记录判定依据，保留原始数据 |
+| `code/evaluate_binary_logprob.py` | 重新计算 AUROC 等指标，进行重试去重分析并生成图表 |
+
+最新结果：
+
+- **198 次工具调用**：158 正确、40 错误，全部参与主评估。
+- **18 次无工具结束输出**：9 次任务完成、9 次未完成；原日志没有保存其 logprob。
+- **50 个任务**：按新完成规则复核，14 完成、36 未完成。
+- `geo_mean_prob` AUROC 为 **0.6351**；去重后为 **0.6980**。这是标签修订后的重评结果，不代表模型能力提升。
+
+标签明细、指标和图表位于 [`outputs/legacy_binary_v2/`](outputs/legacy_binary_v2/)。
+
+## 最新进展：自陈置信度与多采样一致性初筛
+
+在清洗后的 **198 步（158 正确、40 错误）** 上补采两个新信号，固定原调用和标签，不执行新工具。完整结果见 [自陈置信度与多采样一致性评估](outputs/new_signals_fast_v1/新信号评估.md)。
+
+| 信号 | AUROC | 优先检查最低分 20% 的错误捕获率 |
+|---|---:|---:|
+| 原 logprob | 0.6351 | 29.0% |
+| 自陈置信度 | 0.7172 | 33.4% |
+| 多采样一致性（K=3） | **0.8812** | **68.7%** |
+
+一致性去重后 AUROC 为 **0.8793**。同分跨过抽查预算时，捕获率按随机顺序的期望计算。本轮使用重建上下文、关闭思考的快速初筛；尚未拟合校准器，也没有独立数据验证。
+
+| 新文件 | 作用 |
+|---|---|
+| [`code/collect_new_signals.py`](code/collect_new_signals.py) | 重建调用前状态，补采自陈分数和 3 次独立动作；不执行工具 |
+| [`code/evaluate_new_signals.py`](code/evaluate_new_signals.py) | 固定标签计算 AUROC、配对区间、错误捕获率和去重结果，生成报告与图 |
+| [`code/README_new_signals.md`](code/README_new_signals.md) | 信号定义、文件说明、CPU 复算及重新采集方法 |
+| `tests/test_new_signal_collection.py`、`tests/test_new_signal_evaluation.py`、`tests/test_published_new_signals.py` | 分别检查上下文隔离与动作匹配、统计口径、公开结果与样本的一致性 |
+
+[`outputs/new_signals_fast_v1/`](outputs/new_signals_fast_v1/) 保存逐步 `scores.jsonl`、精简采样动作 `sample_actions.jsonl`、模型可见状态 `states.jsonl`、冻结协议 `protocol.json`，以及指标 JSON/CSV、逐步对应 CSV、对比图、采集汇总和校验记录。**已有分数可直接用 CPU 复算指标，无需模型服务或完整 API-Bank 数据。**

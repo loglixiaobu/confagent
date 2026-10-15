@@ -1,0 +1,51 @@
+﻿task_id,old_task_success,y,status,stop_reason,end_origin,missing_goals,failure_causes
+l3-003,True,1,正确,success,runner,,
+l3-001,True,1,正确,success,runner,,
+l3-002,True,1,正确,success,runner,,
+l3-004,True,1,正确,success,runner,,
+l3-000,False,0,错误,final_answer,model_no_tool_response,发送提醒：2021-01-02 10:00:00 / Room 2,model_response_before_all_goals_completed
+l3-007,False,0,错误,repeated_call,runner,取得实际天气返回; 取得穿衣建议返回; 给出有返回依据的天气与穿衣答案,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-006,False,0,错误,repeated_call,runner,取得实际天气返回; 取得穿衣建议返回; 给出有返回依据的天气与穿衣答案,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-009,False,0,错误,repeated_call,runner,取得实际天气返回; 取得穿衣建议返回; 给出有返回依据的天气与穿衣答案,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-005,False,0,错误,repeated_call,runner,取得实际天气返回; 取得穿衣建议返回; 给出有返回依据的天气与穿衣答案,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-008,False,1,正确,final_answer,model_no_tool_response,,
+l3-011,False,0,错误,final_answer,model_no_tool_response,取得组织成员; 核查全部成员出差状态; 以有依据的参数实际预约成功,no_final_answer_unclosed_thinking; no_tool_work_recorded
+l3-015,False,0,错误,repeated_call,runner,取得正确餐厅查询返回,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-012,False,0,错误,final_answer,model_no_tool_response,取得组织成员; 核查全部成员出差状态; 以有依据的参数实际预约成功,no_final_answer_unclosed_thinking; no_tool_work_recorded
+l3-013,False,0,错误,final_answer,model_no_tool_response,核查全部成员出差状态; 以有依据的参数实际预约成功,no_final_answer_unclosed_thinking
+l3-010,False,0,错误,max_steps,runner,以有依据的参数实际预约成功,incorrect_recorded_calls; runner_limit_or_repetition_stop
+l3-018,False,0,错误,repeated_call,runner,取得正确餐厅查询返回,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-020,True,0,错误,success,runner,记录排除已看电影后的列表,runner_success_check_omitted_required_goal
+l3-014,False,0,错误,final_answer,model_no_tool_response,以有依据的参数实际预约成功,incorrect_recorded_calls; model_response_before_all_goals_completed
+l3-019,False,0,错误,repeated_call,runner,取得正确餐厅查询返回,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-017,False,0,错误,repeated_call,runner,取得正确餐厅查询返回,incorrect_recorded_calls; simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-016,False,0,错误,repeated_call,runner,取得正确餐厅查询返回,incorrect_recorded_calls; simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-021,True,0,错误,success,runner,记录排除已看电影后的列表,runner_success_check_omitted_required_goal
+l3-023,True,0,错误,success,runner,记录排除已看电影后的列表,runner_success_check_omitted_required_goal
+l3-022,True,0,错误,success,runner,记录排除已看电影后的列表,runner_success_check_omitted_required_goal
+l3-024,False,0,错误,final_answer,model_no_tool_response,取得偏好; 取得已看列表; 取得推荐候选; 记录排除已看电影后的列表,no_final_answer_unclosed_thinking; no_tool_work_recorded
+l3-028,True,0,错误,success,runner,产生正确总数的实际返回或最终答案,runner_success_check_omitted_required_goal
+l3-026,False,1,正确,final_answer,model_no_tool_response,,
+l3-025,False,1,正确,final_answer,model_no_tool_response,,
+l3-027,False,0,错误,repeated_call,runner,产生正确总数的实际返回或最终答案,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-029,False,1,正确,final_answer,model_no_tool_response,,
+l3-031,False,1,正确,final_answer,model_no_tool_response,,
+l3-032,False,0,错误,repeated_call,runner,取得正确天气返回,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-034,False,0,错误,repeated_call,runner,取得正确天气返回,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-033,False,0,错误,repeated_call,runner,取得正确天气返回,simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-037,True,0,错误,success,runner,以有依据的入住退房时间取得酒店查询返回,incorrect_recorded_calls; runner_success_check_omitted_required_goal
+l3-030,False,0,错误,repeated_call,runner,取得正确天气返回,incorrect_recorded_calls; simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-036,False,0,错误,final_answer,model_no_tool_response,以有依据的入住退房时间取得酒店查询返回,incorrect_recorded_calls; model_response_before_all_goals_completed
+l3-039,True,0,错误,success,runner,以有依据的入住退房时间取得酒店查询返回,incorrect_recorded_calls; runner_success_check_omitted_required_goal
+l3-038,True,0,错误,success,runner,以有依据的入住退房时间取得酒店查询返回,incorrect_recorded_calls; runner_success_check_omitted_required_goal
+l3-040,False,0,错误,final_answer,model_no_tool_response,取得需求周期下有依据的税后工资返回,incorrect_recorded_calls; simulator_rejected_semantically_valid_call; no_final_answer_unclosed_thinking
+l3-035,False,0,错误,repeated_call,runner,取得有输入依据的航班查询返回; 以有依据的入住退房时间取得酒店查询返回,incorrect_recorded_calls; runner_limit_or_repetition_stop
+l3-043,True,1,正确,success,runner,,
+l3-041,False,0,错误,repeated_call,runner,取得需求周期下有依据的税后工资返回,incorrect_recorded_calls; simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-045,False,1,正确,final_answer,model_no_tool_response,,
+l3-046,False,1,正确,final_answer,model_no_tool_response,,
+l3-047,False,1,正确,final_answer,model_no_tool_response,,
+l3-048,False,1,正确,final_answer,model_no_tool_response,,
+l3-044,False,0,错误,repeated_call,runner,取得需求周期下有依据的税后工资返回,incorrect_recorded_calls; simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop
+l3-049,False,0,错误,final_answer,model_no_tool_response,实际更新成功,simulator_rejected_semantically_valid_call; model_response_before_all_goals_completed
+l3-042,False,0,错误,repeated_call,runner,取得需求周期下有依据的税后工资返回,incorrect_recorded_calls; simulator_rejected_semantically_valid_call; runner_limit_or_repetition_stop

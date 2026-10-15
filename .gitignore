@@ -23,8 +23,24 @@ desktop.ini
 # 内部工作文档（仅本地保留，不纳入仓库）
 中期答辩一周冲刺计划.md
 中期答辩内容提纲.md
-旧服务器gpu42_目录结构分析.md
+旧服务器*_目录结构分析.md
 研究内容一_阶段性结论与下一步.md
 选题3_任务与数据集选型建议.md
 选题3_任务类型适配性分析.md
 选题3_研究方案与SelfRAG对比分析.md
+
+# Offline analysis: retain compact review artifacts, omit duplicate long traces
+outputs/**/trajectories_binary.jsonl
+outputs/**/events_binary.jsonl
+*.joblib
+.env
+.env.*
+
+# Keep portable confidence scores and compact samples, not inference runtime data
+outputs/**/requests.jsonl
+outputs/**/thermal*.json*
+outputs/**/*.pid
+outputs/**/environment.json
+outputs/**/run_status.json
+outputs/**/server_startup.*
+outputs/**/cpu_validation.log

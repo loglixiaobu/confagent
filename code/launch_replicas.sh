@@ -1,4 +1,5 @@
 #!/bin/bash
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
 # ============================================================================
 # 在指定的 GPU 组上启动多个 vLLM 副本（每个副本独占一张卡，端口递增）
 #
@@ -15,17 +16,17 @@ set -u
 GPUS="${1:-0 1 2 3}"
 BASE_PORT="${2:-8000}"
 
-source /home1/lh/miniconda/etc/profile.d/conda.sh
+source "${CONDA_SH:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate confagent
 
-MODEL_PATH="${MODEL_PATH:-/home1/lh/confagent/models/Qwen3-8B}"
+MODEL_PATH="${MODEL_PATH:-${PROJECT_ROOT}/models/Qwen3-8B}"
 # 注意：不要在这里设 CUDA_DEVICE_ORDER=PCI_BUS_ID。
 # 2026-10-14 实测：在本机（已有 GPU 掉出总线）设置该变量并不能修正设备映射，
 # 反而会引入额外的初始化失败风险。保持默认顺序即可。
 SERVED_NAME="${SERVED_NAME:-Qwen3-8B}"
 MAX_LEN="${MAX_LEN:-16384}"
 GMU="${GMU:-0.90}"
-LOGDIR=/home1/lh/confagent/logs
+LOGDIR=${PROJECT_ROOT}/logs
 mkdir -p "$LOGDIR"
 
 echo "=============================================="
@@ -40,7 +41,7 @@ for g in $GPUS; do
   PORTS="$PORTS $port"
   log="$LOGDIR/vllm_gpu${g}_port${port}.log"
   echo "  GPU $g -> port $port  (log: $log)"
-  CUDA_VISIBLE_DEVICES="$g" nohup python /home1/lh/confagent/code/vllm_serve_patched.py serve "$MODEL_PATH" \
+  CUDA_VISIBLE_DEVICES="$g" nohup python ${PROJECT_ROOT}/code/vllm_serve_patched.py serve "$MODEL_PATH" \
     --served-model-name "$SERVED_NAME" \
     --host 0.0.0.0 --port "$port" \
     --dtype bfloat16 --max-model-len "$MAX_LEN" \

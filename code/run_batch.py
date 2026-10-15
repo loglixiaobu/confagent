@@ -23,6 +23,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 import argparse
 import json
 import os
@@ -137,8 +138,8 @@ def main() -> None:
     ap.add_argument("--endpoints", default="localhost:8000",
                     help="逗号分隔的 host:port 列表")
     ap.add_argument("--model", default="Qwen3-8B")
-    ap.add_argument("--data-dir", default="/home1/lh/confagent/data/api-bank")
-    ap.add_argument("--out", default="/home1/lh/confagent/outputs/traj_vanilla.jsonl")
+    ap.add_argument("--data-dir", default=str(Path(__file__).resolve().parents[1] / 'data/api-bank'))
+    ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / 'outputs/traj_vanilla.jsonl'))
     ap.add_argument("--limit", type=int, default=50)
     ap.add_argument("--offset", type=int, default=0)
     ap.add_argument("--concurrency", type=int, default=1,

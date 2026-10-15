@@ -1,0 +1,12 @@
+{
+  "tests_passed": 13,
+  "source_sha256": "fe6e484abce858d214601990e05d86567232ab74f2bb0155b16945a10383c4df",
+  "all_198_calls_binary": true,
+  "all_18_no_tool_responses_binary": true,
+  "all_50_task_outcomes_binary": true,
+  "termination_scores_not_fabricated": true,
+  "original_calls_and_scores_unchanged": true,
+  "gpu_used": false,
+  "model_requests": 0,
+  "metrics_match_original_analysis": true
+}
