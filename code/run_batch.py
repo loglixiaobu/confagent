@@ -140,6 +140,8 @@ def main() -> None:
     ap.add_argument("--model", default="Qwen3-8B")
     ap.add_argument("--data-dir", default=str(Path(__file__).resolve().parents[1] / 'data/api-bank'))
     ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / 'outputs/traj_vanilla.jsonl'))
+    ap.add_argument("--allow-append", action="store_true",
+                    help="显式允许向已有非空轨迹追加；不同实验条件不要共用文件")
     ap.add_argument("--limit", type=int, default=50)
     ap.add_argument("--offset", type=int, default=0)
     ap.add_argument("--concurrency", type=int, default=1,
@@ -180,10 +182,16 @@ def main() -> None:
 
     if args.verify_budget < 0:
         ap.error("--verify-budget 不能为负")
+    if args.consistency_k < 0:
+        ap.error("--consistency-k 不能为负")
+    if args.verify_policy == "vanilla" and args.verify_budget != 0:
+        ap.error("vanilla 基线的 --verify-budget 必须为 0")
     if not 0.0 <= args.risk_threshold <= 1.0:
         ap.error("--risk-threshold 必须位于 [0,1]")
 
     endpoints = [e.strip() for e in args.endpoints.split(",") if e.strip()]
+    if not endpoints:
+        ap.error("--endpoints 不能为空")
     all_tasks = load_level3(args.data_dir, "test")
 
     # 剔除 gold 链涉及指定 API 的任务（例如上一批正确率为 0% 的子任务）
@@ -199,6 +207,8 @@ def main() -> None:
     if args.tag:
         root, ext = os.path.splitext(out)
         out = "%s_%s%s" % (root, args.tag, ext)
+    if os.path.exists(out) and os.path.getsize(out) > 0 and not args.allow_append:
+        ap.error("输出文件已存在且非空：%s；请换新路径，或明确使用 --allow-append" % out)
 
     cfg = AgentConfig(
         model=args.model, max_steps=args.max_steps, temperature=args.temperature,

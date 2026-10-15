@@ -9,9 +9,11 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "code"))
 
 from apibank_env import APIBankMockEnv, api_schema_to_tool  # noqa: E402
+from action_semantics import semantic_action_equal  # noqa: E402
 from react_agent import AgentConfig, run_task  # noqa: E402
 from verification import (BudgetState, CandidateAction,  # noqa: E402
                           check_argument_provenance, correction_outcome,
+                          grounded_label, run_consistency_vote, run_critic,
                           should_verify)
 
 
@@ -60,7 +62,10 @@ class FakeCompletions:
         self.requests.append(kwargs)
         if not self.responses:
             raise AssertionError("unexpected model request")
-        return self.responses.pop(0)
+        response = self.responses.pop(0)
+        if isinstance(response, Exception):
+            raise response
+        return response
 
 
 class FakeClient:
@@ -90,6 +95,19 @@ class EnvironmentTests(unittest.TestCase):
 
 
 class VerificationUnitTests(unittest.TestCase):
+    def test_online_consistency_uses_published_semantic_equality(self):
+        calculator = {
+            "name": "Calculator", "description": "Calculate.",
+            "input_parameters": {"formula": {"type": "str", "description": "Formula."}},
+        }
+        tools = [api_schema_to_tool(calculator)]
+        self.assertTrue(semantic_action_equal(
+            CandidateAction("Calculator", {"formula": "70 + 80 + 90"}),
+            CandidateAction("Calculator", {"formula": "240"}), tools))
+        self.assertFalse(semantic_action_equal(
+            CandidateAction("Calculator", {"formula": "70 + 80"}),
+            CandidateAction("Calculator", {"formula": "240"}), tools))
+
     def test_provenance_flags_unsupported_value(self):
         task, api = task_fixture()
         tools = [api_schema_to_tool(api)]
@@ -100,6 +118,36 @@ class VerificationUnitTests(unittest.TestCase):
         self.assertGreaterEqual(bad.risk, 0.7)
         self.assertFalse(bad.valid)
         self.assertTrue(good.valid)
+
+    def test_provenance_accepts_visible_number_and_reformatted_datetime(self):
+        api = {
+            "name": "ReserveRoom", "description": "Reserve a room.",
+            "input_parameters": {
+                "room": {"type": "str", "description": "Room name."},
+                "people": {"type": "int", "description": "Party size."},
+                "start_time": {"type": "str", "description": "Start date and time."},
+            },
+        }
+        result = check_argument_provenance(
+            "Reserve room Atlas for 4 people on 2026-11-03 at 14:00.", [],
+            CandidateAction("ReserveRoom", {
+                "room": "Atlas", "people": 4, "start_time": "2026-11-03T14:00",
+            }), [api_schema_to_tool(api)])
+        self.assertTrue(result.valid)
+        self.assertEqual(result.supported_fields, ["room", "people", "start_time"])
+
+    def test_critic_json_without_boolean_valid_is_unavailable(self):
+        task, api = task_fixture()
+        tools = [api_schema_to_tool(api)]
+        candidate = CandidateAction("LookupUser", {"user_name": "Alice"})
+        provenance = check_argument_provenance(task["requirement"], [], candidate, tools)
+        client = FakeClient([text_response(json.dumps({
+            "candidate_action": candidate.to_dict(), "revised_action": None,
+        }))])
+        result = run_critic(client, "fake", [], tools, candidate, provenance)
+        self.assertFalse(result.available)
+        self.assertIsNone(result.valid)
+        self.assertEqual(result.issues[0]["kind"], "invalid_critic_output")
 
     def test_budget_and_policy(self):
         task, api = task_fixture()
@@ -115,10 +163,44 @@ class VerificationUnitTests(unittest.TestCase):
                                     __import__("random").Random(0))
         self.assertFalse(hit)
         self.assertIn("exhausted", reason)
+        hit, reason = should_verify("always", 1.0, prov, BudgetState(2), 0.0,
+                                    __import__("random").Random(0), required_calls=3)
+        self.assertFalse(hit)
+        self.assertIn("exhausted", reason)
 
     def test_correction_outcomes(self):
         self.assertEqual(correction_outcome(False, True, True), "error_to_correct")
         self.assertEqual(correction_outcome(True, False, True), "correct_to_error")
+
+    def test_grounded_label_rejects_lucky_hidden_value(self):
+        task, api = task_fixture()
+        provenance = check_argument_provenance(
+            task["requirement"], [], CandidateAction("LookupUser", {"user_name": "Bob"}),
+            [api_schema_to_tool(api)])
+        self.assertFalse(grounded_label(provenance, replay_correct=True))
+
+    def test_consistency_keeps_fixed_denominator_and_missing_is_unavailable(self):
+        task, api = task_fixture()
+        tools = [api_schema_to_tool(api)]
+        candidate = CandidateAction("LookupUser", {"user_name": "Alice"})
+        client = FakeClient([
+            tool_response("LookupUser", {"user_name": "Alice"}),
+            text_response("no action"), text_response("no action"),
+        ])
+        vote = run_consistency_vote(
+            client, "fake", [], tools, candidate, 3, 0.7, 100, False, seed=0)
+        self.assertTrue(vote.available)
+        self.assertAlmostEqual(vote.raw["agreement"], 1 / 3)
+        self.assertEqual(vote.raw["n_samples"], 3)
+
+        missing_client = FakeClient([
+            tool_response("LookupUser", {"user_name": "Alice"}),
+            RuntimeError("transport"), text_response("no action"),
+        ])
+        missing = run_consistency_vote(
+            missing_client, "fake", [], tools, candidate, 3, 0.7, 100, False, seed=0)
+        self.assertFalse(missing.available)
+        self.assertIsNone(missing.raw["agreement"])
 
 
 class AgentFlowTests(unittest.TestCase):
@@ -129,7 +211,8 @@ class AgentFlowTests(unittest.TestCase):
             "issues": [{"field": "user_name", "reason": "unsupported"}],
             "revised_action": {"api_name": "LookupUser", "arguments": {"user_name": "Alice"}},
         }))
-        client = FakeClient([tool_response("LookupUser", {"user_name": "Bob"}), critic])
+        client = FakeClient([tool_response("LookupUser", {"user_name": "Bob"}), critic,
+                             text_response("Alice was found.")])
         cfg = AgentConfig(
             model="fake", max_steps=2, verify_policy="provenance", verifier="critic",
             verify_budget=1, feedback_mode="realistic", enable_thinking=False,
@@ -142,6 +225,8 @@ class AgentFlowTests(unittest.TestCase):
         self.assertTrue(step.verified)
         self.assertFalse(step.candidate_matched_gold)
         self.assertTrue(step.matched_gold)
+        self.assertFalse(step.candidate_grounded_correct)
+        self.assertTrue(step.executed_grounded_correct)
         self.assertEqual(step.correction_outcome, "error_to_correct")
         self.assertEqual(step.action_input["arguments"]["user_name"], "Alice")
         self.assertEqual(step.model_calls, 2)
@@ -155,6 +240,7 @@ class AgentFlowTests(unittest.TestCase):
             tool_response("LookupUser", {"user_name": "Alice"}, "s1"),
             tool_response("LookupUser", {"user_name": "Alice"}, "s2"),
             tool_response("LookupUser", {"user_name": "Bob"}, "s3"),
+            text_response("Alice was found."),
         ])
         cfg = AgentConfig(
             model="fake", max_steps=2, verify_policy="provenance", verifier="consistency",
@@ -189,6 +275,7 @@ class AgentFlowTests(unittest.TestCase):
         client = FakeClient([
             tool_response("LookupUser", {"user_name": "Bob"}, "call-1"),
             tool_response("LookupUser", {"user_name": "Alice"}, "call-2"),
+            text_response("Alice was found."),
         ])
         cfg = AgentConfig(
             model="fake", max_steps=3, verify_policy="exception", verifier="critic",
@@ -198,12 +285,22 @@ class AgentFlowTests(unittest.TestCase):
         self.assertTrue(traj.final_success)
         self.assertFalse(traj.clean_success)
         self.assertTrue(traj.recovered_success)
-        self.assertEqual([s.action_type for s in traj.steps], ["tool_call", "retry"])
+        self.assertEqual([s.action_type for s in traj.steps], ["tool_call", "retry", "answer"])
         self.assertFalse(traj.steps[0].matched_gold)
         self.assertTrue(traj.steps[1].matched_gold)
         self.assertEqual(traj.steps[1].correction_type, "local_retry")
-        self.assertEqual(traj.steps[1].correction_outcome, "error_to_correct")
+        self.assertEqual(traj.steps[1].correction_outcome, "unchanged_correct")
+        self.assertEqual(traj.steps[1].retry_outcome, "recovered")
         self.assertEqual(traj.steps[1].parent_step_id, traj.steps[0].step_id)
+
+    def test_replay_completion_without_final_answer_is_not_task_success(self):
+        task, _ = task_fixture()
+        client = FakeClient([tool_response("LookupUser", {"user_name": "Alice"})])
+        cfg = AgentConfig(model="fake", max_steps=1, verify_policy="vanilla",
+                          feedback_mode="realistic", enable_thinking=False)
+        traj = run_task(task, cfg, client, task_index=0)
+        self.assertTrue(traj.replay_success)
+        self.assertFalse(traj.final_success)
 
 
 if __name__ == "__main__":

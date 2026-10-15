@@ -55,7 +55,7 @@ from apibank_env import APIBankMockEnv, load_level3  # noqa: E402
 from trajectory import Trajectory, TrajectoryStep, TrajectoryWriter  # noqa: E402
 from verification import (BudgetState, CandidateAction, UsageCost, VerificationResult,  # noqa: E402
                           check_argument_provenance, correction_outcome,
-                          fuse_risk, run_consistency_vote, run_critic,
+                          fuse_risk, grounded_label, run_consistency_vote, run_critic,
                           should_verify, usage_from_response)
 
 # 推理段少于这么多 token 视为"没有真正思考"，置信度不可用
@@ -109,6 +109,8 @@ class AgentConfig:
             raise ValueError("未知 verifier: %s" % self.verifier)
         if self.verify_budget < 0:
             raise ValueError("verify_budget 不能为负")
+        if self.consistency_k < 0:
+            raise ValueError("consistency_k 不能为负")
         if not 0.0 <= self.risk_threshold <= 1.0:
             raise ValueError("risk_threshold 必须位于 [0,1]")
         if self.feedback_mode not in {"realistic", "diagnostic"}:
@@ -254,6 +256,8 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
         task_id=task_id, model=cfg.model, seed=cfg.seed,
         round_idx=cfg.round_idx, method=cfg.method,
         config={"max_steps": cfg.max_steps, "temperature": cfg.temperature,
+                "q2_protocol_version": "q2-online-v3-grounded",
+                "action_equivalence": "published-semantic-v1",
                 "enable_thinking": cfg.enable_thinking, "self_report": cfg.self_report,
                 "consistency_k": cfg.consistency_k,
                 "consistency_temp": cfg.consistency_temp,
@@ -352,16 +356,20 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
             task.get("requirement", ""), observations, original, tools)
         budget_before = budget.remaining
         extra_cost = UsageCost()
+        signal_cost = UsageCost()
+        verifier_cost = UsageCost()
 
         # 自陈属于额外模型调用，必须占用同一验证预算。
         self_rep: Optional[float] = None
-        if cfg.self_report and (cfg.verify_policy == "vanilla" or budget.can_spend(1)):
+        if (cfg.self_report and cfg.verify_policy in ("vanilla", "fused")
+                and (cfg.verify_policy == "vanilla" or budget.can_spend(1))):
             if cfg.verify_policy != "vanilla":
                 budget.spend(1)
             self_rep, sr_cost = ask_self_report(
                 client, cfg, messages,
                 "%s(%s)" % (name, json.dumps(args, ensure_ascii=False)))
             extra_cost.add(sr_cost)
+            signal_cost.add(sr_cost)
 
         token_conf = feats.get("confidence") if feats.get("available") else None
         signal_vote = None
@@ -374,6 +382,7 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                     cfg.consistency_temp, cfg.max_tokens, cfg.enable_thinking,
                     seed=cfg.seed * 1000003 + task_index * 101 + len(traj.steps) * 17)
                 extra_cost.add(signal_vote.usage)
+                signal_cost.add(signal_vote.usage)
         consistency_signal = None
         if signal_vote is not None and signal_vote.raw:
             consistency_signal = signal_vote.raw.get("agreement")
@@ -385,9 +394,16 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
             risk = provenance.risk
         else:
             risk = fused_risk
+        if cfg.verifier == "consistency":
+            required_verify_calls = 0 if signal_vote is not None else (
+                cfg.consistency_k if cfg.consistency_k > 0 else 3)
+        else:
+            # Hybrid can still run its critic with one remaining call; its
+            # consistency branch is optional when the fixed K is unavailable.
+            required_verify_calls = 1
         do_verify, trigger_reason = should_verify(
             cfg.verify_policy, risk, provenance, budget,
-            cfg.risk_threshold, rng)
+            cfg.risk_threshold, rng, required_verify_calls)
 
         verification = None
         verification_usage_precounted = False
@@ -402,9 +418,8 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                     verification = signal_vote
                     verification_usage_precounted = True
                 else:
-                    k = min(cfg.consistency_k if cfg.consistency_k > 0 else 3,
-                            budget.remaining)
-                    if k >= 2:
+                    k = cfg.consistency_k if cfg.consistency_k > 0 else 3
+                    if k >= 2 and budget.can_spend(k):
                         budget.spend(k)
                         verification = run_consistency_vote(
                             client, cfg.model, messages, tools, original, k,
@@ -417,9 +432,8 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                     max_tokens=min(768, cfg.max_tokens))
                 vote_result = signal_vote
                 if vote_result is None:
-                    k = min(cfg.consistency_k if cfg.consistency_k > 0 else 3,
-                            budget.remaining)
-                    if k >= 2:
+                    k = cfg.consistency_k if cfg.consistency_k > 0 else 3
+                    if k >= 2 and budget.can_spend(k):
                         budget.spend(k)
                         vote_result = run_consistency_vote(
                             client, cfg.model, messages, tools, original, k,
@@ -449,10 +463,12 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                 if signal_vote is not None:
                     # signal_vote 已计入 extra_cost，只需补 critic 成本。
                     extra_cost.add(critic_result.usage)
+                    verifier_cost.add(critic_result.usage)
                     verification_usage_precounted = True
             if verification is not None:
                 if not verification_usage_precounted:
                     extra_cost.add(verification.usage)
+                    verifier_cost.add(verification.usage)
                 if verification.revised_action is not None:
                     # 修订动作必须仍属于当前暴露工具集；避免 critic 虚构 API。
                     exposed = {((t.get("function") or {}).get("name")) for t in tools}
@@ -461,11 +477,10 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
 
         changed = final.signature() != original.signature()
         final_eval = env.evaluate_candidate(final.api_name, final.arguments)
+        final_provenance = check_argument_provenance(
+            task.get("requirement", ""), observations, final, tools)
         outcome = correction_outcome(
             original_eval.matched_gold, final_eval.matched_gold, changed)
-        if previous_failed:
-            outcome = ("error_to_correct" if final_eval.matched_gold
-                       else "changed_but_still_error")
 
         # --- 重复调用熔断：按真正即将执行的动作判断 ---
         sig = final.signature()
@@ -476,6 +491,9 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
             last_sig = sig
 
         res = env.call(final.api_name, final.arguments)
+        retry_outcome = None
+        if previous_failed:
+            retry_outcome = "recovered" if res.matched_gold else "retry_failed"
 
         if final.api_name == "ToolSearcher" and isinstance(res.observation, dict) and res.observation.get("name"):
             unlocked[res.observation["name"]] = res.observation
@@ -549,6 +567,11 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
             correction_type=correction_type, correction_changed=changed,
             correction_outcome=outcome,
             candidate_matched_gold=original_eval.matched_gold,
+            candidate_grounded_correct=grounded_label(provenance, original_eval.matched_gold),
+            executed_grounded_correct=grounded_label(final_provenance, res.matched_gold),
+            candidate_grounding=provenance.to_dict(),
+            executed_grounding=final_provenance.to_dict(),
+            retry_outcome=retry_outcome,
             parent_step_id=last_failed_step_id if previous_failed else None,
             budget_before=budget_before, budget_after=budget.remaining,
             cost_tokens=base_cost.total_tokens + extra_cost.total_tokens,
@@ -561,6 +584,8 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
             verification_completion_tokens=extra_cost.completion_tokens,
             verification_model_calls=extra_cost.model_calls,
             verification_latency_ms=extra_cost.latency_ms,
+            signal_model_calls=signal_cost.model_calls,
+            verifier_model_calls=verifier_cost.model_calls,
             matched_gold=res.matched_gold,
             strict_matched_gold=res.strict_matched_gold,
             failure_type=res.failure_type,
@@ -590,11 +615,6 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                 ("%.3f" % conf) if conf is not None else "None",
                 (feats.get("n_tokens") if feats.get("available") else "-"),
                 "  [DEGENERATE]" if feats.get("degenerate") else ""))
-
-        if env.success():
-            traj.final_answer = clean_content
-            stop_reason = "success"
-            break
 
         if repeat_count >= MAX_REPEAT - 1:
             stop_reason = "repeated_call"
@@ -626,9 +646,13 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
         else:
             consecutive_failures = 0
 
-    traj.final_success = env.success()
-    traj.clean_success = env.clean_success()
-    traj.recovered_success = env.recovered_success()
+    traj.replay_success = env.success()
+    # Completing the replay chain is not by itself a completed user-facing
+    # task: require an explicit non-empty terminal response as well.
+    answered = stop_reason == "final_answer" and bool((traj.final_answer or "").strip())
+    traj.final_success = bool(traj.replay_success and answered)
+    traj.clean_success = bool(traj.final_success and env.clean_success())
+    traj.recovered_success = bool(traj.final_success and env.recovered_success())
     traj.config["stop_reason"] = stop_reason
     traj.config["verification_budget_used"] = budget.used
     traj.config["verification_budget_remaining"] = budget.remaining
@@ -642,6 +666,8 @@ def main() -> None:
     ap.add_argument("--model", default="Qwen3-8B")
     ap.add_argument("--data-dir", default=str(Path(__file__).resolve().parents[1] / 'data/api-bank'))
     ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / 'outputs/traj_vanilla.jsonl'))
+    ap.add_argument("--allow-append", action="store_true",
+                    help="显式允许向已有非空轨迹追加")
     ap.add_argument("--limit", type=int, default=3)
     ap.add_argument("--offset", type=int, default=0)
     ap.add_argument("--max-steps", type=int, default=12)
@@ -666,6 +692,11 @@ def main() -> None:
                     choices=["realistic", "diagnostic"])
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args()
+
+    if args.verify_policy == "vanilla" and args.verify_budget != 0:
+        ap.error("vanilla 基线的 --verify-budget 必须为 0")
+    if os.path.exists(args.out) and os.path.getsize(args.out) > 0 and not args.allow_append:
+        ap.error("输出文件已存在且非空：%s；请换新路径，或明确使用 --allow-append" % args.out)
 
     cfg = AgentConfig(
         base_url=args.base_url, model=args.model, max_steps=args.max_steps,

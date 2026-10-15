@@ -12,9 +12,11 @@ import json
 import random
 import re
 import time
-from collections import Counter
+from decimal import Decimal, InvalidOperation
 from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, Iterable, List, Optional, Tuple
+
+from action_semantics import semantic_action_equal, strict_action_equal
 
 
 @dataclass
@@ -149,6 +151,47 @@ def _tokens(value: Any) -> set:
     return {t for t in re.findall(r"[a-z0-9@._:+-]+", _normalise(value)) if len(t) > 2}
 
 
+def _number(value: Any) -> Optional[Decimal]:
+    if isinstance(value, bool):
+        return None
+    try:
+        result = Decimal(str(value))
+        return result if result.is_finite() else None
+    except (InvalidOperation, ValueError, TypeError):
+        return None
+
+
+def _numbers_in_evidence(values: Iterable[Any]) -> set:
+    """Collect scalar numbers and numeric literals embedded in visible text."""
+    numbers = set()
+    for value in values:
+        direct = _number(value)
+        if direct is not None:
+            numbers.add(direct)
+        if isinstance(value, str):
+            for literal in re.findall(r"(?<![\w.])-?\d+(?:\.\d+)?", value):
+                parsed = _number(literal)
+                if parsed is not None:
+                    numbers.add(parsed)
+    return numbers
+
+
+def _structured_time_grounded(value: Any, evidence_text: str) -> bool:
+    """Accept a visible date/time even when the model changes separators.
+
+    For example, ``2026-11-03T14:00`` is grounded by the requirement text
+    ``2026-11-03 at 14:00``. Every detected date/time component must be visible;
+    this does not infer or manufacture a missing component.
+    """
+    if not isinstance(value, str):
+        return False
+    # Digit boundaries (rather than ``\b``) also cover the ISO ``dateTtime`` form.
+    dates = re.findall(r"(?<!\d)\d{4}-\d{1,2}-\d{1,2}(?!\d)", value)
+    times = re.findall(r"(?<!\d)\d{1,2}:\d{2}(?::\d{2})?(?!\d)", value)
+    parts = dates + times
+    return bool(parts) and all(part.lower() in evidence_text for part in parts)
+
+
 def _tool_schema(tools: List[Dict[str, Any]], api_name: str) -> Optional[Dict[str, Any]]:
     for tool in tools:
         fn = tool.get("function") or {}
@@ -183,7 +226,9 @@ def check_argument_provenance(requirement: str, observations: List[Any],
 
     evidence_values = list(_flatten_values([requirement, observations]))
     evidence_norm = [_normalise(v) for v in evidence_values]
+    evidence_numbers = _numbers_in_evidence(evidence_values)
     evidence_tokens = set().union(*(_tokens(v) for v in evidence_values)) if evidence_values else set()
+    evidence_text = " ".join(evidence_norm)
     composition_fields = {"content", "message", "body", "description", "query", "keywords", "text"}
 
     for field_name, value in args.items():
@@ -194,8 +239,36 @@ def check_argument_provenance(requirement: str, observations: List[Any],
         value_norm = _normalise(value)
         exact = any(value_norm == ev or (len(value_norm) >= 4 and value_norm in ev)
                     for ev in evidence_norm)
+        numeric = _number(value)
+        if numeric is not None and numeric in evidence_numbers:
+            exact = True
         overlap = _tokens(value) & evidence_tokens
         compositional = field_name.lower() in composition_fields and bool(overlap)
+        if _structured_time_grounded(value, evidence_text):
+            compositional = True
+        if isinstance(value, (list, tuple)):
+            leaves = list(_flatten_values(value))
+            compositional = bool(leaves) and all(
+                _normalise(leaf) in evidence_norm
+                or (_number(leaf) is not None and _number(leaf) in evidence_numbers)
+                for leaf in leaves)
+        # Safe arithmetic is grounded only when every numeric literal was
+        # already visible.  This accepts sums of observed counts without
+        # legitimising a fabricated constant or an unsupported /12 conversion.
+        if candidate.api_name == "Calculator" and field_name == "formula":
+            try:
+                from apibank_env import arithmetic_value
+                arithmetic_value(value)
+                literals = [_number(v) for v in re.findall(r"(?<![\w.])-?\d+(?:\.\d+)?", str(value))]
+                compositional = bool(literals) and all(v in evidence_numbers for v in literals)
+            except (ValueError, SyntaxError, ArithmeticError):
+                compositional = False
+        description = str((properties.get(field_name) or {}).get("description", "")).lower()
+        if numeric is not None and "meter" in description:
+            km_values = [Decimal(v) * 1000 for v in re.findall(
+                r"(?<![\w.])(\d+(?:\.\d+)?)\s*(?:km|kilometers?)\b", requirement.lower())]
+            if numeric in km_values:
+                compositional = True
         # 布尔值和很小的枚举通常由任务语义决定，单纯字符串检索会产生大量假阳性。
         primitive_ok = isinstance(value, bool) or value_norm in {"true", "false", "yes", "no"}
         if exact or compositional or primitive_ok:
@@ -239,12 +312,12 @@ def fuse_risk(token_confidence: Optional[float], self_report: Optional[float],
 
 def should_verify(policy: str, risk: float, provenance: ProvenanceResult,
                   budget: BudgetState, threshold: float,
-                  rng: random.Random) -> Tuple[bool, str]:
+                  rng: random.Random, required_calls: int = 1) -> Tuple[bool, str]:
     if policy == "vanilla":
         return False, "policy=vanilla"
     if policy == "exception":
         return False, "exception policy waits for execution feedback"
-    if not budget.can_spend(1):
+    if not budget.can_spend(required_calls):
         return False, "verification budget exhausted"
     if policy == "always":
         return True, "policy=always"
@@ -283,19 +356,23 @@ def run_critic(client: Any, model: str, messages: List[Dict[str, Any]],
                provenance: ProvenanceResult, max_tokens: int = 512) -> VerificationResult:
     """用独立结构化 critic 验证并在必要时给出修订动作。"""
     schema = _tool_schema(tools, candidate.api_name)
-    prompt = {
+    evidence = {
         "candidate_action": candidate.to_dict(),
         "candidate_tool_schema": schema,
         "available_tool_schemas": [t.get("function") for t in tools if t.get("function")],
         "deterministic_provenance_check": provenance.to_dict(),
-        "instruction": (
-            "Verify the candidate using only the requirement and tool observations above. "
-            "Never invent a value. Return JSON only with keys valid, issues, and revised_action. "
-            "revised_action must be null when no justified correction is available, otherwise "
-            "it must contain api_name and arguments."
-        ),
     }
-    probe = list(messages) + [{"role": "user", "content": json.dumps(prompt, ensure_ascii=False)}]
+    prompt = (
+        "You are the action verifier. Verify the candidate using only the requirement and "
+        "tool observations already shown. Never invent a value.\n"
+        "Return exactly ONE JSON object and no other text. It must have these three keys:\n"
+        '{"valid": true_or_false, "issues": [], "revised_action": null}\n'
+        "When a justified correction exists, revised_action must instead be "
+        '{"api_name": "...", "arguments": {...}}. Otherwise keep it null.\n'
+        "Do not repeat the evidence or tool schema in your answer.\n"
+        "EVIDENCE:\n" + json.dumps(evidence, ensure_ascii=False)
+    )
+    probe = list(messages) + [{"role": "user", "content": prompt}]
     t0 = time.time()
     try:
         response = client.chat.completions.create(
@@ -325,6 +402,13 @@ def run_critic(client: Any, model: str, messages: List[Dict[str, Any]],
         revised = CandidateAction(ra["api_name"], ra["arguments"])
     issues = obj.get("issues") if isinstance(obj.get("issues"), list) else []
     valid = obj.get("valid") if isinstance(obj.get("valid"), bool) else None
+    if valid is None:
+        return VerificationResult(
+            verifier="critic", valid=None, risk=provenance.risk,
+            issues=[{"kind": "invalid_critic_output",
+                     "message": "critic JSON is missing a boolean valid field"}],
+            usage=usage, raw=obj, available=False,
+        )
     risk = 0.0 if valid is True else max(provenance.risk, 0.75 if issues else 0.5)
     return VerificationResult(
         verifier="critic", valid=valid, risk=risk, issues=issues,
@@ -338,8 +422,12 @@ def run_consistency_vote(client: Any, model: str, messages: List[Dict[str, Any]]
                          enable_thinking: bool,
                          seed: Optional[int] = None) -> VerificationResult:
     """在同一状态采样 k 次，以多数动作作为可选修订。"""
-    samples: List[CandidateAction] = []
+    # One slot per requested sample.  A successful response without a parsed
+    # action is a genuine disagreement; a transport failure makes the whole
+    # primary score unavailable rather than silently shrinking K.
+    samples: List[Optional[CandidateAction]] = []
     usage = UsageCost()
+    missing_samples = 0
     for sample_idx in range(max(0, k)):
         t0 = time.time()
         try:
@@ -352,38 +440,60 @@ def run_consistency_vote(client: Any, model: str, messages: List[Dict[str, Any]]
         except Exception:
             usage.add(UsageCost(model_calls=1,
                                 latency_ms=int((time.time() - t0) * 1000)))
+            missing_samples += 1
             continue
         usage.add(usage_from_response(response, int((time.time() - t0) * 1000)))
         calls = getattr(response.choices[0].message, "tool_calls", None) or []
         if not calls:
+            samples.append(None)
             continue
         tc = calls[0]
         try:
             args = json.loads(tc.function.arguments or "{}")
         except Exception:
+            samples.append(None)
             continue
         if isinstance(args, dict):
             samples.append(CandidateAction(tc.function.name, args))
+        else:
+            samples.append(None)
 
-    if not samples:
+    if missing_samples or len(samples) != max(0, k):
         return VerificationResult(
             verifier="consistency", valid=None, risk=1.0,
-            issues=[{"kind": "no_valid_samples", "message": "no sampled tool action was parseable"}],
+            issues=[{"kind": "incomplete_samples",
+                     "message": "one or more requested samples are missing"}],
             usage=usage, available=False,
+            raw={"agreement": None, "strict_agreement": None,
+                 "requested_samples": k, "missing_samples": missing_samples},
         )
-    counts = Counter(s.signature() for s in samples)
-    majority_sig, majority_n = counts.most_common(1)[0]
-    majority = next(s for s in samples if s.signature() == majority_sig)
-    chosen_n = counts.get(candidate.signature(), 0)
-    agreement = chosen_n / len(samples)
-    revised = majority if majority_sig != candidate.signature() and majority_n > chosen_n else None
+
+    parsed = [sample for sample in samples if sample is not None]
+    chosen_n = sum(semantic_action_equal(candidate, sample, tools) for sample in parsed)
+    strict_n = sum(strict_action_equal(candidate, sample) for sample in parsed)
+    agreement = chosen_n / k if k else 0.0
+    strict_agreement = strict_n / k if k else 0.0
+
+    clusters: List[Tuple[CandidateAction, int]] = []
+    for sample in parsed:
+        for idx, (representative, count) in enumerate(clusters):
+            if semantic_action_equal(representative, sample, tools):
+                clusters[idx] = (representative, count + 1)
+                break
+        else:
+            clusters.append((sample, 1))
+    majority, majority_n = max(clusters, key=lambda item: item[1]) if clusters else (None, 0)
+    # Do not revise from a plurality produced alongside no-action responses.
+    revised = (majority if majority is not None and majority_n > k / 2
+               and not semantic_action_equal(candidate, majority, tools) else None)
     return VerificationResult(
         verifier="consistency", valid=agreement >= 0.5, risk=1.0 - agreement,
         issues=[] if agreement >= 0.5 else [{"kind": "low_consistency", "message": "sampled actions disagree"}],
         revised_action=revised, usage=usage,
-        raw={"agreement": agreement, "n_samples": len(samples), "n_agree": chosen_n,
+        raw={"agreement": agreement, "strict_agreement": strict_agreement,
+             "n_samples": k, "n_parsed_actions": len(parsed), "n_agree": chosen_n,
              "majority_count": majority_n,
-             "sample_actions": [s.to_dict() for s in samples]},
+             "sample_actions": [s.to_dict() if s is not None else None for s in samples]},
     )
 
 
@@ -398,3 +508,19 @@ def correction_outcome(before_correct: Optional[bool], after_correct: Optional[b
     if not before_correct and after_correct:
         return "error_to_correct"
     return "changed_but_still_error" if changed else "unchanged_error"
+
+
+def grounded_label(provenance: ProvenanceResult,
+                   replay_correct: Optional[bool]) -> Optional[bool]:
+    """Conservative evidence-grounded label for online Q2 attribution.
+
+    A provenance violation is an observable error even when a fabricated value
+    happens to equal hidden replay data.  Conversely, a grounded action rejected
+    by the deterministic replay is left unknown instead of being forced wrong.
+    This label is evaluator-only and must never enter model messages.
+    """
+    if not provenance.valid:
+        return False
+    if replay_correct is True:
+        return True
+    return None

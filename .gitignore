@@ -44,3 +44,9 @@ outputs/**/environment.json
 outputs/**/run_status.json
 outputs/**/server_startup.*
 outputs/**/cpu_validation.log
+
+# small_model_smoke/.gitignore
+/small_model_smoke/models/
+/small_model_smoke/cache/
+/small_model_smoke/tmp/
+/small_model_smoke/outputs/

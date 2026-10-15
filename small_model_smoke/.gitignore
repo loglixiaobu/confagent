@@ -1,0 +1,6 @@
+# Large/local-only artifacts. All of these stay on E: under this directory.
+models/
+cache/
+tmp/
+outputs/
+

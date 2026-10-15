@@ -338,7 +338,7 @@ class APIBankMockEnv:
                 failure_type=None if ok else "search_miss",
             )
 
-        # 保留组长版本的参数感知 repeated-API 对齐。
+        # 保留现有的参数感知 repeated-API 对齐逻辑。
         gi = self._align(api_name, args)
         if gi is None:
             ftype, msg, fields = self._diagnose_no_align(api_name, args)

@@ -10,6 +10,24 @@ from analyze_verification import paired_delta_ci, summarize  # noqa: E402
 
 
 class VerificationAnalysisTests(unittest.TestCase):
+    def test_grounded_labels_take_priority_over_lucky_replay_match(self):
+        traj = {
+            "task_id": "t1", "seed": 0, "final_success": False,
+            "replay_success": True, "total_verification_calls": 1,
+            "steps": [{
+                "action_type": "tool_call", "verified": True,
+                "candidate_matched_gold": True,
+                "candidate_grounded_correct": False,
+                "executed_grounded_correct": False,
+                "signal_model_calls": 0, "verifier_model_calls": 1,
+            }],
+        }
+        out = summarize([traj])
+        self.assertEqual(out["trigger_label_basis"], "grounded")
+        self.assertEqual(out["trigger_precision"], 1.0)
+        self.assertEqual(out["replay_trigger_precision"], 0.0)
+        self.assertEqual(out["replay_success_rate"], 1.0)
+
     def test_summary_counts_fix_and_harm(self):
         traj = {
             "task_id": "t1", "seed": 0, "final_success": True,
@@ -49,4 +67,3 @@ class VerificationAnalysisTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -263,6 +263,10 @@ verification_result / correction_type / correction_outcome / budget_before / bud
 - `clean_success`：无任何已执行错误的成功；
 - `recovered_success`：发生过执行错误、后来成功恢复。
 
+Q2 新运行统一写为 schema v3：进一步区分 `replay_success` 与需要最终回答的 `final_success`，并记录
+`candidate_grounded_correct / executed_grounded_correct / retry_outcome`。一致性验证复用
+新信号实验的语义动作等价规则；执行前 verifier 纠错与执行后的局部重试分别归因。
+
 ---
 
 ## 7. 已知问题与重要结论

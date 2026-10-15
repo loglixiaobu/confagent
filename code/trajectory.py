@@ -46,6 +46,7 @@ CORRECTION_TYPES = ("information_supplement", "argument_revision", "tool_revisio
                     "local_retry", "replan", "none")
 CORRECTION_OUTCOMES = ("error_to_correct", "correct_to_error", "unchanged_correct",
                        "unchanged_error", "changed_but_still_error", "not_evaluated")
+RETRY_OUTCOMES = ("recovered", "retry_failed")
 
 
 @dataclass
@@ -74,6 +75,11 @@ class TrajectoryStep:
     correction_changed: bool = False
     correction_outcome: Optional[str] = None
     candidate_matched_gold: Optional[bool] = None
+    candidate_grounded_correct: Optional[bool] = None
+    executed_grounded_correct: Optional[bool] = None
+    candidate_grounding: Optional[Dict[str, Any]] = None
+    executed_grounding: Optional[Dict[str, Any]] = None
+    retry_outcome: Optional[str] = None
     parent_step_id: Optional[int] = None
     budget_before: Optional[int] = None
     budget_after: Optional[int] = None
@@ -90,6 +96,8 @@ class TrajectoryStep:
     verification_completion_tokens: int = 0
     verification_model_calls: int = 0
     verification_latency_ms: int = 0
+    signal_model_calls: int = 0
+    verifier_model_calls: int = 0
 
     # --- 以下为分析用辅助字段（可选，便于事后归因） ---
     matched_gold: Optional[bool] = None          # 宽松口径标签（主标签）
@@ -116,6 +124,8 @@ class TrajectoryStep:
             raise ValueError("未知 correction_type: %r" % self.correction_type)
         if self.correction_outcome is not None and self.correction_outcome not in CORRECTION_OUTCOMES:
             raise ValueError("未知 correction_outcome: %r" % self.correction_outcome)
+        if self.retry_outcome is not None and self.retry_outcome not in RETRY_OUTCOMES:
+            raise ValueError("未知 retry_outcome: %r" % self.retry_outcome)
         if self.risk_score is not None and not (0.0 <= self.risk_score <= 1.0):
             raise ValueError("risk_score 必须落在 [0,1]，收到 %r" % self.risk_score)
 
@@ -129,7 +139,7 @@ class Trajectory:
 
     task_id: str
     steps: List[TrajectoryStep] = field(default_factory=list)
-    schema_version: int = 2
+    schema_version: int = 3
 
     # 运行配置，便于复现
     model: Optional[str] = None
@@ -138,6 +148,7 @@ class Trajectory:
 
     # 终局结果
     final_success: Optional[bool] = None
+    replay_success: Optional[bool] = None
     clean_success: Optional[bool] = None
     recovered_success: Optional[bool] = None
     final_answer: Optional[str] = None
@@ -174,6 +185,18 @@ class Trajectory:
         return sum(s.verification_model_calls for s in self.steps)
 
     @property
+    def total_actor_calls(self) -> int:
+        return self.total_model_calls - self.total_verification_calls
+
+    @property
+    def total_signal_calls(self) -> int:
+        return sum(s.signal_model_calls for s in self.steps)
+
+    @property
+    def total_verifier_calls(self) -> int:
+        return sum(s.verifier_model_calls for s in self.steps)
+
+    @property
     def n_steps(self) -> int:
         return len(self.steps)
 
@@ -184,7 +207,11 @@ class Trajectory:
         这是研究内容二的核心指标之一——衡量"一个错误会污染多远"。
         """
         execution = [s for s in self.steps if s.action_type != "answer"]
-        first_err = next((i for i, s in enumerate(execution) if s.matched_gold is False), None)
+        first_err = next((
+            i for i, s in enumerate(execution)
+            if (s.executed_grounded_correct is False
+                if s.executed_grounded_correct is not None else s.matched_gold is False)
+        ), None)
         if first_err is None:
             return 0.0
         downstream = len(execution) - first_err - 1
@@ -200,6 +227,7 @@ class Trajectory:
             "method": self.method,
             "config": self.config,
             "final_success": self.final_success,
+            "replay_success": self.replay_success,
             "clean_success": self.clean_success,
             "recovered_success": self.recovered_success,
             "final_answer": self.final_answer,
@@ -207,8 +235,11 @@ class Trajectory:
             "total_tokens": self.total_tokens,
             "total_calls": self.total_calls,
             "total_model_calls": self.total_model_calls,
+            "total_actor_calls": self.total_actor_calls,
             "total_tool_calls": self.total_tool_calls,
             "total_verification_calls": self.total_verification_calls,
+            "total_signal_calls": self.total_signal_calls,
+            "total_verifier_calls": self.total_verifier_calls,
             "steps": [s.to_dict() for s in self.steps],
         }
 
