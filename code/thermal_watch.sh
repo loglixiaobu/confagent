@@ -1,4 +1,5 @@
 #!/bin/bash
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
 # ============================================================================
 # GPU 温度监控（后台常驻，超过阈值时写告警日志）
 #
@@ -8,12 +9,12 @@
 #
 # 用法：
 #   nohup bash thermal_watch.sh > /dev/null 2>&1 &
-#   tail -f /home1/lh/confagent/logs/thermal.log
+#   tail -f ${PROJECT_ROOT}/logs/thermal.log
 # ============================================================================
 
 INTERVAL="${INTERVAL:-30}"
 THRESHOLD="${THRESHOLD:-78}"
-LOG=/home1/lh/confagent/logs/thermal.log
+LOG=${PROJECT_ROOT}/logs/thermal.log
 mkdir -p "$(dirname "$LOG")"
 
 echo "[$(date '+%F %T')] thermal_watch 启动 | 采样间隔 ${INTERVAL}s | 告警阈值 ${THRESHOLD}°C" >> "$LOG"

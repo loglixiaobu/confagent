@@ -1,0 +1,217 @@
+﻿event_id,event_type,task_id,step_id,api,arguments,old_label,y,status,reason,missing_goals,score_available
+l3-003:call-01,tool_call,l3-003,1,QueryMeeting,"{""user_name"": ""Tom""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-003:call-02,tool_call,l3-003,2,EmailReminder,"{""content"": ""Meeting: Meeting at Room 1 on 2021-01-01 10:00:00"", ""time"": ""2021-01-01 10:00:00"", ""location"": ""Room 1"", ""recipient"": ""tom@example.com""}",1,1,正确,结构化字段匹配实际会议；自由文本事实经无分数上下文审查一致。,,True
+l3-001:call-01,tool_call,l3-001,1,QueryMeeting,"{""user_name"": ""Mary""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-001:call-02,tool_call,l3-001,2,EmailReminder,"{""content"": ""Reminder: Meeting with the client"", ""time"": ""2021-01-01 10:00:00"", ""location"": ""Room 1"", ""recipient"": ""mary@example.com""}",1,1,正确,结构化字段匹配实际会议；自由文本事实经无分数上下文审查一致。,,True
+l3-002:call-01,tool_call,l3-002,1,QueryMeeting,"{""user_name"": ""Peter""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-002:call-02,tool_call,l3-002,2,EmailReminder,"{""content"": ""Reminder: Meeting with the client"", ""time"": ""2021-01-01 10:00:00"", ""location"": ""Room 1"", ""recipient"": ""peter@example.com""}",1,1,正确,结构化字段匹配实际会议；自由文本事实经无分数上下文审查一致。,,True
+l3-004:call-01,tool_call,l3-004,1,QueryMeeting,"{""user_name"": ""Jerry""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-004:call-02,tool_call,l3-004,2,EmailReminder,"{""content"": ""Meeting details: Meeting, time 2021-01-01 10:00:00, location Room 1."", ""time"": ""2021-01-01 10:00:00"", ""location"": ""Room 1"", ""recipient"": ""jerry@example.com""}",1,1,正确,结构化字段匹配实际会议；自由文本事实经无分数上下文审查一致。,,True
+l3-000:call-01,tool_call,l3-000,1,QueryMeeting,"{""user_name"": ""John""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-000:call-02,tool_call,l3-000,2,EmailReminder,"{""content"": ""You have a meeting named Meeting with the client at 2021-01-01 10:00:00 in Room 1"", ""time"": ""2021-01-01 10:00:00"", ""location"": ""Room 1"", ""recipient"": ""john@example.com""}",1,1,正确,结构化字段匹配实际会议；自由文本事实经无分数上下文审查一致。,,True
+l3-007:call-01,tool_call,l3-007,1,GetWeatherForCoordinates,"{""latitude"": 51.5074, ""longitude"": 0.1278}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-007:call-02,tool_call,l3-007,2,GetWeatherForCoordinates,"{""latitude"": 51.5074, ""longitude"": 0.1278}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-007:call-03,tool_call,l3-007,3,GetWeatherForCoordinates,"{""latitude"": 51.5074, ""longitude"": 0.1278}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-006:call-01,tool_call,l3-006,1,GetWeatherForCoordinates,"{""latitude"": 37.7749, ""longitude"": 122.4194}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-006:call-02,tool_call,l3-006,2,GetWeatherForCoordinates,"{""latitude"": 37.7749, ""longitude"": 122.4194}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-006:call-03,tool_call,l3-006,3,GetWeatherForCoordinates,"{""latitude"": 37.7749, ""longitude"": 122.4194}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-009:call-01,tool_call,l3-009,1,GetWeatherForCoordinates,"{""latitude"": 35.6762, ""longitude"": 139.6503}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-009:call-02,tool_call,l3-009,2,GetWeatherForCoordinates,"{""latitude"": 35.6762, ""longitude"": 139.6503}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-009:call-03,tool_call,l3-009,3,GetWeatherForCoordinates,"{""latitude"": 35.6762, ""longitude"": 139.6503}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-005:call-01,tool_call,l3-005,1,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": 74.006}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-005:call-02,tool_call,l3-005,2,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": 74.006}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-005:call-03,tool_call,l3-005,3,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": 74.006}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-008:call-01,tool_call,l3-008,1,GetWeatherForCoordinates,"{""latitude"": 48.8566, ""longitude"": 2.3522}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-008:call-02,tool_call,l3-008,2,GetWeatherForCoordinates,"{""latitude"": 48.8566, ""longitude"": 2.3522}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-008:call-03,tool_call,l3-008,3,GetWeatherForCoordinates,"{""latitude"": ""48.8566"", ""longitude"": ""2.3522""}",1,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-008:call-04,tool_call,l3-008,4,ClothingRecommendation,"{""temperature"": 15, ""humidity"": 0.7, ""weather_conditions"": ""Sunny""}",1,0,错误,文档要求百分比，未核实或转换就把历史中的 0.7 原样作为百分比传入。,,True
+l3-015:call-01,tool_call,l3-015,1,Geocoding,"{""address"": ""New York City""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-015:call-02,tool_call,l3-015,2,NearbyRestaurants,"{""latitude"": 40.7128, ""longitude"": 74.006, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-015:call-03,tool_call,l3-015,3,NearbyRestaurants,"{""latitude"": 40.7128, ""longitude"": 74.006, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-015:call-04,tool_call,l3-015,4,NearbyRestaurants,"{""latitude"": 40.7128, ""longitude"": 74.006, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-013:call-01,tool_call,l3-013,1,OrganizationMembers,"{""organization"": ""ByteDance""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-010:call-01,tool_call,l3-010,1,ToolSearcher,"{""keywords"": ""location""}",1,0,错误,搜索 location 没有返回工具文档，未满足检索目标。,,True
+l3-010:call-02,tool_call,l3-010,2,OrganizationMembers,"{""organization"": ""Alibaba""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-010:call-03,tool_call,l3-010,3,TravelStatus,"{""member_name"": ""John""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-010:call-04,tool_call,l3-010,4,TravelStatus,"{""member_name"": ""Mary""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-010:call-05,tool_call,l3-010,5,TravelStatus,"{""member_name"": ""Peter""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-010:call-06,tool_call,l3-010,6,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""Alibaba Conference Room"", ""attendees"": ""Mary, Peter""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-010:call-07,tool_call,l3-010,7,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""Alibaba Office Conference Room"", ""attendees"": ""Mary (Remote), Peter (Office, Position: Engineer)""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-010:call-08,tool_call,l3-010,8,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""Alibaba Office Conference Room (Main Building)"", ""attendees"": ""Mary (Remote, Position: Developer), Peter (Office, Position: Engineer)""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-010:call-09,tool_call,l3-010,9,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""Alibaba Main Conference Room"", ""attendees"": ""Mary (Developer, Remote), Peter (Engineer, Office)""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-010:call-10,tool_call,l3-010,10,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""Alibaba Main Conference Room (Building A, 5th Floor)"", ""attendees"": ""Mary (Developer, Remote), Peter (Engineer, Office, Building B)""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-010:call-11,tool_call,l3-010,11,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""Alibaba Conference Room"", ""attendees"": ""Mary (Developer, Remote), Peter (Engineer, Office)""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-010:call-12,tool_call,l3-010,12,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""Alibaba Conference Room (Main Building)"", ""attendees"": ""Mary (Remote), Peter (Office)""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-018:call-01,tool_call,l3-018,1,Geocoding,"{""address"": ""Paris""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-018:call-02,tool_call,l3-018,2,NearbyRestaurants,"{""latitude"": 48.8566, ""longitude"": 2.3522, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-018:call-03,tool_call,l3-018,3,NearbyRestaurants,"{""latitude"": 48.8566, ""longitude"": 2.3522, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-018:call-04,tool_call,l3-018,4,NearbyRestaurants,"{""latitude"": 48.8566, ""longitude"": 2.3522, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-020:call-01,tool_call,l3-020,1,UserMoviePreferences,"{""user_name"": ""John""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-020:call-02,tool_call,l3-020,2,UserWatchedMovies,"{""user_name"": ""John""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-020:call-03,tool_call,l3-020,3,MovieRecommendations,"{""preferences"": [""Action"", ""Comedy"", ""Drama""]}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-014:call-01,tool_call,l3-014,1,OrganizationMembers,"{""organization"": ""JD""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-014:call-02,tool_call,l3-014,2,TravelStatus,"{""member_name"": ""Mike""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-014:call-03,tool_call,l3-014,3,TravelStatus,"{""member_name"": ""Jane""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-014:call-04,tool_call,l3-014,4,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""JD Headquarters Conference Room"", ""attendees"": ""Mike, Jane""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-014:call-05,tool_call,l3-014,5,AddMeeting,"{""meeting_topic"": ""Team Meeting"", ""start_time"": ""2023-06-08 14:00:00"", ""end_time"": ""2023-06-08 15:00:00"", ""location"": ""JD Headquarters Conference Room A"", ""attendees"": ""Mike (Manager), Jane (Developer)""}",0,0,错误,没有用户或此前工具提供会议地点，模型自行填入会议室。旧 schema 的类型错误另外记录，不掩盖地点问题。,,True
+l3-019:call-01,tool_call,l3-019,1,Geocoding,"{""address"": ""Tokyo""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-019:call-02,tool_call,l3-019,2,NearbyRestaurants,"{""latitude"": 35.6762, ""longitude"": 139.6503, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-019:call-03,tool_call,l3-019,3,NearbyRestaurants,"{""latitude"": 35.6762, ""longitude"": 139.6503, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-019:call-04,tool_call,l3-019,4,NearbyRestaurants,"{""latitude"": 35.6762, ""longitude"": 139.6503, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-017:call-01,tool_call,l3-017,1,Geocoding,"{""address"": ""London""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-017:call-02,tool_call,l3-017,2,NearbyRestaurants,"{""latitude"": 51.5074, ""longitude"": 0.1278, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-017:call-03,tool_call,l3-017,3,NearbyRestaurants,"{""latitude"": 51.5074, ""longitude"": 0.1278, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-017:call-04,tool_call,l3-017,4,NearbyRestaurants,"{""latitude"": 51.5074, ""longitude"": 0.1278, ""distance"": 1}",0,0,错误,需求为 1 km，API distance 单位是米，应传 1000，而实际传入 1。,,True
+l3-017:call-05,tool_call,l3-017,5,NearbyRestaurants,"{""latitude"": 51.5074, ""longitude"": 0.1278, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-017:call-06,tool_call,l3-017,6,NearbyRestaurants,"{""latitude"": 51.5074, ""longitude"": 0.1278, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-017:call-07,tool_call,l3-017,7,NearbyRestaurants,"{""latitude"": 51.5074, ""longitude"": 0.1278, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-016:call-01,tool_call,l3-016,1,Geocoding,"{""address"": ""San Francisco""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-016:call-02,tool_call,l3-016,2,NearbyRestaurants,"{""latitude"": 37.7749, ""longitude"": 122.4194, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-016:call-03,tool_call,l3-016,3,NearbyRestaurants,"{""latitude"": 37.7749, ""longitude"": 122.4194, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-016:call-04,tool_call,l3-016,4,NearbyRestaurants,"{""latitude"": 37.7749, ""longitude"": 122.4194, ""distance"": ""1000""}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-016:call-05,tool_call,l3-016,5,NearbyRestaurants,"{""latitude"": 37.7749, ""longitude"": 122.4194, ""distance"": 1}",0,0,错误,需求为 1 km，API distance 单位是米，应传 1000，而实际传入 1。,,True
+l3-016:call-06,tool_call,l3-016,6,NearbyRestaurants,"{""latitude"": 37.7749, ""longitude"": 122.4194, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-016:call-07,tool_call,l3-016,7,NearbyRestaurants,"{""latitude"": 37.7749, ""longitude"": 122.4194, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-016:call-08,tool_call,l3-016,8,NearbyRestaurants,"{""latitude"": 37.7749, ""longitude"": 122.4194, ""distance"": 1000}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-021:call-01,tool_call,l3-021,1,UserMoviePreferences,"{""user_name"": ""Mary""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-021:call-02,tool_call,l3-021,2,UserWatchedMovies,"{""user_name"": ""Mary""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-021:call-03,tool_call,l3-021,3,MovieRecommendations,"{""preferences"": [""Comedy"", ""Drama"", ""Romance""]}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-023:call-01,tool_call,l3-023,1,UserMoviePreferences,"{""user_name"": ""Tom""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-023:call-02,tool_call,l3-023,2,UserWatchedMovies,"{""user_name"": ""Tom""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-023:call-03,tool_call,l3-023,3,MovieRecommendations,"{""preferences"": [""Action"", ""Comedy"", ""Drama""]}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-022:call-01,tool_call,l3-022,1,UserMoviePreferences,"{""user_name"": ""Peter""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-022:call-02,tool_call,l3-022,2,UserWatchedMovies,"{""user_name"": ""Peter""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-022:call-03,tool_call,l3-022,3,MovieRecommendations,"{""preferences"": [""Action"", ""Drama"", ""Thriller""]}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-028:call-01,tool_call,l3-028,1,UserPosts,"{""user_id"": 4}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-028:call-02,tool_call,l3-028,2,LikeCount,"{""post_id"": 10}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-028:call-03,tool_call,l3-028,3,LikeCount,"{""post_id"": 11}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-028:call-04,tool_call,l3-028,4,LikeCount,"{""post_id"": 12}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-026:call-01,tool_call,l3-026,1,UserPosts,"{""user_id"": 1}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-026:call-02,tool_call,l3-026,2,LikeCount,"{""post_id"": 1}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-026:call-03,tool_call,l3-026,3,LikeCount,"{""post_id"": 2}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-026:call-04,tool_call,l3-026,4,Calculator,"{""formula"": ""10 + 20 + 30""}",0,0,错误,尚未获取全部帖子点赞数，公式使用了当时未观察到的数值；遵循原系统提示“参数来自需求或此前返回”的过程正确性口径。,,True
+l3-026:call-05,tool_call,l3-026,5,Calculator,"{""formula"": ""10 + 20 + 30""}",0,0,错误,尚未获取全部帖子点赞数，公式使用了当时未观察到的数值；遵循原系统提示“参数来自需求或此前返回”的过程正确性口径。,,True
+l3-026:call-06,tool_call,l3-026,6,LikeCount,"{""post_id"": 3}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-026:call-07,tool_call,l3-026,7,Calculator,"{""formula"": ""10 + 20 + 30""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-025:call-01,tool_call,l3-025,1,UserPosts,"{""user_id"": 2}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-025:call-02,tool_call,l3-025,2,LikeCount,"{""post_id"": 4}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-025:call-03,tool_call,l3-025,3,LikeCount,"{""post_id"": 5}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-025:call-04,tool_call,l3-025,4,LikeCount,"{""post_id"": 6}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-025:call-05,tool_call,l3-025,5,Calculator,"{""formula"": ""(40 + 50) + 60""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-025:call-06,tool_call,l3-025,6,Calculator,"{""formula"": ""40 + 50 + 60""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-025:call-07,tool_call,l3-025,7,Calculator,"{""formula"": ""40 + 50 + 60""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-025:call-08,tool_call,l3-025,8,Calculator,"{""formula"": ""40+50+60""}",1,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-027:call-01,tool_call,l3-027,1,UserPosts,"{""user_id"": 3}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-027:call-02,tool_call,l3-027,2,LikeCount,"{""post_id"": 7}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-027:call-03,tool_call,l3-027,3,LikeCount,"{""post_id"": 8}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-027:call-04,tool_call,l3-027,4,LikeCount,"{""post_id"": 9}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-027:call-05,tool_call,l3-027,5,Calculator,"{""formula"": ""(70 + 80 + 90)""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-027:call-06,tool_call,l3-027,6,Calculator,"{""formula"": ""70 + 80 + 90""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-027:call-07,tool_call,l3-027,7,Calculator,"{""formula"": ""70 + 80 + 90""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-027:call-08,tool_call,l3-027,8,Calculator,"{""formula"": ""70+80+90""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-027:call-09,tool_call,l3-027,9,Calculator,"{""formula"": ""70+80+90""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-027:call-10,tool_call,l3-027,10,Calculator,"{""formula"": ""70+80+90""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-029:call-01,tool_call,l3-029,1,UserPosts,"{""user_id"": 5}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-029:call-02,tool_call,l3-029,2,LikeCount,"{""post_id"": 13}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-029:call-03,tool_call,l3-029,3,LikeCount,"{""post_id"": 14}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-029:call-04,tool_call,l3-029,4,LikeCount,"{""post_id"": 15}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-029:call-05,tool_call,l3-029,5,Calculator,"{""formula"": ""130 + 140 + 150""}",0,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-029:call-06,tool_call,l3-029,6,Calculator,"{""formula"": ""130+140+150""}",1,1,正确,用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。,,True
+l3-031:call-01,tool_call,l3-031,1,Geocoding,"{""address"": ""San Francisco""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-031:call-02,tool_call,l3-031,2,GetWeatherForCoordinates,"{""latitude"": 37.7749, ""longitude"": 122.4194}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-031:call-03,tool_call,l3-031,3,GetWeatherForCoordinates,"{""latitude"": 37.7749, ""longitude"": 122.4194}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-031:call-04,tool_call,l3-031,4,GetWeatherForCoordinates,"{""latitude"": ""37.7749"", ""longitude"": ""122.4194""}",1,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-032:call-01,tool_call,l3-032,1,Geocoding,"{""address"": ""London""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-032:call-02,tool_call,l3-032,2,GetWeatherForCoordinates,"{""latitude"": 51.5074, ""longitude"": 0.1278}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-032:call-03,tool_call,l3-032,3,GetWeatherForCoordinates,"{""latitude"": 51.5074, ""longitude"": 0.1278}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-032:call-04,tool_call,l3-032,4,GetWeatherForCoordinates,"{""latitude"": 51.5074, ""longitude"": 0.1278}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-034:call-01,tool_call,l3-034,1,Geocoding,"{""address"": ""Tokyo""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-034:call-02,tool_call,l3-034,2,GetWeatherForCoordinates,"{""latitude"": 35.6762, ""longitude"": 139.6503}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-034:call-03,tool_call,l3-034,3,GetWeatherForCoordinates,"{""latitude"": 35.6762, ""longitude"": 139.6503}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-034:call-04,tool_call,l3-034,4,GetWeatherForCoordinates,"{""longitude"": 139.6503, ""latitude"": 35.6762}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-033:call-01,tool_call,l3-033,1,Geocoding,"{""address"": ""Paris""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-033:call-02,tool_call,l3-033,2,GetWeatherForCoordinates,"{""latitude"": 48.8566, ""longitude"": 2.3522}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-033:call-03,tool_call,l3-033,3,GetWeatherForCoordinates,"{""latitude"": 48.8566, ""longitude"": 2.3522}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-033:call-04,tool_call,l3-033,4,GetWeatherForCoordinates,"{""latitude"": 48.8566, ""longitude"": 2.3522}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-037:call-01,tool_call,l3-037,1,FlightSearch,"{""source"": ""London"", ""destination"": ""San Francisco"", ""travel_dates"": ""2022-01-03""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-037:call-02,tool_call,l3-037,2,HotelAvailability,"{""destination"": ""San Francisco"", ""check_in_date"": ""2022-01-03"", ""check_out_date"": ""2022-01-04""}",1,0,错误,没有入住时长或退房日期依据，模型自行确定 checkout，包括碰巧与隐藏参考一致的情况。,,True
+l3-030:call-01,tool_call,l3-030,1,Geocoding,"{""address"": ""New York City""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-030:call-02,tool_call,l3-030,2,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": 74.006}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-030:call-03,tool_call,l3-030,3,ToolSearcher,"{""keywords"": ""weather city""}",1,1,正确,搜索 weather city 返回天气查询文档，能够说明现有天气工具的参数。,,True
+l3-030:call-04,tool_call,l3-030,4,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": 74.006}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-030:call-05,tool_call,l3-030,5,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": 74.006}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-030:call-06,tool_call,l3-030,6,GetWeatherForCoordinates,"{""latitude"": ""40.7128"", ""longitude"": ""74.006""}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-030:call-07,tool_call,l3-030,7,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": 74.006}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-030:call-08,tool_call,l3-030,8,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": 74.006}",0,1,正确,坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。,,True
+l3-030:call-09,tool_call,l3-030,9,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": -74.006}",0,0,错误,未记录独立核验，就修改此前工具返回的经度符号；按参数依据规则判错，不对真实地理坐标下结论。,,True
+l3-030:call-10,tool_call,l3-030,10,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": -74.006}",0,0,错误,未记录独立核验，就修改此前工具返回的经度符号；按参数依据规则判错，不对真实地理坐标下结论。,,True
+l3-030:call-11,tool_call,l3-030,11,GetWeatherForCoordinates,"{""latitude"": 40.7128, ""longitude"": -74.006}",0,0,错误,未记录独立核验，就修改此前工具返回的经度符号；按参数依据规则判错，不对真实地理坐标下结论。,,True
+l3-036:call-01,tool_call,l3-036,1,FlightSearch,"{""source"": ""Los Angeles"", ""destination"": ""San Francisco"", ""travel_dates"": ""2022-01-02""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-036:call-02,tool_call,l3-036,2,HotelAvailability,"{""destination"": ""San Francisco"", ""check_in_date"": ""2022-01-02"", ""check_out_date"": ""2022-01-02""}",0,0,错误,没有入住时长或退房日期依据，模型自行确定 checkout，包括碰巧与隐藏参考一致的情况。,,True
+l3-036:call-03,tool_call,l3-036,3,HotelAvailability,"{""destination"": ""San Francisco"", ""check_in_date"": ""2022-01-02"", ""check_out_date"": ""2022-01-03""}",1,0,错误,没有入住时长或退房日期依据，模型自行确定 checkout，包括碰巧与隐藏参考一致的情况。,,True
+l3-039:call-01,tool_call,l3-039,1,FlightSearch,"{""source"": ""New York"", ""destination"": ""Los Angeles"", ""travel_dates"": ""2022-01-05""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-039:call-02,tool_call,l3-039,2,HotelAvailability,"{""destination"": ""Los Angeles"", ""check_in_date"": ""2022-01-05"", ""check_out_date"": ""2022-01-06""}",1,0,错误,没有入住时长或退房日期依据，模型自行确定 checkout，包括碰巧与隐藏参考一致的情况。,,True
+l3-038:call-01,tool_call,l3-038,1,FlightSearch,"{""source"": ""New York"", ""destination"": ""London"", ""travel_dates"": ""2022-01-04""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-038:call-02,tool_call,l3-038,2,HotelAvailability,"{""destination"": ""London"", ""check_in_date"": ""2022-01-04"", ""check_out_date"": ""2022-01-05""}",1,0,错误,没有入住时长或退房日期依据，模型自行确定 checkout，包括碰巧与隐藏参考一致的情况。,,True
+l3-040:call-01,tool_call,l3-040,1,GetOccupationSalary,"{""occupation"": ""Financial Analyst""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-040:call-02,tool_call,l3-040,2,TaxCalculator,"{""salary"": 100000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-040:call-03,tool_call,l3-040,3,TaxCalculator,"{""salary"": 8333.33}",0,0,错误,返回工资未声明为年薪，没有依据直接除以 12 改变计算周期。,,True
+l3-040:call-04,tool_call,l3-040,4,TaxCalculator,"{""salary"": 100000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-035:call-01,tool_call,l3-035,1,FlightSearch,"{""source"": ""New York"", ""destination"": ""Paris"", ""travel_dates"": ""2023-10-05""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-02,tool_call,l3-035,2,FlightSearch,"{""source"": ""JFK"", ""destination"": ""CDG"", ""travel_dates"": ""2023-10-05""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-03,tool_call,l3-035,3,ToolSearcher,"{""keywords"": ""flight search parameters""}",1,1,正确,搜索 flight search parameters 返回 FlightSearch 文档；检索本身没有编造出行参数。,,True
+l3-035:call-04,tool_call,l3-035,4,HotelAvailability,"{""destination"": ""Paris"", ""check_in_date"": ""2023-10-05"", ""check_out_date"": ""2023-10-07""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-05,tool_call,l3-035,5,HotelAvailability,"{""destination"": ""PAR"", ""check_in_date"": ""2023-10-05"", ""check_out_date"": ""2023-10-07""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-06,tool_call,l3-035,6,FlightSearch,"{""source"": ""JFK"", ""destination"": ""CDG"", ""travel_dates"": ""2023-10-05-2023-10-07""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-07,tool_call,l3-035,7,FlightSearch,"{""source"": ""JFK"", ""destination"": ""CDG"", ""travel_dates"": ""2023-10-05""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-08,tool_call,l3-035,8,FlightSearch,"{""source"": ""New York"", ""destination"": ""Paris"", ""travel_dates"": ""2023-10-05""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-09,tool_call,l3-035,9,FlightSearch,"{""source"": ""JFK"", ""destination"": ""CDG"", ""travel_dates"": ""2023-10-05""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-10,tool_call,l3-035,10,FlightSearch,"{""source"": ""JFK"", ""destination"": ""CDG"", ""travel_dates"": ""2023-10-05""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-035:call-11,tool_call,l3-035,11,FlightSearch,"{""source"": ""JFK"", ""destination"": ""CDG"", ""travel_dates"": ""2023-10-05""}",0,0,错误,用户没有提供出发地、目的地和日期，调用却擅自填入；属于无依据参数。,,True
+l3-043:call-01,tool_call,l3-043,1,GetOccupationSalary,"{""occupation"": ""Product Manager""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-043:call-02,tool_call,l3-043,2,TaxCalculator,"{""salary"": 130000}",1,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-041:call-01,tool_call,l3-041,1,GetOccupationSalary,"{""occupation"": ""Software Engineer""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-041:call-02,tool_call,l3-041,2,TaxCalculator,"{""salary"": 10000}",0,0,错误,返回工资未声明为年薪，没有依据直接除以 12 改变计算周期。,,True
+l3-041:call-03,tool_call,l3-041,3,TaxCalculator,"{""salary"": 120000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-041:call-04,tool_call,l3-041,4,TaxCalculator,"{""salary"": 10000}",0,0,错误,返回工资未声明为年薪，没有依据直接除以 12 改变计算周期。,,True
+l3-041:call-05,tool_call,l3-041,5,TaxCalculator,"{""salary"": 120000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-041:call-06,tool_call,l3-041,6,TaxCalculator,"{""salary"": 120000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-041:call-07,tool_call,l3-041,7,TaxCalculator,"{""salary"": 120000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-045:call-01,tool_call,l3-045,1,PersonalInfoUpdate,"{""username"": ""John"", ""password"": ""123456"", ""address"": ""123 Main St""}",1,1,正确,用户名、密码和地址由用户明确给出；允许地址末尾句号，不要求多余的 AccountInfo 前置调用。,,True
+l3-046:call-01,tool_call,l3-046,1,PersonalInfoUpdate,"{""username"": ""Mary"", ""password"": ""abcdef"", ""address"": ""456 Main St.""}",0,1,正确,用户名、密码和地址由用户明确给出；允许地址末尾句号，不要求多余的 AccountInfo 前置调用。,,True
+l3-046:call-02,tool_call,l3-046,2,PersonalInfoUpdate,"{""username"": ""Mary"", ""password"": ""abcdef"", ""address"": ""456 Main St""}",1,1,正确,用户名、密码和地址由用户明确给出；允许地址末尾句号，不要求多余的 AccountInfo 前置调用。,,True
+l3-047:call-01,tool_call,l3-047,1,PersonalInfoUpdate,"{""username"": ""Peter"", ""password"": ""qwerty"", ""address"": ""789 Main St""}",1,1,正确,用户名、密码和地址由用户明确给出；允许地址末尾句号，不要求多余的 AccountInfo 前置调用。,,True
+l3-048:call-01,tool_call,l3-048,1,PersonalInfoUpdate,"{""username"": ""Tom"", ""password"": ""asdfgh"", ""address"": ""012 Main St""}",1,1,正确,用户名、密码和地址由用户明确给出；允许地址末尾句号，不要求多余的 AccountInfo 前置调用。,,True
+l3-044:call-01,tool_call,l3-044,1,GetOccupationSalary,"{""occupation"": ""Doctor""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-044:call-02,tool_call,l3-044,2,TaxCalculator,"{""salary"": 16666.67}",0,0,错误,返回工资未声明为年薪，没有依据直接除以 12 改变计算周期。,,True
+l3-044:call-03,tool_call,l3-044,3,TaxCalculator,"{""salary"": 200000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-044:call-04,tool_call,l3-044,4,TaxCalculator,"{""salary"": 200000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-044:call-05,tool_call,l3-044,5,TaxCalculator,"{""salary"": 200000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-049:call-01,tool_call,l3-049,1,PersonalInfoUpdate,"{""username"": ""Jerry"", ""password"": ""zxcvbn"", ""address"": ""345 Main St.""}",0,1,正确,用户名、密码和地址由用户明确给出；允许地址末尾句号，不要求多余的 AccountInfo 前置调用。,,True
+l3-049:call-02,tool_call,l3-049,2,PersonalInfoUpdate,"{""username"": ""Jerry"", ""password"": ""zxcvbn"", ""address"": ""345 Main St.""}",0,1,正确,用户名、密码和地址由用户明确给出；允许地址末尾句号，不要求多余的 AccountInfo 前置调用。,,True
+l3-042:call-01,tool_call,l3-042,1,GetOccupationSalary,"{""occupation"": ""Data Scientist""}",1,1,正确,工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。,,True
+l3-042:call-02,tool_call,l3-042,2,TaxCalculator,"{""salary"": 12500}",0,0,错误,返回工资未声明为年薪，没有依据直接除以 12 改变计算周期。,,True
+l3-042:call-03,tool_call,l3-042,3,TaxCalculator,"{""salary"": 150000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-042:call-04,tool_call,l3-042,4,TaxCalculator,"{""salary"": 12500}",0,0,错误,返回工资未声明为年薪，没有依据直接除以 12 改变计算周期。,,True
+l3-042:call-05,tool_call,l3-042,5,ToolSearcher,"{""keywords"": ""net salary calculation""}",1,0,错误,搜索 net salary calculation 却返回已使用的职业工资查询工具，没有提供扣税计算能力。,,True
+l3-042:call-06,tool_call,l3-042,6,TaxCalculator,"{""salary"": 150000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-042:call-07,tool_call,l3-042,7,TaxCalculator,"{""salary"": 150000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-042:call-08,tool_call,l3-042,8,TaxCalculator,"{""salary"": 150000}",0,1,正确,将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。,,True
+l3-000:no-tool-response,model_no_tool_response,l3-000,,,,,0,错误,model_response_before_all_goals_completed,发送提醒：2021-01-02 10:00:00 / Room 2,False
+l3-008:no-tool-response,model_no_tool_response,l3-008,,,,,1,正确,任务目标已完成,,False
+l3-011:no-tool-response,model_no_tool_response,l3-011,,,,,0,错误,no_final_answer_unclosed_thinking; no_tool_work_recorded,取得组织成员; 核查全部成员出差状态; 以有依据的参数实际预约成功,False
+l3-012:no-tool-response,model_no_tool_response,l3-012,,,,,0,错误,no_final_answer_unclosed_thinking; no_tool_work_recorded,取得组织成员; 核查全部成员出差状态; 以有依据的参数实际预约成功,False
+l3-013:no-tool-response,model_no_tool_response,l3-013,,,,,0,错误,no_final_answer_unclosed_thinking,核查全部成员出差状态; 以有依据的参数实际预约成功,False
+l3-014:no-tool-response,model_no_tool_response,l3-014,,,,,0,错误,incorrect_recorded_calls; model_response_before_all_goals_completed,以有依据的参数实际预约成功,False
+l3-024:no-tool-response,model_no_tool_response,l3-024,,,,,0,错误,no_final_answer_unclosed_thinking; no_tool_work_recorded,取得偏好; 取得已看列表; 取得推荐候选; 记录排除已看电影后的列表,False
+l3-026:no-tool-response,model_no_tool_response,l3-026,,,,,1,正确,任务目标已完成,,False
+l3-025:no-tool-response,model_no_tool_response,l3-025,,,,,1,正确,任务目标已完成,,False
+l3-029:no-tool-response,model_no_tool_response,l3-029,,,,,1,正确,任务目标已完成,,False
+l3-031:no-tool-response,model_no_tool_response,l3-031,,,,,1,正确,任务目标已完成,,False
+l3-036:no-tool-response,model_no_tool_response,l3-036,,,,,0,错误,incorrect_recorded_calls; model_response_before_all_goals_completed,以有依据的入住退房时间取得酒店查询返回,False
+l3-040:no-tool-response,model_no_tool_response,l3-040,,,,,0,错误,incorrect_recorded_calls; simulator_rejected_semantically_valid_call; no_final_answer_unclosed_thinking,取得需求周期下有依据的税后工资返回,False
+l3-045:no-tool-response,model_no_tool_response,l3-045,,,,,1,正确,任务目标已完成,,False
+l3-046:no-tool-response,model_no_tool_response,l3-046,,,,,1,正确,任务目标已完成,,False
+l3-047:no-tool-response,model_no_tool_response,l3-047,,,,,1,正确,任务目标已完成,,False
+l3-048:no-tool-response,model_no_tool_response,l3-048,,,,,1,正确,任务目标已完成,,False
+l3-049:no-tool-response,model_no_tool_response,l3-049,,,,,0,错误,simulator_rejected_semantically_valid_call; model_response_before_all_goals_completed,实际更新成功,False

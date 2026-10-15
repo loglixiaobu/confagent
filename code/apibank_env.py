@@ -32,10 +32,13 @@ API-Bank 的 level-3 记录链里，每一步都完整保存了：
 from __future__ import annotations
 
 import argparse
+import ast
 import glob
 import json
 import os
 import re
+from pathlib import Path
+from decimal import Decimal, InvalidOperation
 from dataclasses import dataclass, field, asdict
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -66,12 +69,24 @@ _DT_PATTERNS = [
 ]
 
 
+def parameter_schema(type_name: str) -> Dict[str, Any]:
+    """Translate API-Bank types, including list(str), without silently losing items."""
+    name = type_name.lower().strip()
+    match = re.fullmatch(r"list(?:\((.+)\)|\[(.+)\])", name)
+    if match:
+        return {"type": "array", "items": parameter_schema(match[1] or match[2])}
+    kind = TYPE_MAP.get(name)
+    if kind is None:
+        raise ValueError("Unsupported API parameter type: %s" % type_name)
+    return {"type": kind, **({"items": {}} if kind == "array" else {})}
+
+
 def api_schema_to_tool(api: Dict[str, Any]) -> Dict[str, Any]:
     """把 API-Bank 的 API 描述转成 OpenAI function-calling 的 tool schema。"""
     props: Dict[str, Any] = {}
     for pname, pmeta in (api.get("input_parameters") or {}).items():
         props[pname] = {
-            "type": TYPE_MAP.get(str(pmeta.get("type", "str")).lower(), "string"),
+            **parameter_schema(str(pmeta.get("type", "str"))),
             "description": pmeta.get("description", ""),
         }
     return {
@@ -149,6 +164,62 @@ def text_match(model_v: Any, gold_v: Any) -> bool:
 
 def structured_equal(a: Any, b: Any) -> bool:
     return _canon(_norm_time(a)) == _canon(_norm_time(b))
+
+
+def numeric_equal(a: Any, b: Any, integer: bool = False) -> bool:
+    """Normalize numeric *fields*, never arbitrary passwords/IDs or booleans."""
+    if isinstance(a, bool) or isinstance(b, bool):
+        return False
+    try:
+        aa, bb = Decimal(str(a)), Decimal(str(b))
+        return (aa.is_finite() and bb.is_finite() and aa == bb
+                and (not integer or aa == aa.to_integral_value()))
+    except (InvalidOperation, ValueError, TypeError):
+        return False
+
+
+def typed_equal(a: Any, b: Any, type_name: str = "str") -> bool:
+    schema = parameter_schema(type_name)
+    if schema["type"] in ("number", "integer"):
+        return numeric_equal(a, b, schema["type"] == "integer")
+    if schema["type"] == "array":
+        if not isinstance(a, list) or not isinstance(b, list) or len(a) != len(b):
+            return False
+        item = re.fullmatch(r"list(?:\((.+)\)|\[(.+)\])", type_name.lower().strip())
+        return all(typed_equal(x, y, item[1] or item[2]) if item
+                   else structured_equal(x, y) for x, y in zip(a, b))
+    return structured_equal(a, b)
+
+
+def arithmetic_value(expression: Any) -> Decimal:
+    """Evaluate a bounded arithmetic AST; no names, calls, powers, or eval."""
+    if not isinstance(expression, str) or len(expression) > 256:
+        raise ValueError("Not a bounded arithmetic expression")
+    root = ast.parse(expression, mode="eval")
+    if sum(1 for _ in ast.walk(root)) > 80:
+        raise ValueError("Expression too large")
+    def visit(node):
+        if isinstance(node, ast.Expression):
+            return visit(node.body)
+        if isinstance(node, ast.Constant) and type(node.value) in (int, float):
+            value = Decimal(str(node.value))
+            if not value.is_finite() or abs(value) > Decimal('1e20'):
+                raise ValueError("Constant out of bounds")
+            return value
+        if isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.UAdd, ast.USub)):
+            value = visit(node.operand)
+            return -value if isinstance(node.op, ast.USub) else value
+        if isinstance(node, ast.BinOp):
+            a, b = visit(node.left), visit(node.right)
+            if isinstance(node.op, ast.Add): return a + b
+            if isinstance(node.op, ast.Sub): return a - b
+            if isinstance(node.op, ast.Mult): return a * b
+            if isinstance(node.op, ast.Div): return a / b
+        raise ValueError("Unsupported arithmetic")
+    result = visit(root)
+    if not result.is_finite() or abs(result) > Decimal('1e30'):
+        raise ValueError("Result out of bounds")
+    return result
 
 
 # ----------------------------------------------------------------------------
@@ -253,7 +324,7 @@ class APIBankMockEnv:
             return res
 
         # 普通 API：先按 api_name 贪心对齐到未消费的 gold 步骤
-        gi = self._align(api_name)
+        gi = self._align(api_name, args)
         if gi is None:
             ftype, msg, fields = self._diagnose_no_align(api_name, args)
             res = StepResult(
@@ -266,7 +337,7 @@ class APIBankMockEnv:
 
         gold = self.gold_steps[gi]
         gargs = gold.get("input") or {}
-        relaxed_ok, strict_ok, fields = self._compare_args(args, gargs)
+        relaxed_ok, strict_ok, fields = self._compare_args(args, gargs, api_name)
 
         if relaxed_ok:
             rec = gold.get("output") or {}
@@ -291,30 +362,71 @@ class APIBankMockEnv:
         return res
 
     # -- 内部 ---------------------------------------------------------------
-    def _align(self, api_name: str) -> Optional[int]:
+    def _align(self, api_name: str, args: Optional[Dict[str, Any]] = None) -> Optional[int]:
         """按 api_name 贪心对齐到第一个未消费的 gold 步骤。"""
+        candidates = [i for i, st in enumerate(self.gold_steps)
+                      if not self._consumed[i] and st.get("api_name") == api_name]
+        # Allow interchangeable calls in one repeated-API block, not jumps across dependencies.
+        if candidates and args is not None:
+            first = candidates[0]
+            for i in candidates:
+                intervening = [st.get("api_name") for j, st in enumerate(self.gold_steps[first:i])
+                               if not self._consumed[first + j]]
+                if any(n not in (api_name, "ToolSearcher") for n in intervening):
+                    break
+                if self._compare_args(args, self.gold_steps[i].get("input") or {}, api_name)[0]:
+                    return i
         for i, st in enumerate(self.gold_steps):
             if not self._consumed[i] and st.get("api_name") == api_name:
                 return i
         return None
 
-    def _compare_args(self, args: Dict[str, Any], gargs: Dict[str, Any]) -> Tuple[bool, bool, List[str]]:
+    def _compare_args(self, args: Dict[str, Any], gargs: Dict[str, Any],
+                      api_name: str = "") -> Tuple[bool, bool, List[str]]:
         """返回 (宽松是否通过, 严格是否通过, 不匹配字段列表)。"""
         missing = [k for k in gargs if k not in args]
         if missing:
             return False, False, ["missing:" + k for k in missing]
 
         bad_relaxed, bad_strict = [], []
+        metadata = (self.tool_registry.get(api_name) or {}).get("input_parameters") or {}
         for k, gv in gargs.items():
             mv = args[k]
-            if _is_free_text(gv):
+            if api_name == "Calculator" and k == "formula":
+                try:
+                    target = arithmetic_value(gv)
+                    # One reference contains "30 / 3" for likes 70+80+90.
+                    # When all actual like results are available, the explicit
+                    # user request to total them supplies an independent oracle.
+                    if 'total' in self.requirement.lower() and 'likes' in self.requirement.lower():
+                        expected_ids = {str(s.get('input', {}).get('post_id')) for s in self.gold_steps
+                                        if s.get('api_name') == 'LikeCount'}
+                        observed = {str(s.args.get('post_id')): s.observation['like_count']
+                                    for s in self.history if s.api_name == 'LikeCount' and s.matched_gold
+                                    and isinstance(s.observation, dict) and 'like_count' in s.observation}
+                        if expected_ids and set(observed) == expected_ids:
+                            target = sum((Decimal(str(v)) for v in observed.values()), Decimal(0))
+                    equal = arithmetic_value(mv) == target
+                except (ValueError, SyntaxError, ArithmeticError):
+                    equal = False
+                if not equal:
+                    bad_relaxed.append(k)
+                if not structured_equal(mv, gv):
+                    bad_strict.append(k)
+            elif api_name == "PersonalInfoUpdate" and k == "address":
+                if str(mv).strip().rstrip('.') != str(gv).strip().rstrip('.'):
+                    bad_relaxed.append(k)
+                if not structured_equal(mv, gv):
+                    bad_strict.append(k)
+            elif _is_free_text(gv):
                 if not text_match(mv, gv):
                     bad_relaxed.append(k)
                 if not structured_equal(mv, gv):
                     bad_strict.append(k)
             else:
-                if not structured_equal(mv, gv):
+                if not typed_equal(mv, gv, metadata.get(k, {}).get("type", "str")):
                     bad_relaxed.append(k)
+                if not structured_equal(mv, gv):
                     bad_strict.append(k)
         # 额外参数不算错（模型多传不影响正确性）
         return (len(bad_relaxed) == 0, len(bad_strict) == 0, bad_relaxed)
@@ -390,7 +502,8 @@ class APIBankMockEnv:
 def load_level3(data_dir: str, split: str = "test", limit: Optional[int] = None) -> List[Dict[str, Any]]:
     fname = "level-3.json" if split == "test" else "lv3-train.json"
     path = os.path.join(data_dir, "test-data" if split == "test" else "training-data", fname)
-    tasks = json.load(open(path, encoding="utf-8"))
+    with open(path, encoding="utf-8") as source:
+        tasks = json.load(source)
     tasks = [t for t in tasks if isinstance(t, dict) and t.get("apis")]
     return tasks[:limit] if limit else tasks
 
@@ -427,7 +540,7 @@ def dataset_stats(data_dir: str) -> Dict[str, Any]:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--data-dir", default="/home1/lh/confagent/data/api-bank")
+    ap.add_argument("--data-dir", default=str(Path(__file__).resolve().parents[1] / "data/api-bank"))
     ap.add_argument("--demo", action="store_true")
     args = ap.parse_args()
 

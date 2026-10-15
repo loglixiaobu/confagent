@@ -1,4 +1,5 @@
 #!/bin/bash
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
 # ============================================================================
 # 一条命令跑一轮实验：指定 GPU 组 -> 启动副本 -> 跑批处理 -> 报告温度
 #
@@ -24,8 +25,8 @@ for a in "$@"; do
   if [ "$a" = "--stop" ]; then STOP_AFTER=1; else ARGS="$ARGS $a"; fi
 done
 
-CODE=/home1/lh/confagent/code
-source /home1/lh/miniconda/etc/profile.d/conda.sh
+CODE=${PROJECT_ROOT}/code
+source "${CONDA_SH:-$HOME/miniconda3/etc/profile.d/conda.sh}"
 conda activate confagent
 
 # 构造端点列表
