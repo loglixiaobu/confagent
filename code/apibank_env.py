@@ -181,7 +181,11 @@ class APIBankMockEnv:
     """基于 API-Bank level-3 记录链的确定性重放环境。"""
 
     def __init__(self, task: Dict[str, Any],
-                 distractor_apis: Optional[List[Dict[str, Any]]] = None) -> None:
+                 distractor_apis: Optional[List[Dict[str, Any]]] = None,
+                 feedback_mode: str = "realistic") -> None:
+        if feedback_mode not in ("realistic", "diagnostic"):
+            raise ValueError("feedback_mode 必须是 realistic 或 diagnostic")
+        self.feedback_mode = feedback_mode
         self.requirement: str = task.get("requirement", "")
         self.gold_response: str = task.get("response", "")
         self.gold_steps: List[Dict[str, Any]] = task.get("apis", [])
@@ -226,67 +230,72 @@ class APIBankMockEnv:
         }
         return [searcher] + [api_schema_to_tool(a) for a in self.tool_registry.values()]
 
-    # -- 执行一步 -----------------------------------------------------------
-    def call(self, api_name: str, args: Dict[str, Any]) -> StepResult:
-        self._step_id += 1
-        sid = self._step_id
+    # -- 执行与只读评估 -----------------------------------------------------
+    def evaluate_candidate(self, api_name: str, args: Dict[str, Any]) -> StepResult:
+        """只读判断候选动作，不消费 gold 步骤，也不写 history。
 
-        # ToolSearcher：模拟 API 检索
+        该结果只能用于离线 evaluator 和纠错效果归因，绝不能放入模型上下文。
+        """
+        sid = self._step_id + 1
         if api_name == "ToolSearcher":
             kws = str(args.get("keywords", ""))
             matched_api = self._search(kws)
             gi = self._align("ToolSearcher")
-            res = StepResult(
-                step_id=sid, api_name=api_name, args=args,
-                observation=matched_api,
-                exception=None if matched_api else "No API found for keywords: %s" % kws,
-                matched_gold=gi is not None,
-                strict_matched_gold=gi is not None,
-                matched_gold_step=gi,
+            ok = gi is not None and matched_api is not None
+            return StepResult(
+                step_id=sid, api_name=api_name, args=args, observation=matched_api,
+                exception=None if matched_api else "No API found for the supplied keywords.",
+                matched_gold=ok, strict_matched_gold=ok, matched_gold_step=gi,
                 gold_api_name="ToolSearcher" if gi is not None else None,
                 gold_args=(self.gold_steps[gi].get("input") if gi is not None else None),
-                failure_type=None if matched_api else "search_miss",
+                failure_type=None if ok else "search_miss",
             )
-            if gi is not None:
-                self._consumed[gi] = True
-            self.history.append(res)
-            return res
 
-        # 普通 API：先按 api_name 贪心对齐到未消费的 gold 步骤
         gi = self._align(api_name)
         if gi is None:
             ftype, msg, fields = self._diagnose_no_align(api_name, args)
-            res = StepResult(
+            if self.feedback_mode == "realistic" and ftype == "wrong_api":
+                msg = "The selected API is not applicable to the current unfinished task."
+            return StepResult(
                 step_id=sid, api_name=api_name, args=args, observation=None,
                 exception=msg, matched_gold=False, strict_matched_gold=False,
                 failure_type=ftype, mismatch_fields=fields,
             )
-            self.history.append(res)
-            return res
 
         gold = self.gold_steps[gi]
         gargs = gold.get("input") or {}
         relaxed_ok, strict_ok, fields = self._compare_args(args, gargs)
-
         if relaxed_ok:
             rec = gold.get("output") or {}
-            res = StepResult(
+            return StepResult(
                 step_id=sid, api_name=api_name, args=args,
                 observation=rec.get("output"), exception=rec.get("exception"),
                 matched_gold=True, strict_matched_gold=strict_ok,
                 matched_gold_step=gi, gold_api_name=api_name, gold_args=gargs,
             )
-            self._consumed[gi] = True
+
+        ftype = self._classify(fields, args, gargs)
+        if self.feedback_mode == "diagnostic":
+            msg = "Call does not match the expected step. Problem field(s): %s" % (fields or "?")
+        elif ftype == "missing_arg":
+            missing = [f.split(":", 1)[1] for f in fields if f.startswith("missing:")]
+            msg = "API validation failed: missing required argument(s): %s" % ", ".join(missing)
         else:
-            ftype = self._classify(fields, args, gargs)
-            res = StepResult(
-                step_id=sid, api_name=api_name, args=args, observation=None,
-                exception="Call does not match the expected step. Problem field(s): %s" % (fields or "?"),
-                matched_gold=False, strict_matched_gold=False,
-                matched_gold_step=gi, gold_api_name=api_name, gold_args=gargs,
-                failure_type=ftype, mismatch_fields=fields,
-            )
-            # 不消费该 gold 步骤，允许模型重试
+            msg = "API validation failed: one or more argument values are invalid."
+        return StepResult(
+            step_id=sid, api_name=api_name, args=args, observation=None,
+            exception=msg, matched_gold=False, strict_matched_gold=False,
+            matched_gold_step=gi, gold_api_name=api_name, gold_args=gargs,
+            failure_type=ftype, mismatch_fields=fields,
+        )
+
+    def call(self, api_name: str, args: Dict[str, Any]) -> StepResult:
+        """执行一步。模型只能看到 observation/exception，gold 诊断仅写轨迹。"""
+        res = self.evaluate_candidate(api_name, args)
+        self._step_id += 1
+        res.step_id = self._step_id
+        if res.matched_gold and res.matched_gold_step is not None:
+            self._consumed[res.matched_gold_step] = True
         self.history.append(res)
         return res
 
@@ -361,13 +370,20 @@ class APIBankMockEnv:
                 if st.get("api_name") != "ToolSearcher"]
 
     def success(self) -> bool:
-        """成功 = 全部**实质** gold 步骤（不含 ToolSearcher）被匹配，且没有失败步骤。"""
+        """最终任务成功：全部实质 gold 步骤完成；允许此前失败后恢复。"""
         req = self._required_gold_indices()
         if not req:
             return False
         all_matched = all(self._consumed[i] for i in req)
-        no_fail = not any(s.matched_gold is False for s in self.history)
-        return bool(all_matched and no_fail and self.history)
+        return bool(all_matched and self.history)
+
+    def clean_success(self) -> bool:
+        """无错成功：最终成功，且执行历史中从未出现失败动作。"""
+        return self.success() and not any(s.matched_gold is False for s in self.history)
+
+    def recovered_success(self) -> bool:
+        """恢复成功：曾执行失败，但经过纠错/重试后最终完成任务。"""
+        return self.success() and any(s.matched_gold is False for s in self.history)
 
     def summary(self) -> Dict[str, Any]:
         req = self._required_gold_indices()
@@ -380,6 +396,8 @@ class APIBankMockEnv:
             "n_matched_strict": sum(1 for s in self.history if s.strict_matched_gold),
             "n_required_matched": sum(1 for i in req if self._consumed[i]),
             "success": self.success(),
+            "clean_success": self.clean_success(),
+            "recovered_success": self.recovered_success(),
             "failure_types": [s.failure_type for s in self.history if s.failure_type],
         }
 

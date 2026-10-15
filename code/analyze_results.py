@@ -102,18 +102,26 @@ def main():
     # ---- 任务级 ----
     n_task = len(trajs)
     n_ok = sum(1 for t in trajs if t.get("final_success"))
+    n_clean = sum(1 for t in trajs if t.get("clean_success"))
+    n_recovered = sum(1 for t in trajs if t.get("recovered_success"))
     steps_per = [t["n_steps"] for t in trajs]
     stop = Counter((t.get("config") or {}).get("stop_reason", "?") for t in trajs)
     print("任务数            : %d" % n_task)
     print("任务成功率        : %.1f%%  (%d/%d)" % (100 * n_ok / n_task, n_ok, n_task))
+    if any(t.get("clean_success") is not None for t in trajs):
+        print("无错/恢复成功     : %d / %d" % (n_clean, n_recovered))
     print("平均步数/任务     : %.2f  (范围 %d–%d)"
           % (sum(steps_per) / n_task, min(steps_per), max(steps_per)))
     print("停止原因分布      : %s" % dict(stop))
     print("总 token          : %d" % sum(t.get("total_tokens", 0) for t in trajs))
     print("总工具调用        : %d" % sum(t.get("total_calls", 0) for t in trajs))
+    if any("total_model_calls" in t for t in trajs):
+        print("总模型/验证调用   : %d / %d" % (
+            sum(t.get("total_model_calls", 0) for t in trajs),
+            sum(t.get("total_verification_calls", 0) for t in trajs)))
 
     # ---- 步骤级 ----
-    steps = [s for t in trajs for s in t["steps"]]
+    steps = [s for t in trajs for s in t["steps"] if s.get("action_type") != "answer"]
     labeled = [s for s in steps if s.get("matched_gold") is not None]
     n_step = len(labeled)
     n_ok_step = sum(1 for s in labeled if s["matched_gold"])
