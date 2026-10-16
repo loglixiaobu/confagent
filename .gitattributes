@@ -1,0 +1,10 @@
+# Frozen protocols hash file bytes; keep checkout bytes identical on Windows.
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.csv text eol=lf
+*.sh text eol=lf
+# Frozen CSV artifacts were published with CRLF; preserve their actual bytes.
+outputs/legacy_binary_v2/*.csv -text
+outputs/new_signals_fast_v1/*.csv -text
