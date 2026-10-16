@@ -165,6 +165,39 @@ python code/calibration.py --traj results/traj_main.jsonl --out-dir outputs
 python code/analyze_results.py results/traj_main_clean.jsonl
 ```
 
+### 步骤 5 · 自主验证与纠错（研究内容二）
+
+新实验统一使用 `feedback_mode=realistic`，并按“每任务额外模型调用次数”限制验证预算。
+旧轨迹是 schema v1，只适合回顾；由于旧版只统计 completion token，正式等预算对比必须用
+当前 schema v2 **重新运行 vanilla 基线**。
+
+```bash
+# 新版 vanilla 基线（无额外验证调用）
+python code/run_batch.py --endpoints localhost:8000 --limit 50 \
+  --verify-policy vanilla --verify-budget 0 --feedback-mode realistic \
+  --out results/q2_vanilla.jsonl
+
+# 参数来源风险触发 + 结构化 critic；每任务最多 2 次额外模型调用
+python code/run_batch.py --endpoints localhost:8000 --limit 50 \
+  --verify-policy provenance --verifier critic --verify-budget 2 \
+  --feedback-mode realistic --out results/q2_provenance_b2.jsonl
+
+# 参数来源风险触发 + 3 次采样多数投票
+python code/run_batch.py --endpoints localhost:8000 --limit 50 \
+  --verify-policy provenance --verifier consistency --consistency-k 3 \
+  --verify-budget 3 --feedback-mode realistic \
+  --out results/q2_consistency_b3.jsonl
+
+# 多条件等预算分析（第一个文件作为配对比较基线）
+python code/analyze_verification.py \
+  results/q2_vanilla.jsonl results/q2_provenance_b2.jsonl results/q2_consistency_b3.jsonl \
+  --json-out outputs/q2_metrics.json
+```
+
+主要策略：`vanilla / always / random / exception / provenance / threshold / fused`。
+主要验证器：`critic / consistency / hybrid`。其中 `exception` 使用执行反馈进行局部重试，
+`provenance` 优先检查参数值是否能追溯到需求或历史工具输出。
+
 ---
 
 ## 6. 目录结构与文件职责
@@ -187,6 +220,8 @@ python code/analyze_results.py results/traj_main_clean.jsonl
 | `run_batch.py` | 多卡并行批处理。任务分片到多个 vLLM 端点、干扰 API 注入、`ThermalGuard` 温度保护 |
 | `calibration.py` | 校准评估（研究内容一核心分析）。ECE/Brier/NLL/AUROC/AURC、温度缩放/Platt/Isotonic、可靠性图与风险—覆盖率曲线 |
 | `analyze_results.py` | 纯 Python 结果分析（无第三方依赖），用于本地复盘已采集轨迹 |
+| `verification.py` | **研究内容二核心**：参数来源检查、风险融合、预算策略、结构化 critic、多采样多数投票、纠错归因 |
+| `analyze_verification.py` | 验证触发 precision/recall、纠错收益/伤害、恢复成功率、成本与配对 bootstrap 分析 |
 | `run_vllm.sh` | 启动单个 vLLM 服务（Qwen3-8B，单卡） |
 | `launch_replicas.sh` | 在指定 GPU 组上启动多个 vLLM 副本 |
 | `stop_replicas.sh` | 停止 vLLM 副本并等待显存释放 |
@@ -194,6 +229,14 @@ python code/analyze_results.py results/traj_main_clean.jsonl
 | `thermal_watch.sh` | GPU 温度后台监控，超阈值写告警日志 |
 | `vllm_serve_patched.py` | vLLM 启动包装器：绕过"某张 GPU 故障导致 vLLM 无法启动"（NVML 容错补丁） |
 | `verify_logprobs.py` | 技术验证：vLLM 能否同时返回 tool_call 与 token logprob |
+
+### tests/
+
+`tests/test_verification.py` 使用纯本地假客户端验证状态机，不下载或加载任何模型：
+
+```bash
+python -m unittest discover -s tests -v
+```
 
 ### results/
 
@@ -211,6 +254,18 @@ task_id, step_id, action_type, action_input, observation,
 confidence, confidence_source, verified, correction,
 cost_tokens, cost_calls, final_success
 ```
+
+schema v2 额外记录 `candidate_action / verification_type / trigger_reason / risk_score /
+verification_result / correction_type / correction_outcome / budget_before / budget_after`，并把
+模型调用、工具调用、prompt/completion token 和验证成本分开计量。任务终局同时区分：
+
+- `final_success`：最终完成全部必要步骤，允许先失败后恢复；
+- `clean_success`：无任何已执行错误的成功；
+- `recovered_success`：发生过执行错误、后来成功恢复。
+
+Q2 新运行统一写为 schema v3：进一步区分 `replay_success` 与需要最终回答的 `final_success`，并记录
+`candidate_grounded_correct / executed_grounded_correct / retry_outcome`。一致性验证复用
+新信号实验的语义动作等价规则；执行前 verifier 纠错与执行后的局部重试分别归因。
 
 ---
 

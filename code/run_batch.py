@@ -140,6 +140,8 @@ def main() -> None:
     ap.add_argument("--model", default="Qwen3-8B")
     ap.add_argument("--data-dir", default=str(Path(__file__).resolve().parents[1] / 'data/api-bank'))
     ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / 'outputs/traj_vanilla.jsonl'))
+    ap.add_argument("--allow-append", action="store_true",
+                    help="显式允许向已有非空轨迹追加；不同实验条件不要共用文件")
     ap.add_argument("--limit", type=int, default=50)
     ap.add_argument("--offset", type=int, default=0)
     ap.add_argument("--concurrency", type=int, default=1,
@@ -161,9 +163,35 @@ def main() -> None:
     ap.add_argument("--consistency-k", type=int, default=0,
                     help="多采样一致性的采样次数（0=关闭）")
     ap.add_argument("--consistency-temp", type=float, default=0.7)
+    ap.add_argument("--verify-policy", default="vanilla",
+                    choices=["vanilla", "always", "random", "exception",
+                             "provenance", "threshold", "fused"],
+                    help="研究内容二：验证触发策略")
+    ap.add_argument("--verifier", default="critic",
+                    choices=["critic", "consistency", "hybrid"],
+                    help="触发后使用的验证器")
+    ap.add_argument("--verify-budget", type=int, default=0,
+                    help="每任务额外模型调用预算；vanilla 应设为 0")
+    ap.add_argument("--risk-threshold", type=float, default=0.60)
+    ap.add_argument("--replan-after", type=int, default=2)
+    ap.add_argument("--max-retries", type=int, default=3)
+    ap.add_argument("--feedback-mode", default="realistic",
+                    choices=["realistic", "diagnostic"],
+                    help="realistic 不向智能体泄露 gold 字段/后续 API")
     args = ap.parse_args()
 
+    if args.verify_budget < 0:
+        ap.error("--verify-budget 不能为负")
+    if args.consistency_k < 0:
+        ap.error("--consistency-k 不能为负")
+    if args.verify_policy == "vanilla" and args.verify_budget != 0:
+        ap.error("vanilla 基线的 --verify-budget 必须为 0")
+    if not 0.0 <= args.risk_threshold <= 1.0:
+        ap.error("--risk-threshold 必须位于 [0,1]")
+
     endpoints = [e.strip() for e in args.endpoints.split(",") if e.strip()]
+    if not endpoints:
+        ap.error("--endpoints 不能为空")
     all_tasks = load_level3(args.data_dir, "test")
 
     # 剔除 gold 链涉及指定 API 的任务（例如上一批正确率为 0% 的子任务）
@@ -175,18 +203,23 @@ def main() -> None:
 
     tasks = all_tasks[args.offset: args.offset + args.limit]
     pool = collect_distractor_apis(all_tasks)
-    rng = random.Random(args.seed)
-
     out = args.out
     if args.tag:
         root, ext = os.path.splitext(out)
         out = "%s_%s%s" % (root, args.tag, ext)
+    if os.path.exists(out) and os.path.getsize(out) > 0 and not args.allow_append:
+        ap.error("输出文件已存在且非空：%s；请换新路径，或明确使用 --allow-append" % out)
 
     cfg = AgentConfig(
         model=args.model, max_steps=args.max_steps, temperature=args.temperature,
         enable_thinking=not args.no_thinking, self_report=args.self_report,
         consistency_k=args.consistency_k, consistency_temp=args.consistency_temp,
-        seed=args.seed, method="vanilla_react",
+        verify_policy=args.verify_policy, verifier=args.verifier,
+        verify_budget=args.verify_budget, risk_threshold=args.risk_threshold,
+        replan_after=args.replan_after, max_retries=args.max_retries,
+        feedback_mode=args.feedback_mode,
+        seed=args.seed, method=("vanilla_react" if args.verify_policy == "vanilla"
+                                else "conf_verify_%s_%s" % (args.verify_policy, args.verifier)),
     )
 
     print("=" * 72)
@@ -194,6 +227,9 @@ def main() -> None:
           % (args.model, len(tasks), len(endpoints), args.concurrency, args.distractors))
     print("信号采集 | self_report=%s | consistency_k=%d (temp=%.2f)"
           % (args.self_report, args.consistency_k, args.consistency_temp))
+    print("验证纠错 | policy=%s | verifier=%s | budget=%d | threshold=%.2f | feedback=%s"
+          % (args.verify_policy, args.verifier, args.verify_budget,
+             args.risk_threshold, args.feedback_mode))
     print("端点:", ", ".join(endpoints))
     print("输出:", out)
     print("=" * 72)
@@ -210,7 +246,9 @@ def main() -> None:
     def job(idx: int, task: Dict[str, Any]) -> Trajectory:
         guard.wait_if_hot()
         ep = endpoints[idx % len(endpoints)]
-        payload = build_task_payload(task, pool, args.distractors, rng)
+        # 每个任务独立 RNG，避免多线程共享 random 导致不可复现。
+        task_rng = random.Random(args.seed * 1000003 + args.offset + idx)
+        payload = build_task_payload(task, pool, args.distractors, task_rng)
         traj = run_one(payload, cfg, ep, args.offset + idx, payload["_distractors"])
         with lock:
             writer.write(traj)
@@ -234,7 +272,8 @@ def main() -> None:
 
     dt = time.time() - t0
     ok = sum(1 for t in results if t.final_success)
-    steps = [s for t in results for s in t.steps]
+    recovered = sum(1 for t in results if t.recovered_success)
+    steps = [s for t in results for s in t.steps if s.matched_gold is not None]
     n_ok_steps = sum(1 for s in steps if s.matched_gold)
     n_deg = sum(1 for s in steps if (s.raw_logprobs or {}).get("degenerate"))
 
@@ -242,6 +281,10 @@ def main() -> None:
     print("=" * 72)
     print("完成 %d 任务 | 任务成功率 %.1f%% | 用时 %.1f 分钟 (%.1f 秒/任务)"
           % (len(results), 100.0 * ok / max(len(results), 1), dt / 60, dt / max(len(results), 1)))
+    print("恢复成功 %d | 模型调用 %d | 验证调用 %d | 工具调用 %d"
+          % (recovered, sum(t.total_model_calls for t in results),
+             sum(t.total_verification_calls for t in results),
+             sum(t.total_tool_calls for t in results)))
     print("步骤总数 %d | 步骤正确率 %.1f%% | 负样本 %d | 退化置信度 %d"
           % (len(steps), 100.0 * n_ok_steps / max(len(steps), 1),
              len(steps) - n_ok_steps, n_deg))
