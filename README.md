@@ -333,3 +333,14 @@ Q2 新运行统一写为 schema v3：进一步区分 `replay_success` 与需要�
 | `tests/test_new_signal_collection.py`、`tests/test_new_signal_evaluation.py`、`tests/test_published_new_signals.py` | 分别检查上下文隔离与动作匹配、统计口径、公开结果与样本的一致性 |
 
 [`outputs/new_signals_fast_v1/`](outputs/new_signals_fast_v1/) 保存逐步 `scores.jsonl`、精简采样动作 `sample_actions.jsonl`、模型可见状态 `states.jsonl`、冻结协议 `protocol.json`，以及指标 JSON/CSV、逐步对应 CSV、对比图、采集汇总和校验记录。**已有分数可直接用 CPU 复算指标，无需模型服务或完整 API-Bank 数据。**
+
+## 最新进展：研究内容三的三层更新原型
+
+已完成经验筛选、结构化记忆、学习策略、真实LoRA训练和冻结后的跨形态初步验证。
+Qwen3.5-0.8B在18个不同留出实例上，基础13/18、最终P＋L部署18/18；两个固定
+计算工具控制也为18/18，LoRA单独没有留出提升。正式API-Bank／Q1-Q2集成仍待完成。
+
+开发内容与结果见[研究内容三开发说明](研究内容三_经验筛选与三层更新开发说明.md)，
+可选训练依赖见[requirements-q3.txt](requirements-q3.txt)。本地环境脚本、模型权重和
+Q3实验输出不纳入仓库，文档仅保留初步结果摘要。
+研究内容二的实现与正式实验命令仍见[研究内容二开发说明](研究内容二_自主验证与纠错开发说明.md)。

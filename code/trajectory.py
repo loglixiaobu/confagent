@@ -81,6 +81,8 @@ class TrajectoryStep:
     executed_grounding: Optional[Dict[str, Any]] = None
     retry_outcome: Optional[str] = None
     parent_step_id: Optional[int] = None
+    memory_ids: List[str] = field(default_factory=list)
+    memory_prompt_chars: int = 0
     budget_before: Optional[int] = None
     budget_after: Optional[int] = None
 

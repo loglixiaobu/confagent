@@ -245,9 +245,27 @@ def ask_self_report(client: OpenAI, cfg: AgentConfig, messages: List[Dict[str, A
 # ---------------------------------------------------------------------------
 # 单任务执行
 # ---------------------------------------------------------------------------
+def tool_searcher_schema():
+    return {
+        "type": "function",
+        "function": {
+            "name": "ToolSearcher",
+            "description": ("Search for a suitable API by keywords. Returns the API name, "
+                            "description and its input parameters."),
+            "parameters": {
+                "type": "object",
+                "properties": {"keywords": {"type": "string",
+                                            "description": "Keywords describing the capability you need."}},
+                "required": ["keywords"],
+            },
+        },
+    }
+
+
 def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
              task_index: int = 0,
-             distractors: Optional[List[Dict[str, Any]]] = None) -> Trajectory:
+             distractors: Optional[List[Dict[str, Any]]] = None,
+             memory_bank=None, memory_mode: str = "validated") -> Trajectory:
     env = APIBankMockEnv(task, distractor_apis=distractors,
                          feedback_mode=cfg.feedback_mode)
     task_id = "l3-%03d" % task_index
@@ -269,20 +287,7 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                 "distractors": len(distractors or [])},
     )
 
-    tool_searcher = {
-        "type": "function",
-        "function": {
-            "name": "ToolSearcher",
-            "description": ("Search for a suitable API by keywords. Returns the API name, "
-                            "description and its input parameters."),
-            "parameters": {
-                "type": "object",
-                "properties": {"keywords": {"type": "string",
-                                            "description": "Keywords describing the capability you need."}},
-                "required": ["keywords"],
-            },
-        },
-    }
+    tool_searcher = tool_searcher_schema()
     from apibank_env import api_schema_to_tool
 
     # 预解锁本任务涉及的全部 API：ToolSearcher 作为**可选**检索动作保留。
@@ -307,10 +312,21 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
 
     for _ in range(cfg.max_steps):
         tools = [tool_searcher] + [api_schema_to_tool(a) for a in unlocked.values()]
+        # Q3 guidance is selected from visible state; gold/evaluation metadata
+        # never enters retrieval or the prompt. Keep canonical history separate.
+        selected_memories = []
+        decision_messages = messages
+        if memory_bank is not None:
+            from repair_memory import memory_messages
+            selected_memories = memory_bank.retrieve(messages, tools, mode=memory_mode)
+            decision_messages = memory_messages(messages, selected_memories)
+            traj.config["memory_bank_sha256"] = memory_bank.sha256
+            traj.config["memory_mode"] = memory_mode
+        memory_prompt_chars = sum(len(m.instruction) for m in selected_memories)
         t0 = time.time()
         try:
             resp = client.chat.completions.create(
-                model=cfg.model, messages=messages, tools=tools, tool_choice="auto",
+                model=cfg.model, messages=decision_messages, tools=tools, tool_choice="auto",
                 temperature=cfg.temperature, max_tokens=cfg.max_tokens,
                 logprobs=True, top_logprobs=cfg.top_logprobs, seed=cfg.seed,
                 extra_body={"chat_template_kwargs": {"enable_thinking": cfg.enable_thinking}},
@@ -331,6 +347,7 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
 
         if not tool_calls:
             traj.final_answer = msg.content or ""
+            traj.config["terminal_finish_reason"] = getattr(choice, "finish_reason", None)
             traj.add(TrajectoryStep(
                 task_id=task_id, step_id=0, action_type="answer",
                 action_input={"content": traj.final_answer}, observation=None,
@@ -338,6 +355,8 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                 prompt_tokens=base_cost.prompt_tokens,
                 completion_tokens=base_cost.completion_tokens,
                 model_calls=1, tool_calls=0, latency_ms=latency_ms,
+                memory_ids=[m.memory_id for m in selected_memories],
+                memory_prompt_chars=memory_prompt_chars,
             ))
             stop_reason = "final_answer"
             break
@@ -366,7 +385,7 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
             if cfg.verify_policy != "vanilla":
                 budget.spend(1)
             self_rep, sr_cost = ask_self_report(
-                client, cfg, messages,
+                client, cfg, decision_messages,
                 "%s(%s)" % (name, json.dumps(args, ensure_ascii=False)))
             extra_cost.add(sr_cost)
             signal_cost.add(sr_cost)
@@ -378,7 +397,7 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                 if cfg.verify_policy != "vanilla":
                     budget.spend(cfg.consistency_k)
                 signal_vote = run_consistency_vote(
-                    client, cfg.model, messages, tools, original, cfg.consistency_k,
+                    client, cfg.model, decision_messages, tools, original, cfg.consistency_k,
                     cfg.consistency_temp, cfg.max_tokens, cfg.enable_thinking,
                     seed=cfg.seed * 1000003 + task_index * 101 + len(traj.steps) * 17)
                 extra_cost.add(signal_vote.usage)
@@ -411,7 +430,7 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
             if cfg.verifier == "critic" and budget.can_spend(1):
                 budget.spend(1)
                 verification = run_critic(
-                    client, cfg.model, messages, tools, original, provenance,
+                    client, cfg.model, decision_messages, tools, original, provenance,
                     max_tokens=min(768, cfg.max_tokens))
             elif cfg.verifier == "consistency":
                 if signal_vote is not None:
@@ -422,13 +441,13 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                     if k >= 2 and budget.can_spend(k):
                         budget.spend(k)
                         verification = run_consistency_vote(
-                            client, cfg.model, messages, tools, original, k,
+                            client, cfg.model, decision_messages, tools, original, k,
                             cfg.consistency_temp, cfg.max_tokens, cfg.enable_thinking,
                             seed=cfg.seed * 1000003 + task_index * 101 + len(traj.steps) * 17)
             elif cfg.verifier == "hybrid" and budget.can_spend(1):
                 budget.spend(1)
                 critic_result = run_critic(
-                    client, cfg.model, messages, tools, original, provenance,
+                    client, cfg.model, decision_messages, tools, original, provenance,
                     max_tokens=min(768, cfg.max_tokens))
                 vote_result = signal_vote
                 if vote_result is None:
@@ -436,7 +455,7 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                     if k >= 2 and budget.can_spend(k):
                         budget.spend(k)
                         vote_result = run_consistency_vote(
-                            client, cfg.model, messages, tools, original, k,
+                            client, cfg.model, decision_messages, tools, original, k,
                             cfg.consistency_temp, cfg.max_tokens, cfg.enable_thinking,
                             seed=cfg.seed * 1000003 + task_index * 101 + len(traj.steps) * 17)
                 hybrid_usage = UsageCost()
@@ -573,6 +592,8 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
             executed_grounding=final_provenance.to_dict(),
             retry_outcome=retry_outcome,
             parent_step_id=last_failed_step_id if previous_failed else None,
+            memory_ids=[m.memory_id for m in selected_memories],
+            memory_prompt_chars=memory_prompt_chars,
             budget_before=budget_before, budget_after=budget.remaining,
             cost_tokens=base_cost.total_tokens + extra_cost.total_tokens,
             cost_calls=1,

@@ -50,3 +50,15 @@ outputs/**/cpu_validation.log
 /small_model_smoke/cache/
 /small_model_smoke/tmp/
 /small_model_smoke/outputs/
+
+# Q3 local runtime and generated experiments.
+.venv/
+.venv_train/
+.test_tmp/
+/local_08b/
+.review_manifest.json
+ccfa-workfiles/
+INSTRUCTION_*.md
+Q3_README.md
+.pr1_sync_backup_path
+/outputs/q3*/

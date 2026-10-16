@@ -5,3 +5,6 @@
 *.jsonl text eol=lf
 *.csv text eol=lf
 *.sh text eol=lf
+# Frozen CSV artifacts were published with CRLF; preserve their actual bytes.
+outputs/legacy_binary_v2/*.csv -text
+outputs/new_signals_fast_v1/*.csv -text
