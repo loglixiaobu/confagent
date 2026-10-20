@@ -1,0 +1,43 @@
+{
+  "version": "legacy-semantic-review-v1",
+  "reviewer": "Codex: deterministic rules plus score-blind source/context review; not independent human annotation",
+  "policies": {
+    "target": "Local business-call semantic correctness with required evidence/dependencies, not task success or runtime success under the faulty mock.",
+    "labels": {
+      "1": "正确",
+      "0": "错误",
+      "null": "无法确定"
+    },
+    "numeric": "Schema-declared numeric fields compare by finite Decimal value; numeric storage strings allowed. IDs/passwords/text are not coerced. Canonical JSON schema validity is reported separately.",
+    "retries": "A semantically correct call remains locally correct when retried after false mock rejection. Redundancy is separately flagged.",
+    "history": "Only actually recorded earlier non-error returns supply dynamic facts. No future return is used to supply a missing prerequisite.",
+    "calculator": "Require all post counts from prior recorded returns; then compare safe arithmetic result with their sum. Also report answer-only sensitivity using offline reference counts.",
+    "email": "Review recipient, scheduled time/location and factual content; harmless wording changes allowed. Case reviews contain no confidence scores.",
+    "address": "Allow a sentence-ending period for these five street-address updates; do not normalize arbitrary strings.",
+    "AddMeeting": "Unknown: original tool schema advertised attendees as string despite canonical list(str); required location was unspecified. Record both defects; do not attribute this as clean agent error.",
+    "ClothingRecommendation": "Unknown: percentage humidity documentation conflicts with fractional reference values.",
+    "underspecified_travel": "All business calls in task 35 unknown because travel inputs absent. All HotelAvailability calls unknown because no stay duration/checkout specified. Exclusions independent of scores or original labels.",
+    "salary_conversion": "Passing the returned salary through is a valid local action. Dividing by 12 is unknown: docs do not specify annual/monthly salary periods, so a reference mismatch alone cannot establish error.",
+    "coordinate_sign": "Numeric agreement with supplied coordinates is locally supported. A sign change from positive recorded geocoding to negative is unknown for semantic truth because geographic/tool evidence conflicts; additionally record visible-evidence contradiction.",
+    "search": "ToolSearcher has no reliable semantic gold label in the old mock; retain all four as unknown auxiliary actions, with observed retrieval outcome separately recorded. Exclude from primary business-call metrics.",
+    "scope": "No missing final-answer/no-tool actions are invented. Zero-call tasks and final answers are preserved but not step-labeled. No task success rate is recomputed.",
+    "sampling": "All 198 recorded calls retained; no score-based exclusions, resampling or candidate generation.",
+    "evaluation": "Descriptive reanalysis of already inspected trajectories, not an untouched holdout and not a newly trained calibrator."
+  },
+  "source_file": "results/traj_main_clean.jsonl",
+  "source_sha256": "fe6e484abce858d214601990e05d86567232ab74f2bb0155b16945a10383c4df",
+  "task_data_sha256": "29542493a302915303d5d67f868282ddda46fa15ba059a4bcf38c6687be29d55",
+  "labeler_sha256": "d6803352606110a3f417308512e22b93c4167268455bc0935504ea876c68160b",
+  "comparison_code_sha256": "561a93ead877222c916a22044ef4e0409927fb45278b7a61ed40751a11503490",
+  "schema_validation_code_sha256": "6952f3c2c017037d9668aab0f1b3c7c02117512fcabe388397f6f85d23cde47c",
+  "email_reviews": {
+    "l3-000:2": "Body accurately identifies Meeting with the client, its time and Room 1; recipient matches requirement. Does not assert that all reminders were sent.",
+    "l3-001:2": "Body Reminder: Meeting with the client is brief but factual; structured time/location and recipient identify the actual meeting.",
+    "l3-002:2": "Body Reminder: Meeting with the client is factual; structured time/location and recipient identify the actual meeting.",
+    "l3-003:2": "Body names Meeting, Room 1 and 2021-01-01 10:00:00, all supported by the earlier meeting response.",
+    "l3-004:2": "Body names Meeting, its time and Room 1, all supported by the earlier meeting response."
+  },
+  "label_order": "All labels, reasons and exclusions fixed before evaluation script reads scores.",
+  "archived_protocol_sha256": "6194445bf24e58bec5d4f7e8d9bebc40262d5f680280f09b52c709efdbb370b8",
+  "publication_note": "Historical tri-label protocol, superseded by outputs/legacy_binary_v2. Source path is repository-relative. Code/data hashes describe archived research inputs; not every historical input is distributed."
+}

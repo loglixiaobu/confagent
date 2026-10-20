@@ -1,0 +1,266 @@
+{
+  "version": "legacy-semantic-review-v1",
+  "original_tasks": 50,
+  "original_steps": 198,
+  "tasks_with_no_calls": [
+    "l3-011",
+    "l3-012",
+    "l3-024"
+  ],
+  "old_labels": {
+    "1": 87,
+    "0": 111
+  },
+  "revised_labels": {
+    "正确": 156,
+    "无法确定": 38,
+    "错误": 4
+  },
+  "transitions": {
+    "1->正确": 78,
+    "0->正确": 78,
+    "1->无法确定": 9,
+    "0->无法确定": 29,
+    "0->错误": 4
+  },
+  "reason_breakdown": [
+    {
+      "reason_code": "address_update_supported",
+      "status": "正确",
+      "steps": 7,
+      "tasks": [
+        "l3-045",
+        "l3-046",
+        "l3-047",
+        "l3-048",
+        "l3-049"
+      ],
+      "first_semantic_attempts": 5,
+      "reason": "用户名、密码和地址由用户明确给出；允许地址末尾句号，不要求多余的 AccountInfo 前置调用。"
+    },
+    {
+      "reason_code": "auxiliary_search_no_semantic_oracle",
+      "status": "无法确定",
+      "steps": 4,
+      "tasks": [
+        "l3-010",
+        "l3-030",
+        "l3-035",
+        "l3-042"
+      ],
+      "first_semantic_attempts": 4,
+      "reason": "辅助检索单列：旧 mock 的 matched_gold 不能判定检索意图是否满足。"
+    },
+    {
+      "reason_code": "calculation_before_all_counts_observed",
+      "status": "错误",
+      "steps": 2,
+      "tasks": [
+        "l3-026"
+      ],
+      "first_semantic_attempts": 1,
+      "reason": "尚未获取全部帖子点赞数，公式使用了当时未观察到的数值；遵循原系统提示“参数来自需求或此前返回”的过程正确性口径。"
+    },
+    {
+      "reason_code": "coordinates_and_units_supported",
+      "status": "正确",
+      "steps": 53,
+      "tasks": [
+        "l3-005",
+        "l3-006",
+        "l3-007",
+        "l3-008",
+        "l3-009",
+        "l3-015",
+        "l3-016",
+        "l3-017",
+        "l3-018",
+        "l3-019",
+        "l3-030",
+        "l3-031",
+        "l3-032",
+        "l3-033",
+        "l3-034"
+      ],
+      "first_semantic_attempts": 15,
+      "reason": "坐标与需求或此前返回数值一致；数值字符串及尾零差异不构成语义错误。"
+    },
+    {
+      "reason_code": "email_facts_reviewed",
+      "status": "正确",
+      "steps": 5,
+      "tasks": [
+        "l3-000",
+        "l3-001",
+        "l3-002",
+        "l3-003",
+        "l3-004"
+      ],
+      "first_semantic_attempts": 5,
+      "reason": "结构化字段匹配实际会议；自由文本事实经无分数上下文审查一致。"
+    },
+    {
+      "reason_code": "geocoding_sign_conflict",
+      "status": "无法确定",
+      "steps": 3,
+      "tasks": [
+        "l3-030"
+      ],
+      "first_semantic_attempts": 1,
+      "reason": "调用改变了 Geocoding 返回的经度符号；该基准坐标与地理语义存在争议，不能仅用参考值认定真实语义错误。单列“违背可见返回”事实。"
+    },
+    {
+      "reason_code": "humidity_unit_conflict",
+      "status": "无法确定",
+      "steps": 1,
+      "tasks": [
+        "l3-008"
+      ],
+      "first_semantic_attempts": 1,
+      "reason": "文档要求百分比湿度，历史/参考却使用 0–1 小数；现有材料不足以形成可信二分类标签。"
+    },
+    {
+      "reason_code": "kilometers_not_converted_to_meters",
+      "status": "错误",
+      "steps": 2,
+      "tasks": [
+        "l3-016",
+        "l3-017"
+      ],
+      "first_semantic_attempts": 2,
+      "reason": "需求为 1 km，API distance 单位是米，应传 1000，而实际传入 1。"
+    },
+    {
+      "reason_code": "meeting_schema_and_location_conflict",
+      "status": "无法确定",
+      "steps": 9,
+      "tasks": [
+        "l3-010",
+        "l3-014"
+      ],
+      "first_semantic_attempts": 9,
+      "reason": "旧工具 schema 将 attendees 错误声明为 string，原 API 为 list(str)；需求也没有会议地点，不能归因成干净的模型参数错误。"
+    },
+    {
+      "reason_code": "missing_checkout_or_stay_duration",
+      "status": "无法确定",
+      "steps": 5,
+      "tasks": [
+        "l3-036",
+        "l3-037",
+        "l3-038",
+        "l3-039"
+      ],
+      "first_semantic_attempts": 5,
+      "reason": "用户只给出行日期，未给入住时长或退房日期；参考的一晚住宿没有公开依据。"
+    },
+    {
+      "reason_code": "missing_travel_inputs",
+      "status": "无法确定",
+      "steps": 10,
+      "tasks": [
+        "l3-035"
+      ],
+      "first_semantic_attempts": 5,
+      "reason": "需求缺少出发地、目的地和日期，不能按隐藏参考值判定调用对错。"
+    },
+    {
+      "reason_code": "requirement_or_prior_fact_match",
+      "status": "正确",
+      "steps": 64,
+      "tasks": [
+        "l3-000",
+        "l3-001",
+        "l3-002",
+        "l3-003",
+        "l3-004",
+        "l3-010",
+        "l3-013",
+        "l3-014",
+        "l3-015",
+        "l3-016",
+        "l3-017",
+        "l3-018",
+        "l3-019",
+        "l3-020",
+        "l3-021",
+        "l3-022",
+        "l3-023",
+        "l3-025",
+        "l3-026",
+        "l3-027",
+        "l3-028",
+        "l3-029",
+        "l3-030",
+        "l3-031",
+        "l3-032",
+        "l3-033",
+        "l3-034",
+        "l3-036",
+        "l3-037",
+        "l3-038",
+        "l3-039",
+        "l3-040",
+        "l3-041",
+        "l3-042",
+        "l3-043",
+        "l3-044"
+      ],
+      "first_semantic_attempts": 64,
+      "reason": "工具及参数符合需求或此前实际返回；这是局部调用判定，不保证完整任务完成。"
+    },
+    {
+      "reason_code": "returned_salary_passed_through",
+      "status": "正确",
+      "steps": 14,
+      "tasks": [
+        "l3-040",
+        "l3-041",
+        "l3-042",
+        "l3-043",
+        "l3-044"
+      ],
+      "first_semantic_attempts": 5,
+      "reason": "将实际返回工资原值传入扣税 API；数值表示差异不构成语义错误，最终月薪回答另行评估。"
+    },
+    {
+      "reason_code": "salary_period_unspecified",
+      "status": "无法确定",
+      "steps": 6,
+      "tasks": [
+        "l3-040",
+        "l3-041",
+        "l3-042",
+        "l3-044"
+      ],
+      "first_semantic_attempts": 4,
+      "reason": "候选将返回工资除以 12；需求要求月薪，但 API 未声明返回工资或扣税周期。不能仅因不同于参考原值就认定其转换错误。"
+    },
+    {
+      "reason_code": "verified_sum_from_prior_returns",
+      "status": "正确",
+      "steps": 13,
+      "tasks": [
+        "l3-025",
+        "l3-026",
+        "l3-027",
+        "l3-029"
+      ],
+      "first_semantic_attempts": 4,
+      "reason": "用此前实际返回的全部点赞数独立求和；等价表达式均接受，不受错误参考公式影响。"
+    }
+  ],
+  "error_tasks": [
+    "l3-016",
+    "l3-017",
+    "l3-026"
+  ],
+  "protocol_sha256": "d6c4271a248c27a93ee1e18a71a78dfe0858da5895c913b2f4e7a238182ffb6e",
+  "labels_sha256": "10afb329b5506aad780ef9a1dbb5f94c28a5a470f6bc2b6e0a707442330855b6",
+  "source_sha256": "fe6e484abce858d214601990e05d86567232ab74f2bb0155b16945a10383c4df",
+  "gpu_used": false,
+  "model_calls": 0,
+  "caveat": "Retrospective local-call labels; original faulty execution feedback and all task outcomes preserved. Not corrected online performance.",
+  "archived_protocol_sha256": "6194445bf24e58bec5d4f7e8d9bebc40262d5f680280f09b52c709efdbb370b8",
+  "publication_note": "Historical intermediate result; current binary labels and main conclusions are in outputs/legacy_binary_v2. Numeric results are unchanged; published protocol hash reflects portable paths."
+}

@@ -1,0 +1,4486 @@
+{
+  "description": "Retrospective descriptive reanalysis; no calibration fit or untouched holdout.",
+  "source_file": "results/traj_main_clean.jsonl",
+  "source_sha256": "fe6e484abce858d214601990e05d86567232ab74f2bb0155b16945a10383c4df",
+  "protocol_sha256": "d6c4271a248c27a93ee1e18a71a78dfe0858da5895c913b2f4e7a238182ffb6e",
+  "labels_sha256": "10afb329b5506aad780ef9a1dbb5f94c28a5a470f6bc2b6e0a707442330855b6",
+  "evaluation_code_sha256": "457a9a29613686d6f1efe8b7eacec0140dadb4270d3fc116c893848ccf476f9b",
+  "numeric_audit_sha256": "d002f6ef8178a56be75906220895f2ab8d7deea9903422414d1d2dbda3d239b4",
+  "predeclared_signals": [
+    "geo_mean_prob",
+    "p10_prob",
+    "min_prob",
+    "tail_geo_mean_prob",
+    "frac_highprob"
+  ],
+  "primary_signal": "geo_mean_prob",
+  "higher_score_means": "more likely correct",
+  "bootstrap_n": 1000,
+  "cohort_descriptions": {
+    "original_all": "旧标签，原始 198 步，包含辅助检索。仅复现历史统计。",
+    "numeric_fix_only": "只修复旧审计确认的 64 次数值表示假阴性，其他旧标签不变；诊断对照。",
+    "original_on_revised_subset": "与主分析相同的可判定业务调用，使用旧标签；控制样本集合变化。",
+    "revised_all": "主分析：修订后可判定的业务调用；保留所有重试。",
+    "revised_first_semantic_attempt": "去重：同任务、API、语义参数及相关成功返回相同，保留首次；不按分数或标签去重。",
+    "revised_before_first_mock_error": "历史敏感性：仅保留各任务首次 mock 报错之前及产生该次报错的调用。",
+    "revised_calculator_answer_only": "口径敏感性：两次提前计算仅看事后答案，改为正确；其余标签不变。"
+  },
+  "cohorts": {
+    "original_all": {
+      "n": 198,
+      "tasks": 47,
+      "correct": 87,
+      "errors": 111,
+      "error_tasks": [
+        "l3-005",
+        "l3-006",
+        "l3-007",
+        "l3-008",
+        "l3-009",
+        "l3-010",
+        "l3-014",
+        "l3-015",
+        "l3-016",
+        "l3-017",
+        "l3-018",
+        "l3-019",
+        "l3-025",
+        "l3-026",
+        "l3-027",
+        "l3-029",
+        "l3-030",
+        "l3-031",
+        "l3-032",
+        "l3-033",
+        "l3-034",
+        "l3-035",
+        "l3-036",
+        "l3-040",
+        "l3-041",
+        "l3-042",
+        "l3-044",
+        "l3-046",
+        "l3-049"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 198,
+          "correct": 87,
+          "errors": 111,
+          "AUROC": 0.5401263332297815,
+          "error_AUPRC": 0.5629673126516435,
+          "Brier": 0.4830688533383511,
+          "NLL": 1.5370834166154548,
+          "ECE": 0.48643310132737577,
+          "AURC": 0.5243152243793027,
+          "error_capture_at_20pct": 0.16756756756756758,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 198,
+              "confidence": 0.9258270407213152,
+              "accuracy": 0.4393939393939394
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9269621978425988,
+          "error_mean": 0.924937322977606,
+          "random_error_AUPRC": 0.5606060606060606,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.4516736189510506,
+              0.6238917179977344
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "p10_prob": {
+          "n": 198,
+          "correct": 87,
+          "errors": 111,
+          "AUROC": 0.5331365848607228,
+          "error_AUPRC": 0.5602585174932315,
+          "Brier": 0.3523409854821635,
+          "NLL": 0.9892113079010395,
+          "ECE": 0.34365238821787336,
+          "AURC": 0.5324963662729328,
+          "error_capture_at_20pct": 0.1855855855855856,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 16,
+              "confidence": 0.5757327274345032,
+              "accuracy": 0.75
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 107,
+              "confidence": 0.6943844169815878,
+              "accuracy": 0.37383177570093457
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 75,
+              "confidence": 0.879410185187481,
+              "accuracy": 0.4666666666666667
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7626665005712966,
+          "error_mean": 0.748780491849912,
+          "random_error_AUPRC": 0.5606060606060606,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.4465364890828787,
+              0.6149079130133226
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "min_prob": {
+          "n": 198,
+          "correct": 87,
+          "errors": 111,
+          "AUROC": 0.5336025680853267,
+          "error_AUPRC": 0.5802498543941272,
+          "Brier": 0.256333012380567,
+          "NLL": 0.7097743596212202,
+          "ECE": 0.07843816247353193,
+          "AURC": 0.5412551739553023,
+          "error_capture_at_20pct": 0.2036036036036036,
+          "bins": [
+            {
+              "lo": 0.0,
+              "hi": 0.2,
+              "n": 3,
+              "confidence": 0.18276341342528934,
+              "accuracy": 0.6666666666666666
+            },
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 126,
+              "confidence": 0.3091234467530778,
+              "accuracy": 0.3968253968253968
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 69,
+              "confidence": 0.4633536130301016,
+              "accuracy": 0.5072463768115942
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.36590963112157143,
+          "error_mean": 0.357073026330306,
+          "random_error_AUPRC": 0.5606060606060606,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.44796590211559945,
+              0.6140135443943304
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "tail_geo_mean_prob": {
+          "n": 198,
+          "correct": 87,
+          "errors": 111,
+          "AUROC": 0.5120637879258569,
+          "error_AUPRC": 0.5659912440779717,
+          "Brier": 0.4675094395163119,
+          "NLL": 1.508307062349631,
+          "ECE": 0.46659855644117976,
+          "AURC": 0.5399736885087638,
+          "error_capture_at_20pct": 0.22162162162162163,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 11,
+              "confidence": 0.7534930880830681,
+              "accuracy": 0.5454545454545454
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 187,
+              "confidence": 0.9149630492322987,
+              "accuracy": 0.43315508021390375
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9063538204575251,
+          "error_mean": 0.9057092954553955,
+          "random_error_AUPRC": 0.5606060606060606,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.43291693057042835,
+              0.579725233668562
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "frac_highprob": {
+          "n": 198,
+          "correct": 87,
+          "errors": 111,
+          "AUROC": 0.542508025266646,
+          "error_AUPRC": 0.5648898064558376,
+          "Brier": 0.38836236634325366,
+          "NLL": 1.0674168983325898,
+          "ECE": 0.3718250249794589,
+          "AURC": 0.5229865153575682,
+          "error_capture_at_20pct": 0.15855855855855858,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 2,
+              "confidence": 0.5817216424926349,
+              "accuracy": 0.5
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 81,
+              "confidence": 0.7364906740568894,
+              "accuracy": 0.37037037037037035
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 115,
+              "confidence": 0.8678449309768657,
+              "accuracy": 0.48695652173913045
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8141097450192438,
+          "error_mean": 0.8089532173807086,
+          "random_error_AUPRC": 0.5606060606060606,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.45287241478870033,
+              0.6264820005426388
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        }
+      }
+    },
+    "numeric_fix_only": {
+      "n": 198,
+      "tasks": 47,
+      "correct": 151,
+      "errors": 47,
+      "error_tasks": [
+        "l3-010",
+        "l3-014",
+        "l3-016",
+        "l3-017",
+        "l3-025",
+        "l3-026",
+        "l3-027",
+        "l3-029",
+        "l3-030",
+        "l3-035",
+        "l3-036",
+        "l3-040",
+        "l3-041",
+        "l3-042",
+        "l3-044",
+        "l3-046",
+        "l3-049"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 198,
+          "correct": 151,
+          "errors": 47,
+          "AUROC": 0.503170353670565,
+          "error_AUPRC": 0.256643363384191,
+          "Brier": 0.20863711247727276,
+          "NLL": 0.7011839994768418,
+          "ECE": 0.1632007780950525,
+          "AURC": 0.24365403968514035,
+          "error_capture_at_20pct": 0.1617021276595745,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 198,
+              "confidence": 0.9258270407213152,
+              "accuracy": 0.7626262626262627
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9259235334937278,
+          "error_mean": 0.9255170320269683,
+          "random_error_AUPRC": 0.23737373737373738,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.36115964777649284,
+              0.593949193189785
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "p10_prob": {
+          "n": 198,
+          "correct": 151,
+          "errors": 47,
+          "AUROC": 0.5016204029871777,
+          "error_AUPRC": 0.2574805052485345,
+          "Brier": 0.1945366254939038,
+          "NLL": 0.5936760721829631,
+          "ECE": 0.09820660420747035,
+          "AURC": 0.2287533025401276,
+          "error_capture_at_20pct": 0.18297872340425536,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 16,
+              "confidence": 0.5757327274345032,
+              "accuracy": 0.8125
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 107,
+              "confidence": 0.6943844169815878,
+              "accuracy": 0.7570093457943925
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 75,
+              "confidence": 0.879410185187481,
+              "accuracy": 0.76
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7547987893280828,
+          "error_mean": 0.7551489990745216,
+          "random_error_AUPRC": 0.23737373737373738,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.3630679563492063,
+              0.5923180958004761
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "min_prob": {
+          "n": 198,
+          "correct": 151,
+          "errors": 47,
+          "AUROC": 0.5107792024799211,
+          "error_AUPRC": 0.24851516376048927,
+          "Brier": 0.34997204040913504,
+          "NLL": 0.9101995139539065,
+          "ECE": 0.4016704857058552,
+          "AURC": 0.23467692947375943,
+          "error_capture_at_20pct": 0.1702127659574468,
+          "bins": [
+            {
+              "lo": 0.0,
+              "hi": 0.2,
+              "n": 3,
+              "confidence": 0.18276341342528934,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 126,
+              "confidence": 0.3091234467530778,
+              "accuracy": 0.753968253968254
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 69,
+              "confidence": 0.4633536130301016,
+              "accuracy": 0.7681159420289855
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.36135015981952634,
+          "error_mean": 0.3596887169679191,
+          "random_error_AUPRC": 0.23737373737373738,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.372451164874552,
+              0.6272009881422924
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "tail_geo_mean_prob": {
+          "n": 198,
+          "correct": 151,
+          "errors": 47,
+          "AUROC": 0.43595885585458644,
+          "error_AUPRC": 0.22156837638393237,
+          "Brier": 0.209774067212484,
+          "NLL": 0.7411877008287406,
+          "ECE": 0.1505538698864954,
+          "AURC": 0.27931553259284836,
+          "error_capture_at_20pct": 0.23404255319148937,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 11,
+              "confidence": 0.7534930880830681,
+              "accuracy": 0.8181818181818182
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 187,
+              "confidence": 0.9149630492322987,
+              "accuracy": 0.7593582887700535
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9031032068734018,
+          "error_mean": 0.9152751050525517,
+          "random_error_AUPRC": 0.23737373737373738,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.3075900779737944,
+              0.5453615588509205
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "frac_highprob": {
+          "n": 198,
+          "correct": 151,
+          "errors": 47,
+          "AUROC": 0.5031703536705651,
+          "error_AUPRC": 0.2553535701630908,
+          "Brier": 0.1895156218562623,
+          "NLL": 0.5804546842584564,
+          "ECE": 0.06217103913493325,
+          "AURC": 0.2350918141534768,
+          "error_capture_at_20pct": 0.14042553191489365,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 2,
+              "confidence": 0.5817216424926349,
+              "accuracy": 0.5
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 81,
+              "confidence": 0.7364906740568894,
+              "accuracy": 0.7530864197530864
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 115,
+              "confidence": 0.8678449309768657,
+              "accuracy": 0.7739130434782608
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8113468577542141,
+          "error_mean": 0.8108080728733302,
+          "random_error_AUPRC": 0.23737373737373738,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.3653609154929578,
+              0.5913165559134561
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        }
+      }
+    },
+    "original_on_revised_subset": {
+      "n": 160,
+      "tasks": 46,
+      "correct": 78,
+      "errors": 82,
+      "error_tasks": [
+        "l3-005",
+        "l3-006",
+        "l3-007",
+        "l3-008",
+        "l3-009",
+        "l3-015",
+        "l3-016",
+        "l3-017",
+        "l3-018",
+        "l3-019",
+        "l3-025",
+        "l3-026",
+        "l3-027",
+        "l3-029",
+        "l3-030",
+        "l3-031",
+        "l3-032",
+        "l3-033",
+        "l3-034",
+        "l3-040",
+        "l3-041",
+        "l3-042",
+        "l3-044",
+        "l3-046",
+        "l3-049"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 160,
+          "correct": 78,
+          "errors": 82,
+          "AUROC": 0.5490931832395248,
+          "error_AUPRC": 0.5214082604978697,
+          "Brier": 0.4453736955749724,
+          "NLL": 1.4347147100646174,
+          "ECE": 0.44264921094198045,
+          "AURC": 0.4729331727936475,
+          "error_capture_at_20pct": 0.18292682926829268,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 160,
+              "confidence": 0.9301492109419804,
+              "accuracy": 0.4875
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9315755898931503,
+          "error_mean": 0.9287924114518429,
+          "random_error_AUPRC": 0.5125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.435358949970339,
+              0.6446430926500784
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "p10_prob": {
+          "n": 160,
+          "correct": 78,
+          "errors": 82,
+          "AUROC": 0.5430737961225766,
+          "error_AUPRC": 0.5179384943889545,
+          "Brier": 0.3331533033118906,
+          "NLL": 0.9503821732673032,
+          "ECE": 0.3157385216568901,
+          "AURC": 0.4846149853380763,
+          "error_capture_at_20pct": 0.18292682926829268,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 9,
+              "confidence": 0.582789734935858,
+              "accuracy": 0.8888888888888888
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 84,
+              "confidence": 0.6984316053440636,
+              "accuracy": 0.4166666666666667
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 67,
+              "confidence": 0.8820151676212508,
+              "accuracy": 0.5223880597014925
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7776325616387566,
+          "error_mean": 0.760402913245425,
+          "random_error_AUPRC": 0.5125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.430886164026856,
+              0.6370691079906539
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "min_prob": {
+          "n": 160,
+          "correct": 78,
+          "errors": 82,
+          "AUROC": 0.5411194496560351,
+          "error_AUPRC": 0.5494757608007768,
+          "Brier": 0.2658387122836226,
+          "NLL": 0.7287395641316474,
+          "ECE": 0.11934295979637377,
+          "AURC": 0.49505824948131194,
+          "error_capture_at_20pct": 0.21951219512195122,
+          "bins": [
+            {
+              "lo": 0.0,
+              "hi": 0.2,
+              "n": 1,
+              "confidence": 0.16207227888853942,
+              "accuracy": 0.0
+            },
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 97,
+              "confidence": 0.3135863530812765,
+              "accuracy": 0.4536082474226804
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 62,
+              "confidence": 0.46208584617072435,
+              "accuracy": 0.5483870967741935
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3759182647989097,
+          "error_mean": 0.36472739434197937,
+          "random_error_AUPRC": 0.5125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.43419628267973853,
+              0.6319782797987615
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "tail_geo_mean_prob": {
+          "n": 160,
+          "correct": 78,
+          "errors": 82,
+          "AUROC": 0.5118824265165729,
+          "error_AUPRC": 0.5193233264207908,
+          "Brier": 0.42927290526273565,
+          "NLL": 1.392525281362468,
+          "ECE": 0.41959778064434045,
+          "AURC": 0.4956078658514553,
+          "error_capture_at_20pct": 0.1951219512195122,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 9,
+              "confidence": 0.7512136756839237,
+              "accuracy": 0.5555555555555556
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 151,
+              "confidence": 0.9163888862380077,
+              "accuracy": 0.48344370860927155
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.907454994886032,
+          "error_mean": 0.9067579914876092,
+          "random_error_AUPRC": 0.5125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.4182196473499261,
+              0.5964776218405251
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "frac_highprob": {
+          "n": 160,
+          "correct": 78,
+          "errors": 82,
+          "AUROC": 0.5503439649781113,
+          "error_AUPRC": 0.5221050171999095,
+          "Brier": 0.3634306842541037,
+          "NLL": 1.0112034316077492,
+          "ECE": 0.3334402862378427,
+          "AURC": 0.47512867653451013,
+          "error_capture_at_20pct": 0.18292682926829268,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 59,
+              "confidence": 0.7369099225604374,
+              "accuracy": 0.4067796610169492
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 101,
+              "confidence": 0.870027330366228,
+              "accuracy": 0.5346534653465347
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8243637608636647,
+          "error_mean": 0.8176838103742556,
+          "random_error_AUPRC": 0.5125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.4419891098223678,
+              0.647242085775545
+            ],
+            "valid_resamples": 1000,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        }
+      }
+    },
+    "revised_all": {
+      "n": 160,
+      "tasks": 46,
+      "correct": 156,
+      "errors": 4,
+      "error_tasks": [
+        "l3-016",
+        "l3-017",
+        "l3-026"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 160,
+          "correct": 156,
+          "errors": 4,
+          "AUROC": 0.3717948717948718,
+          "error_AUPRC": 0.023839412901912903,
+          "Brier": 0.028187251522207746,
+          "NLL": 0.1451784516075476,
+          "ECE": 0.044850789058019536,
+          "AURC": 0.026738534350011355,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 160,
+              "confidence": 0.9301492109419804,
+              "accuracy": 0.975
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9297295611274803,
+          "error_mean": 0.9465155537074892,
+          "random_error_AUPRC": 0.025,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.30773011100832565,
+              0.4580660715887683
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "p10_prob": {
+          "n": 160,
+          "correct": 156,
+          "errors": 4,
+          "AUROC": 0.36939102564102566,
+          "error_AUPRC": 0.02361514059553849,
+          "Brier": 0.08204954566003723,
+          "NLL": 0.31145021120960226,
+          "ECE": 0.20619763316282588,
+          "AURC": 0.025495903185836367,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 9,
+              "confidence": 0.582789734935858,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 84,
+              "confidence": 0.6984316053440636,
+              "accuracy": 0.9880952380952381
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 67,
+              "confidence": 0.8820151676212508,
+              "accuracy": 0.9552238805970149
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7675874385895595,
+          "error_mean": 0.8161845684941449,
+          "random_error_AUPRC": 0.025,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.28735611510791365,
+              0.4400326797385621
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "min_prob": {
+          "n": 160,
+          "correct": 156,
+          "errors": 4,
+          "AUROC": 0.34935897435897434,
+          "error_AUPRC": 0.02276846000108032,
+          "Brier": 0.4003633724583155,
+          "NLL": 1.015862596684269,
+          "ECE": 0.604817056310267,
+          "AURC": 0.029430639436592347,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.0,
+              "hi": 0.2,
+              "n": 1,
+              "confidence": 0.16207227888853942,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 97,
+              "confidence": 0.3135863530812765,
+              "accuracy": 0.9896907216494846
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 62,
+              "confidence": 0.46208584617072435,
+              "accuracy": 0.9516129032258065
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3689721271816636,
+          "error_mean": 0.4174047875044346,
+          "random_error_AUPRC": 0.025,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.2180891660461653,
+              0.6355958230958231
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "tail_geo_mean_prob": {
+          "n": 160,
+          "correct": 156,
+          "errors": 4,
+          "AUROC": 0.34935897435897434,
+          "error_AUPRC": 0.024370682589860672,
+          "Brier": 0.03409855870167997,
+          "NLL": 0.1717218010752981,
+          "ECE": 0.06790221935565946,
+          "AURC": 0.033515637616177416,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 9,
+              "confidence": 0.7512136756839237,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 151,
+              "confidence": 0.9163888862380077,
+              "accuracy": 0.9735099337748344
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9063810084999678,
+          "error_mean": 0.9350518942748749,
+          "random_error_AUPRC": 0.025,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.1624419578290325,
+              0.46677827380952386
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "frac_highprob": {
+          "n": 160,
+          "correct": 156,
+          "errors": 4,
+          "AUROC": 0.3782051282051282,
+          "error_AUPRC": 0.024016179898532837,
+          "Brier": 0.055663353904329284,
+          "NLL": 0.2469988360701736,
+          "ECE": 0.15405971376215724,
+          "AURC": 0.026615294724804017,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 59,
+              "confidence": 0.7369099225604374,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 101,
+              "confidence": 0.870027330366228,
+              "accuracy": 0.9603960396039604
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8200112806112038,
+          "error_mean": 0.8571715056767544,
+          "random_error_AUPRC": 0.025,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.31122197399669926,
+              0.4733189514816021
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        }
+      }
+    },
+    "revised_first_semantic_attempt": {
+      "n": 101,
+      "tasks": 46,
+      "correct": 98,
+      "errors": 3,
+      "error_tasks": [
+        "l3-016",
+        "l3-017",
+        "l3-026"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 101,
+          "correct": 98,
+          "errors": 3,
+          "AUROC": 0.45578231292517,
+          "error_AUPRC": 0.03544489611562782,
+          "Brier": 0.03164612277631333,
+          "NLL": 0.1526173255256066,
+          "ECE": 0.03250866817990361,
+          "AURC": 0.02628848565067517,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 101,
+              "confidence": 0.9377883615230667,
+              "accuracy": 0.9702970297029703
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.937415595377205,
+          "error_mean": 0.9499653889545489,
+          "random_error_AUPRC": 0.0297029702970297,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.1951267620450242,
+              0.6584369577790631
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "p10_prob": {
+          "n": 101,
+          "correct": 98,
+          "errors": 3,
+          "AUROC": 0.4625850340136054,
+          "error_AUPRC": 0.034911396893937026,
+          "Brier": 0.07200463026540863,
+          "NLL": 0.2794936690408958,
+          "ECE": 0.16899894940395782,
+          "AURC": 0.023594919743362083,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 8,
+              "confidence": 0.582563008897683,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 35,
+              "confidence": 0.71676160592419,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 58,
+              "confidence": 0.8824818246840025,
+              "accuracy": 0.9482758620689655
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8004449966906682,
+          "error_mean": 0.8291654781715913,
+          "random_error_AUPRC": 0.0297029702970297,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.30418797953964194,
+              0.625375
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "min_prob": {
+          "n": 101,
+          "correct": 98,
+          "errors": 3,
+          "AUROC": 0.4285714285714286,
+          "error_AUPRC": 0.03479236812570146,
+          "Brier": 0.36782408631859936,
+          "NLL": 0.9437594195154511,
+          "ECE": 0.5745032389084199,
+          "AURC": 0.029299922275600326,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 47,
+              "confidence": 0.3190152812543495,
+              "accuracy": 0.9787234042553191
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 54,
+              "confidence": 0.46261953057954003,
+              "accuracy": 0.9629629629629629
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3949730967105765,
+          "error_mean": 0.42260313087102847,
+          "random_error_AUPRC": 0.0297029702970297,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.17308959156785242,
+              0.7528585591539987
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "tail_geo_mean_prob": {
+          "n": 101,
+          "correct": 98,
+          "errors": 3,
+          "AUROC": 0.24829931972789115,
+          "error_AUPRC": 0.02541760550659327,
+          "Brier": 0.03764047401753421,
+          "NLL": 0.1843840971688034,
+          "ECE": 0.05331706738271905,
+          "AURC": 0.04309345194683513,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 5,
+              "confidence": 0.7496254802378399,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 96,
+              "confidence": 0.9256963415953768,
+              "accuracy": 0.96875
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9157013429559301,
+          "error_mean": 0.9587481948880798,
+          "random_error_AUPRC": 0.0297029702970297,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.12043103448275863,
+              0.4115836197021764
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "frac_highprob": {
+          "n": 101,
+          "correct": 98,
+          "errors": 3,
+          "AUROC": 0.4625850340136054,
+          "error_AUPRC": 0.03584744164454309,
+          "Brier": 0.053665480800077055,
+          "NLL": 0.235708599941104,
+          "ECE": 0.13083697130186267,
+          "AURC": 0.0263028985192114,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 23,
+              "confidence": 0.7148841611775956,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 78,
+              "confidence": 0.8761939768131689,
+              "accuracy": 0.9615384615384616
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.838641792917558,
+          "error_mean": 0.8661900641970625,
+          "random_error_AUPRC": 0.0297029702970297,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.19619296316657503,
+              0.6843183902774593
+            ],
+            "valid_resamples": 946,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        }
+      }
+    },
+    "revised_before_first_mock_error": {
+      "n": 90,
+      "tasks": 45,
+      "correct": 89,
+      "errors": 1,
+      "error_tasks": [
+        "l3-026"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 90,
+          "correct": 89,
+          "errors": 1,
+          "AUROC": 0.23595505617977527,
+          "error_AUPRC": 0.014492753623188406,
+          "Brier": 0.01499650517620768,
+          "NLL": 0.0991240221608637,
+          "ECE": 0.05010786644889442,
+          "AURC": 0.015969021089842068,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 90,
+              "confidence": 0.9387810224399945,
+              "accuracy": 0.9888888888888889
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9385409716896265,
+          "error_mean": 0.9601455392227537,
+          "random_error_AUPRC": 0.011111111111111112,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.16234058514628658,
+              0.33707865168539325
+            ],
+            "valid_resamples": 629,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "p10_prob": {
+          "n": 90,
+          "correct": 89,
+          "errors": 1,
+          "AUROC": 0.3707865168539326,
+          "error_AUPRC": 0.017543859649122806,
+          "Brier": 0.0586386567887377,
+          "NLL": 0.24599496708982227,
+          "ECE": 0.18243321118961606,
+          "AURC": 0.011041915301210724,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 6,
+              "confidence": 0.5851283865753797,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 30,
+              "confidence": 0.7071817216434949,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 54,
+              "confidence": 0.8861997967440265,
+              "accuracy": 0.9814814814814815
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8058768736820925,
+          "error_mean": 0.8579692352283176,
+          "random_error_AUPRC": 0.011111111111111112,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.2707598039215686,
+              0.4836228287841191
+            ],
+            "valid_resamples": 629,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "min_prob": {
+          "n": 90,
+          "correct": 89,
+          "errors": 1,
+          "AUROC": 0.21348314606741572,
+          "error_AUPRC": 0.014084507042253521,
+          "Brier": 0.37001833074031637,
+          "NLL": 0.9484737959185422,
+          "ECE": 0.5912944863400844,
+          "AURC": 0.017053677174498152,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 41,
+              "confidence": 0.3184316562312603,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 49,
+              "confidence": 0.46383261885532084,
+              "accuracy": 0.9795918367346939
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.39662143102706954,
+          "error_mean": 0.484188867983204,
+          "random_error_AUPRC": 0.011111111111111112,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.1346259249109345,
+              0.28620689655172404
+            ],
+            "valid_resamples": 629,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "tail_geo_mean_prob": {
+          "n": 90,
+          "correct": 89,
+          "errors": 1,
+          "AUROC": 0.14606741573033707,
+          "error_AUPRC": 0.012987012987012988,
+          "Brier": 0.020857587122299872,
+          "NLL": 0.12905324868105592,
+          "ECE": 0.0712905520334965,
+          "AURC": 0.021138187196830673,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 4,
+              "confidence": 0.7410346665590231,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 86,
+              "confidence": 0.9258106005901072,
+              "accuracy": 0.9883720930232558
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9169503069572937,
+          "error_mean": 0.9752729977862067,
+          "random_error_AUPRC": 0.011111111111111112,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.06488294314381271,
+              0.22568181818181807
+            ],
+            "valid_resamples": 629,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "frac_highprob": {
+          "n": 90,
+          "correct": 89,
+          "errors": 1,
+          "AUROC": 0.2247191011235955,
+          "error_AUPRC": 0.014285714285714285,
+          "Brier": 0.039689321630376355,
+          "NLL": 0.20036306859849118,
+          "ECE": 0.14662483675555774,
+          "AURC": 0.0164981216189426,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 21,
+              "confidence": 0.7214059351092705,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 69,
+              "confidence": 0.8790469573145671,
+              "accuracy": 0.9855072463768116
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8416382641384983,
+          "error_mean": 0.8979591836734694,
+          "random_error_AUPRC": 0.011111111111111112,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.15472508591065293,
+              0.3146067415730337
+            ],
+            "valid_resamples": 629,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        }
+      }
+    },
+    "revised_calculator_answer_only": {
+      "n": 160,
+      "tasks": 46,
+      "correct": 158,
+      "errors": 2,
+      "error_tasks": [
+        "l3-016",
+        "l3-017"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 160,
+          "correct": 158,
+          "errors": 2,
+          "AUROC": 0.4177215189873418,
+          "error_AUPRC": 0.01591117216117216,
+          "Brier": 0.016983356682344453,
+          "NLL": 0.10850746293110136,
+          "ECE": 0.0573507890580196,
+          "AURC": 0.01092862814263348,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 160,
+              "confidence": 0.9301492109419804,
+              "accuracy": 0.9875
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9299628045764304,
+          "error_mean": 0.9448753138204464,
+          "random_error_AUPRC": 0.0125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.33333333333333337,
+              0.48638930025916327
+            ],
+            "valid_resamples": 862,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "p10_prob": {
+          "n": 160,
+          "correct": 158,
+          "errors": 2,
+          "AUROC": 0.37816455696202533,
+          "error_AUPRC": 0.014697120158887786,
+          "Brier": 0.07410940722641071,
+          "NLL": 0.29239902743737145,
+          "ECE": 0.21869763316282587,
+          "AURC": 0.012183535231672586,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 9,
+              "confidence": 0.582789734935858,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 84,
+              "confidence": 0.6984316053440636,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 67,
+              "confidence": 0.8820151676212508,
+              "accuracy": 0.9701492537313433
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7682205790801355,
+          "error_mean": 0.8147635996432281,
+          "random_error_AUPRC": 0.0125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.2843434705930605,
+              0.4564566849259485
+            ],
+            "valid_resamples": 862,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "min_prob": {
+          "n": 160,
+          "correct": 158,
+          "errors": 2,
+          "AUROC": 0.43670886075949367,
+          "error_AUPRC": 0.016597796143250687,
+          "Brier": 0.4017883896409673,
+          "NLL": 1.0187450699343912,
+          "ECE": 0.617317056310267,
+          "AURC": 0.011688136833146798,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.0,
+              "hi": 0.2,
+              "n": 1,
+              "confidence": 0.16207227888853942,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 97,
+              "confidence": 0.3135863530812765,
+              "accuracy": 0.9896907216494846
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 62,
+              "confidence": 0.46208584617072435,
+              "accuracy": 0.9838709677419355
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.36990918016283153,
+          "error_mean": 0.39181026231494065,
+          "random_error_AUPRC": 0.0125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.21359748427672956,
+              0.6726971175842612
+            ],
+            "valid_resamples": 862,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "tail_geo_mean_prob": {
+          "n": 160,
+          "correct": 158,
+          "errors": 2,
+          "AUROC": 0.2689873417721519,
+          "error_AUPRC": 0.0125,
+          "Brier": 0.02360810882391164,
+          "NLL": 0.13720039765109993,
+          "ECE": 0.08040221935565953,
+          "AURC": 0.016903537276099136,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 9,
+              "confidence": 0.7512136756839237,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 151,
+              "confidence": 0.9163888862380077,
+              "accuracy": 0.9867549668874173
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9065485652925093,
+          "error_mean": 0.9504857934390163,
+          "random_error_AUPRC": 0.0125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.14693698700410396,
+              0.41513693270735524
+            ],
+            "valid_resamples": 862,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        },
+        "frac_highprob": {
+          "n": 160,
+          "correct": 158,
+          "errors": 2,
+          "AUROC": 0.4272151898734177,
+          "error_AUPRC": 0.015983363042186574,
+          "Brier": 0.04656241623196304,
+          "NLL": 0.2234913353470888,
+          "ECE": 0.16655971376215725,
+          "AURC": 0.010708768523448422,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 59,
+              "confidence": 0.7369099225604374,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 101,
+              "confidence": 0.870027330366228,
+              "accuracy": 0.9801980198019802
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8205685746147917,
+          "error_mean": 0.850305504458859,
+          "random_error_AUPRC": 0.0125,
+          "random_error_capture_at_20pct": 0.2,
+          "AUROC_bootstrap": {
+            "ci95": [
+              0.32644943019943023,
+              0.5149789485048041
+            ],
+            "valid_resamples": 862,
+            "total_resamples": 1000,
+            "unit": "task",
+            "seed": 20261015,
+            "caveat": "Single-class resamples omitted from AUROC interval; few error tasks limit precision."
+          }
+        }
+      }
+    }
+  },
+  "within_api": {
+    "Calculator": {
+      "n": 15,
+      "tasks": 4,
+      "correct": 13,
+      "errors": 2,
+      "error_tasks": [
+        "l3-026"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 15,
+          "correct": 13,
+          "errors": 2,
+          "AUROC": 0.42307692307692313,
+          "error_AUPRC": 0.16666666666666666,
+          "Brier": 0.12341501128994786,
+          "NLL": 0.45183971448273924,
+          "ECE": 0.07470636427765454,
+          "AURC": 0.13161042661042663,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 15,
+              "confidence": 0.9413730309443212,
+              "accuracy": 0.8666666666666667
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9403295289981349,
+          "error_mean": 0.948155793594532,
+          "random_error_AUPRC": 0.13333333333333333,
+          "random_error_capture_at_20pct": 0.2
+        },
+        "p10_prob": {
+          "n": 15,
+          "correct": 13,
+          "errors": 2,
+          "AUROC": 0.46153846153846156,
+          "error_AUPRC": 0.17424242424242425,
+          "Brier": 0.12938085806157754,
+          "NLL": 0.4223834635114102,
+          "ECE": 0.11320019865330191,
+          "AURC": 0.11494375994375995,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 9,
+              "confidence": 0.7456643449210334,
+              "accuracy": 0.8888888888888888
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 6,
+              "confidence": 0.901497014014805,
+              "accuracy": 0.8333333333333334
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8065192395144621,
+          "error_mean": 0.8176055373450617,
+          "random_error_AUPRC": 0.13333333333333333,
+          "random_error_capture_at_20pct": 0.2
+        },
+        "min_prob": {
+          "n": 15,
+          "correct": 13,
+          "errors": 2,
+          "AUROC": 0.2692307692307693,
+          "error_AUPRC": 0.13247863247863248,
+          "Brier": 0.3774747732948513,
+          "NLL": 0.9651381881513423,
+          "ECE": 0.4881553253091473,
+          "AURC": 0.1790971990971991,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 8,
+              "confidence": 0.31922869402762943,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 7,
+              "confidence": 0.4462629383059649,
+              "accuracy": 0.7142857142857143
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3685901149980717,
+          "error_mean": 0.44299931269392856,
+          "random_error_AUPRC": 0.13333333333333333,
+          "random_error_capture_at_20pct": 0.2
+        },
+        "tail_geo_mean_prob": {
+          "n": 15,
+          "correct": 13,
+          "errors": 2,
+          "AUROC": 0.5,
+          "error_AUPRC": 0.3214285714285714,
+          "Brier": 0.11945671241842179,
+          "NLL": 0.44099360638842744,
+          "ECE": 0.09536081373349241,
+          "AURC": 0.16375494875494878,
+          "error_capture_at_20pct": 0.5,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7708514368366558,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 14,
+              "confidence": 0.9429474030599315,
+              "accuracy": 0.8571428571428571
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9332983914964792,
+          "error_mean": 0.9196179951107333,
+          "random_error_AUPRC": 0.13333333333333333,
+          "random_error_capture_at_20pct": 0.2
+        },
+        "frac_highprob": {
+          "n": 15,
+          "correct": 13,
+          "errors": 2,
+          "AUROC": 0.46153846153846156,
+          "error_AUPRC": 0.18333333333333335,
+          "Brier": 0.12343022594963232,
+          "NLL": 0.41779685143151396,
+          "ECE": 0.10429837027106986,
+          "AURC": 0.12494375994375995,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 4,
+              "confidence": 0.7696669515236858,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 11,
+              "confidence": 0.8766493963782538,
+              "accuracy": 0.8181818181818182
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.845672011728172,
+          "error_mean": 0.8640375068946498,
+          "random_error_AUPRC": 0.13333333333333333,
+          "random_error_capture_at_20pct": 0.2
+        }
+      }
+    },
+    "EmailReminder": {
+      "n": 5,
+      "tasks": 5,
+      "correct": 5,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0048098649794918276,
+          "NLL": 0.06800023973093425,
+          "ECE": 0.06546071681726284,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.9345392831827372,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9345392831827372,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0634811691350261,
+          "NLL": 0.272735758125782,
+          "ECE": 0.2329335123890668,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 3,
+              "confidence": 0.6942694830464547,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 2,
+              "confidence": 0.8762619944576509,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7670664876109332,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.4125961793564642,
+          "NLL": 1.0365189790725708,
+          "ECE": 0.6376094241217339,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 4,
+              "confidence": 0.32799829286499693,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 1,
+              "confidence": 0.4999597079313427,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3623905758782661,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0063686948558660545,
+          "NLL": 0.07376369812226657,
+          "ECE": 0.07033423945874395,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.929665760541256,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.929665760541256,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.026716610432926863,
+          "NLL": 0.17087286477032676,
+          "ECE": 0.1556067891841832,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7827715355805244,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.8597986296246399,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8443932108158169,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "FlightSearch": {
+      "n": 4,
+      "tasks": 4,
+      "correct": 4,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.018913504434619012,
+          "NLL": 0.1476767747671855,
+          "ECE": 0.1372455482824615,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.8627544517175385,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8627544517175385,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.16881694738421882,
+          "NLL": 0.5290209501981735,
+          "ECE": 0.41069204334779646,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 3,
+              "confidence": 0.5836006260433316,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.6064299484788191,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.5893079566522035,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.5750809142750865,
+          "NLL": 1.4231049120426178,
+          "ECE": 0.7580280471316552,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 4,
+              "confidence": 0.2419719528683449,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.2419719528683449,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.025120407383659022,
+          "NLL": 0.14931259411513878,
+          "ECE": 0.13468985958597585,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.755894155672012,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 3,
+              "confidence": 0.9017821353280282,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8653101404140242,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.11277389054288917,
+          "NLL": 0.40871810976021616,
+          "ECE": 0.33517891416923384,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 4,
+              "confidence": 0.6648210858307662,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.6648210858307662,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "Geocoding": {
+      "n": 10,
+      "tasks": 10,
+      "correct": 10,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 10,
+          "correct": 10,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0019803182740535745,
+          "NLL": 0.04488577836119352,
+          "ECE": 0.04386381002169826,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 10,
+              "confidence": 0.9561361899783017,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9561361899783017,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 10,
+          "correct": 10,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.023132640744215227,
+          "NLL": 0.1582851804792881,
+          "ECE": 0.1451891503887517,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 2,
+              "confidence": 0.7880544111520649,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 8,
+              "confidence": 0.8714999592260442,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8548108496112483,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 10,
+          "correct": 10,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.30930311839780317,
+          "NLL": 0.8131463587284088,
+          "ECE": 0.5547090203567855,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 1,
+              "confidence": 0.36891391103842575,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 9,
+              "confidence": 0.45377732059930204,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.4452909796432144,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 10,
+          "correct": 10,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.006153617499519881,
+          "NLL": 0.07340405439622515,
+          "ECE": 0.07011230328496265,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 10,
+              "confidence": 0.9298876967150373,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9298876967150373,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 10,
+          "correct": 10,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.01490749208278976,
+          "NLL": 0.12886062264920703,
+          "ECE": 0.12071510034663857,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 10,
+              "confidence": 0.8792848996533614,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8792848996533614,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "GetOccupationSalary": {
+      "n": 5,
+      "tasks": 5,
+      "correct": 5,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0039003890785322083,
+          "NLL": 0.06432340201162337,
+          "ECE": 0.06228731236307328,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.9377126876369267,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9377126876369267,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.05097360776881717,
+          "NLL": 0.25462516248226164,
+          "ECE": 0.22439576528117916,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 4,
+              "confidence": 0.765112760810326,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 1,
+              "confidence": 0.8175701303528004,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7756042347188209,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.41081750782719073,
+          "NLL": 1.025367271900177,
+          "ECE": 0.6404249925377723,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 4,
+              "confidence": 0.34800746471225186,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 1,
+              "confidence": 0.4058451784621314,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.35957500746222776,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.006674251923155496,
+          "NLL": 0.07003925764410852,
+          "ECE": 0.06641429397032861,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.9335857060296714,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9335857060296714,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.025733405625577254,
+          "NLL": 0.17433377696554325,
+          "ECE": 0.15988233793078543,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.8401176620692146,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8401176620692146,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "GetWeatherForCoordinates": {
+      "n": 33,
+      "tasks": 10,
+      "correct": 33,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 33,
+          "correct": 33,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.005700297998758278,
+          "NLL": 0.07432778628302622,
+          "ECE": 0.07130203935139401,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 33,
+              "confidence": 0.928697960648606,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.928697960648606,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 33,
+          "correct": 33,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.07072793643140157,
+          "NLL": 0.28845300773779553,
+          "ECE": 0.24348443591427749,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 21,
+              "confidence": 0.6841109338001801,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 12,
+              "confidence": 0.8832236670854218,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7565155640857224,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 33,
+          "correct": 33,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.3959733518851008,
+          "NLL": 1.0050301028020454,
+          "ECE": 0.6225656503464289,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 21,
+              "confidence": 0.31589776216760074,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 12,
+              "confidence": 0.4851233777540193,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3774343496535711,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 33,
+          "correct": 33,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.010487559278218398,
+          "NLL": 0.09480343583775237,
+          "ECE": 0.08900054471467593,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7831996596168035,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 32,
+              "confidence": 0.9149931988999653,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9109994552853241,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 33,
+          "correct": 33,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.037515321853975485,
+          "NLL": 0.2058416880836357,
+          "ECE": 0.1837856053140409,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 15,
+              "confidence": 0.7607235026664387,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 18,
+              "confidence": 0.8624568047022261,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.816214394685959,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "LikeCount": {
+      "n": 15,
+      "tasks": 5,
+      "correct": 15,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 15,
+          "correct": 15,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0015696914495767567,
+          "NLL": 0.03924335956867359,
+          "ECE": 0.03843537919496487,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 15,
+              "confidence": 0.9615646208050351,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9615646208050351,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 15,
+          "correct": 15,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.012939321895871414,
+          "NLL": 0.1067374665910999,
+          "ECE": 0.09953337512792496,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7970266212391095,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 14,
+              "confidence": 0.907855196560144,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9004666248720752,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 15,
+          "correct": 15,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.32674021975695894,
+          "NLL": 0.8492968797683715,
+          "ECE": 0.5694008707174715,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 5,
+              "confidence": 0.37727801779134934,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 10,
+              "confidence": 0.45725968502811803,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.43059912928252847,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 15,
+          "correct": 15,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.004734328352357961,
+          "NLL": 0.05866697987391271,
+          "ECE": 0.05611169134856353,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 15,
+              "confidence": 0.9438883086514365,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9438883086514365,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 15,
+          "correct": 15,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.010200227422186348,
+          "NLL": 0.10330113365036818,
+          "ECE": 0.09779211934404808,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 15,
+              "confidence": 0.9022078806559519,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9022078806559519,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "MovieRecommendations": {
+      "n": 4,
+      "tasks": 4,
+      "correct": 4,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.006136363665405687,
+          "NLL": 0.07890118405592278,
+          "ECE": 0.0756415718949992,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.9243584281050008,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9243584281050008,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.07727623798681664,
+          "NLL": 0.319028876721859,
+          "ECE": 0.2699617350377128,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 4,
+              "confidence": 0.7300382649622872,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7300382649622872,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.3933912591003428,
+          "NLL": 0.9951730072498322,
+          "ECE": 0.6230802329104013,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 2,
+              "confidence": 0.30970553046144067,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 2,
+              "confidence": 0.44413400371775674,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.37691976708959873,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.007011163272725803,
+          "NLL": 0.07876647448481666,
+          "ECE": 0.07497792569591755,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.9250220743040825,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9250220743040825,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.041373292790369186,
+          "NLL": 0.22241294222920197,
+          "ECE": 0.1980542470053474,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 2,
+              "confidence": 0.7636622199028018,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 2,
+              "confidence": 0.8402292860865034,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8019457529946525,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "NearbyRestaurants": {
+      "n": 22,
+      "tasks": 5,
+      "correct": 20,
+      "errors": 2,
+      "error_tasks": [
+        "l3-016",
+        "l3-017"
+      ],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 22,
+          "correct": 20,
+          "errors": 2,
+          "AUROC": 0.2,
+          "error_AUPRC": 0.08496732026143791,
+          "Brier": 0.08840203875054332,
+          "NLL": 0.3452814275990415,
+          "ECE": 0.007981868148674964,
+          "AURC": 0.13704362880763107,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 22,
+              "confidence": 0.917072777239584,
+              "accuracy": 0.9090909090909091
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.914292523581498,
+          "error_mean": 0.9448753138204464,
+          "random_error_AUPRC": 0.09090909090909091,
+          "random_error_capture_at_20pct": 0.2
+        },
+        "p10_prob": {
+          "n": 22,
+          "correct": 20,
+          "errors": 2,
+          "AUROC": 0.2,
+          "error_AUPRC": 0.08496732026143791,
+          "Brier": 0.14715611771882522,
+          "NLL": 0.4785934370869892,
+          "ECE": 0.2941410848093291,
+          "AURC": 0.13704362880763107,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 16,
+              "confidence": 0.6641229536612037,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 6,
+              "confidence": 0.849511854064083,
+              "accuracy": 0.6666666666666666
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7046755591838649,
+          "error_mean": 0.8147635996432281,
+          "random_error_AUPRC": 0.09090909090909091,
+          "random_error_capture_at_20pct": 0.2
+        },
+        "min_prob": {
+          "n": 22,
+          "correct": 20,
+          "errors": 2,
+          "AUROC": 0.2,
+          "error_AUPRC": 0.08333333333333334,
+          "Brier": 0.4457254209963299,
+          "NLL": 1.1173096921116172,
+          "ECE": 0.5876782271275601,
+          "AURC": 0.14948951625351853,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 18,
+              "confidence": 0.2952558675976033,
+              "accuracy": 0.9444444444444444
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 4,
+              "confidence": 0.4391183466092041,
+              "accuracy": 0.75
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3143729239281897,
+          "error_mean": 0.39181026231494065,
+          "random_error_AUPRC": 0.09090909090909091,
+          "random_error_capture_at_20pct": 0.2
+        },
+        "tail_geo_mean_prob": {
+          "n": 22,
+          "correct": 20,
+          "errors": 2,
+          "AUROC": 0.05,
+          "error_AUPRC": 0.07261904761904761,
+          "Brier": 0.10018033471016538,
+          "NLL": 0.4064368572267489,
+          "ECE": 0.03385423148093924,
+          "AURC": 0.2218921136561158,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7399473867490776,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 21,
+              "confidence": 0.8816790247938219,
+              "accuracy": 0.9047619047619048
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8677117660270653,
+          "error_mean": 0.9504857934390163,
+          "random_error_AUPRC": 0.09090909090909091,
+          "random_error_capture_at_20pct": 0.2
+        },
+        "frac_highprob": {
+          "n": 22,
+          "correct": 20,
+          "errors": 2,
+          "AUROC": 0.225,
+          "error_AUPRC": 0.08680555555555555,
+          "Brier": 0.11071051547013808,
+          "NLL": 0.3945853685383849,
+          "ECE": 0.18061144646981792,
+          "AURC": 0.1294678712318735,
+          "error_capture_at_20pct": 0.0,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 13,
+              "confidence": 0.747876818616192,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 9,
+              "confidence": 0.855094496038499,
+              "accuracy": 0.7777777777777778
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7858819048719635,
+          "error_mean": 0.850305504458859,
+          "random_error_AUPRC": 0.09090909090909091,
+          "random_error_capture_at_20pct": 0.2
+        }
+      }
+    },
+    "OrganizationMembers": {
+      "n": 3,
+      "tasks": 3,
+      "correct": 3,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 3,
+          "correct": 3,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.00920662929919547,
+          "NLL": 0.09653972573025447,
+          "ECE": 0.09156678630099646,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 3,
+              "confidence": 0.9084332136990035,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9084332136990035,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 3,
+          "correct": 3,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.10875470356127721,
+          "NLL": 0.3940061926841736,
+          "ECE": 0.3213930872074186,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 1,
+              "confidence": 0.5740969967840651,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 2,
+              "confidence": 0.7308618707968395,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.6786069127925813,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 3,
+          "correct": 3,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.48164129261813377,
+          "NLL": 1.1861953735351562,
+          "ECE": 0.6935164040635189,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 3,
+              "confidence": 0.30648359593648106,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.30648359593648106,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 3,
+          "correct": 3,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.030251040426953712,
+          "NLL": 0.1683836712167477,
+          "ECE": 0.15030748228188087,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7318388868632971,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 2,
+              "confidence": 0.9086193331455301,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8496925177181192,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 3,
+          "correct": 3,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.05856872858320674,
+          "NLL": 0.269168478388722,
+          "ECE": 0.2331074040541418,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.6749760306807286,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 2,
+              "confidence": 0.812850878578423,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7668925959458582,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "PersonalInfoUpdate": {
+      "n": 7,
+      "tasks": 5,
+      "correct": 7,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 7,
+          "correct": 7,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0028825823408044847,
+          "NLL": 0.05097829581179344,
+          "ECE": 0.049469117638860416,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 7,
+              "confidence": 0.9505308823611396,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9505308823611396,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 7,
+          "correct": 7,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.03131902034406582,
+          "NLL": 0.1727867020027978,
+          "ECE": 0.15384058429863962,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 2,
+              "confidence": 0.7253444399400253,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.8944854060058944,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8461594157013603,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 7,
+          "correct": 7,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.3282123145097208,
+          "NLL": 0.8539488060133797,
+          "ECE": 0.5678745736577533,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 3,
+              "confidence": 0.35853063883204744,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 4,
+              "confidence": 0.4873215169748961,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.43212542634224665,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 7,
+          "correct": 7,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0031969178861517428,
+          "NLL": 0.049293619418552585,
+          "ECE": 0.04760782569076294,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 7,
+              "confidence": 0.9523921743092371,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9523921743092371,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 7,
+          "correct": 7,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.022186820090932622,
+          "NLL": 0.15244391745861136,
+          "ECE": 0.13982438781589407,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.767816091954023,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 6,
+              "confidence": 0.8755688655557864,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8601756121841059,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "QueryMeeting": {
+      "n": 5,
+      "tasks": 5,
+      "correct": 5,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.0019435005018970288,
+          "NLL": 0.04477813695180404,
+          "ECE": 0.04377623875449976,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.9562237612455002,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9562237612455002,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.016013399003022965,
+          "NLL": 0.1302330777049065,
+          "ECE": 0.12137961134476716,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.8786203886552328,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8786203886552328,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.32874157288617123,
+          "NLL": 0.852166759967804,
+          "ECE": 0.5729474066091913,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 1,
+              "confidence": 0.3934435421520277,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 4,
+              "confidence": 0.43545485620050395,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.4270525933908087,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.006684122850764607,
+          "NLL": 0.08036553907429657,
+          "ECE": 0.07679196191223525,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.9232080380877647,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9232080380877647,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.01288072518716174,
+          "NLL": 0.11934450114066217,
+          "ECE": 0.11235271582226258,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.8876472841777374,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8876472841777374,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "TaxCalculator": {
+      "n": 14,
+      "tasks": 5,
+      "correct": 14,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 14,
+          "correct": 14,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.005798782827254949,
+          "NLL": 0.07131579056334333,
+          "ECE": 0.0682015329861293,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 14,
+              "confidence": 0.9317984670138707,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9317984670138707,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 14,
+          "correct": 14,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.06138502768462049,
+          "NLL": 0.2619246401424919,
+          "ECE": 0.2223648995638512,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 1,
+              "confidence": 0.5846035432412577,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 6,
+              "confidence": 0.7078631324727295,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 7,
+              "confidence": 0.8650155811469212,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7776351004361487,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 14,
+          "correct": 14,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.407260090352615,
+          "NLL": 1.0373631928648268,
+          "ECE": 0.6315735734049961,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.0,
+              "hi": 0.2,
+              "n": 1,
+              "confidence": 0.16207227888853942,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 8,
+              "confidence": 0.3400788219038197,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 5,
+              "confidence": 0.4550534236421913,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3684264265950038,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 14,
+          "correct": 14,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.013095342749035456,
+          "NLL": 0.09984653914630924,
+          "ECE": 0.0922537462357943,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7187971967635762,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 13,
+              "confidence": 0.922280796610408,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9077462537642056,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 14,
+          "correct": 14,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.03797724652187411,
+          "NLL": 0.20039062254400156,
+          "ECE": 0.17739955918576983,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 3,
+              "confidence": 0.6852048813084196,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 11,
+              "confidence": 0.8600719570430876,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8226004408142301,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "TravelStatus": {
+      "n": 5,
+      "tasks": 2,
+      "correct": 5,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.010773604429287206,
+          "NLL": 0.10040162658122442,
+          "ECE": 0.09451174132139639,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.9054882586786036,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9054882586786036,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.11210753752228308,
+          "NLL": 0.3945866316556931,
+          "ECE": 0.31818356837077516,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 2,
+              "confidence": 0.5748668758645927,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 2,
+              "confidence": 0.720886987772045,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 1,
+              "confidence": 0.8175744308728488,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.6818164316292249,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.3852456338590394,
+          "NLL": 0.9850557684898377,
+          "ECE": 0.6101361933184206,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 3,
+              "confidence": 0.30088888847024264,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 2,
+              "confidence": 0.5233261839985844,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3898638066815793,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.021086419410855612,
+          "NLL": 0.14286316604547264,
+          "ECE": 0.1308731723194287,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7839887349531075,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.8904113508624373,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8691268276805714,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.07109932499996521,
+          "NLL": 0.29190462869102773,
+          "ECE": 0.246258928674705,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 3,
+              "confidence": 0.6745496198171113,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 2,
+              "confidence": 0.8725282485875706,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.753741071325295,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "UserMoviePreferences": {
+      "n": 4,
+      "tasks": 4,
+      "correct": 4,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.013050940828165604,
+          "NLL": 0.1191159984339375,
+          "ECE": 0.11201411479179102,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.887985885208209,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.887985885208209,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.12689346390534453,
+          "NLL": 0.43772727996110916,
+          "ECE": 0.3525693691472036,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 1,
+              "confidence": 0.5998069058866925,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 3,
+              "confidence": 0.6633052058414977,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.6474306308527964,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.5417654163916157,
+          "NLL": 1.351618304848671,
+          "ECE": 0.7322719167156867,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 4,
+              "confidence": 0.2677280832843133,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.2677280832843133,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.04891291112871512,
+          "NLL": 0.24240798462298868,
+          "ECE": 0.2128772278144395,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.6888113281392388,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 3,
+              "confidence": 0.8198932535343344,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7871227721855606,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.08142914879814399,
+          "NLL": 0.3321403527334569,
+          "ECE": 0.280898442848869,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 4,
+              "confidence": 0.719101557151131,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.719101557151131,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "UserPosts": {
+      "n": 5,
+      "tasks": 5,
+      "correct": 5,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.00736926411844221,
+          "NLL": 0.08829176656585809,
+          "ECE": 0.08436887775401036,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 5,
+              "confidence": 0.9156311222459896,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.9156311222459896,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.09880898874614928,
+          "NLL": 0.37439084053039556,
+          "ECE": 0.3107036871796345,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 5,
+              "confidence": 0.6892963128203655,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.6892963128203655,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.4526407159781846,
+          "NLL": 1.1325173020362853,
+          "ECE": 0.6673604702841658,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 4,
+              "confidence": 0.29484007050866956,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 1,
+              "confidence": 0.4838373665444933,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.3326395297158343,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.01981805096843963,
+          "NLL": 0.14584250767531423,
+          "ECE": 0.1347011055189585,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 1,
+              "confidence": 0.7875942955615443,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.8847250442109158,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8652988944810416,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 5,
+          "correct": 5,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.04672028838178213,
+          "NLL": 0.24084667046285907,
+          "ECE": 0.2132386390681552,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 4,
+              "confidence": 0.7734176875593638,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 1,
+              "confidence": 0.8401360544217688,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7867613609318449,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    },
+    "UserWatchedMovies": {
+      "n": 4,
+      "tasks": 4,
+      "correct": 4,
+      "errors": 0,
+      "error_tasks": [],
+      "signals": {
+        "geo_mean_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.014266139533264657,
+          "NLL": 0.1269500010775464,
+          "ECE": 0.11918792671807454,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.8808120732819255,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8808120732819255,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "p10_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.1466459895231684,
+          "NLL": 0.4824817329645157,
+          "ECE": 0.38242427571296544,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.4,
+              "hi": 0.6,
+              "n": 1,
+              "confidence": 0.586064538651526,
+              "accuracy": 1.0
+            },
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 3,
+              "confidence": 0.6280794528322041,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.6175757242870346,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "min_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.523398471621304,
+          "NLL": 1.2865478694438934,
+          "ECE": 0.7232734826462367,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.2,
+              "hi": 0.4,
+              "n": 4,
+              "confidence": 0.2767265173537633,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.2767265173537633,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "tail_geo_mean_prob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.014377203437707332,
+          "NLL": 0.12050940979713169,
+          "ECE": 0.11259427826807067,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.8,
+              "hi": 1.0,
+              "n": 4,
+              "confidence": 0.8874057217319293,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.8874057217319293,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        },
+        "frac_highprob": {
+          "n": 4,
+          "correct": 4,
+          "errors": 0,
+          "AUROC": null,
+          "error_AUPRC": null,
+          "Brier": 0.08955386560205425,
+          "NLL": 0.3553511379667395,
+          "ECE": 0.29893662014963385,
+          "AURC": 0.0,
+          "error_capture_at_20pct": null,
+          "bins": [
+            {
+              "lo": 0.6,
+              "hi": 0.8,
+              "n": 4,
+              "confidence": 0.7010633798503662,
+              "accuracy": 1.0
+            }
+          ],
+          "missing_scores": 0,
+          "correct_mean": 0.7010633798503662,
+          "error_mean": null,
+          "random_error_AUPRC": 0.0,
+          "random_error_capture_at_20pct": null
+        }
+      }
+    }
+  },
+  "gpu_used": false,
+  "model_calls": 0,
+  "archived_protocol_sha256": "6194445bf24e58bec5d4f7e8d9bebc40262d5f680280f09b52c709efdbb370b8",
+  "publication_note": "Historical intermediate result; current binary labels and main conclusions are in outputs/legacy_binary_v2. Numeric results are unchanged; published protocol hash reflects portable paths."
+}

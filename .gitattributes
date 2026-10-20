@@ -1,0 +1,5 @@
+# Rendered documents are binary artifacts; SVG paths and CSV rows are generated.
+*.pdf binary
+*.png binary
+*.svg whitespace=-blank-at-eol
+*.csv whitespace=cr-at-eol

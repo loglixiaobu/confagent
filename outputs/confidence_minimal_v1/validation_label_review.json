@@ -1,0 +1,75 @@
+{
+  "review_type": "score_blind_complete_call_label_review",
+  "source_file": "validation_labels.jsonl",
+  "source_sha256_at_review": "12c07beca885ab6a68f0b5aace0be937e69c8e634568ebb1a51ffc265e11cfe1",
+  "reviewed_line_range": [
+    1,
+    50
+  ],
+  "reviewed_rows": 50,
+  "unique_call_keys": 50,
+  "last_key": {
+    "task_id": "fresh-l3-175",
+    "step_id": 2
+  },
+  "read_confidence_or_scores": false,
+  "read_sources": [
+    "validation_labels.jsonl",
+    "validation_tasks.jsonl"
+  ],
+  "suggested_revisions": [
+    {
+      "source_line": 24,
+      "task_id": "fresh-l3-231",
+      "step_id": 1,
+      "original_y": 0,
+      "suggested_y": 1,
+      "original_reason": "reference_argument_mismatch_review",
+      "suggested_reason": "grounded_current_date_and_equivalent_clock_time_mock_format_gap",
+      "action": {
+        "api_name": "ReminderSetter",
+        "arguments": {
+          "activity": "meditation",
+          "time": "2034-01-01 08:00:00"
+        }
+      },
+      "reason": "完整日期时刻由需求中给定的当前日期和8:00 AM组成，未编造日期或时间；文档仅要求time为str，没有纯时刻格式约束。参考的8:00 AM与候选的08:00:00是相同时刻，有限mock未存此表示不能作为局部调用错误。",
+      "evidence": [
+        {
+          "source": "requirement",
+          "quotation": "Set a daily reminder for meditation at 8:00 AM.TIME: 2034-01-01 08:00:00"
+        },
+        {
+          "source": "api_document.ReminderSetter.time",
+          "quotation": "type=str; The time at which the reminder is set."
+        },
+        {
+          "source": "reference_arguments",
+          "value": {
+            "activity": "meditation",
+            "time": "8:00 AM"
+          }
+        }
+      ],
+      "scope_limit": "仅修改局部调用正确性建议；不据此声称mock成功或日常重复提醒任务已完成。"
+    }
+  ],
+  "applied_to_source": true,
+  "original_counts": {
+    "correct": 48,
+    "incorrect": 2
+  },
+  "expected_counts_after_suggestions": {
+    "correct": 49,
+    "incorrect": 1
+  },
+  "scope": "Only local API-call correctness; task/stop-output failures are independently recorded in validation_task_outcomes.jsonl. Intermediate mock failure is not itself a wrong-call label.",
+  "original_labels_file": "validation_labels_original.jsonl",
+  "original_labels_sha256": "12c07beca885ab6a68f0b5aace0be937e69c8e634568ebb1a51ffc265e11cfe1",
+  "revised_labels_sha256": "b3f6aa176c044fc50c24f07f088e4df19342c601738707d85104ca6f8a2ee7fb",
+  "revised_counts": {
+    "correct": 49,
+    "errors": 1
+  },
+  "publication_note": "Summary of the original score-blind model-agent review; retained evidence is public. This is not independent human double annotation."
+}

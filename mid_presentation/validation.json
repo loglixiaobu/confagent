@@ -1,0 +1,180 @@
+{
+  "as_of": "2026-10-20",
+  "scope": "Published artifacts only; archive hashes are separately documented and are not asserted to equal public file hashes.",
+  "status": "passed",
+  "checks": {
+    "legacy_call_labels_198_158_40": true,
+    "published_probability_metrics_match_frozen_snapshot": true,
+    "new_tasks_30_success_22_failure_8": true,
+    "OOF_tasks_are_disjoint_within_each_fold": true,
+    "strict_budget_matches_public_frozen_rows_and_numpy_policy": true,
+    "nine_high_resolution_charts_and_537_English_annotations": true,
+    "HTML_embeds_the_published_nine_figures": true,
+    "all_repository_Markdown_links_resolve": true,
+    "PDF_pages_nonempty_fonts_and_private_identifiers_checked": true,
+    "added_and_modified_text_files_have_no_private_server_identifiers": true,
+    "public_source_manifest_checksums_match_actual_files": true,
+    "ledger_21_entries_are_not_counted_as_independent_experiments": true
+  },
+  "checks_passed": 12,
+  "CPU_tests_passed": 84,
+  "chart_count": 9,
+  "actual_chart_annotations_checked": 537,
+  "chart_annotation_language": "English",
+  "PDF_pages": {
+    "中期研究报告.pdf": 9,
+    "中期汇报.pdf": 11
+  },
+  "public_source_files_checked": 39,
+  "added_or_modified_text_files_privacy_checked": 67,
+  "ledger_entries": 21,
+  "ledger_entries_are_independent_experiments": false,
+  "new_model_requests": 0,
+  "gpu_used": false,
+  "files": {
+    "README.md": {
+      "bytes": 4324,
+      "sha256": "40333f470f649f3a32b581ed264f66040eac3dee47f5042923d57e35aa1c3230"
+    },
+    "build_presentation.py": {
+      "bytes": 32739,
+      "sha256": "12c0cb80caef02299bef3c84260e26afbab239b1ac3d7822b7fbbdfd90ea82b5"
+    },
+    "data/archive_source_manifest.json": {
+      "bytes": 2578,
+      "sha256": "5b6eddbf7e9ebe6754c6720b37ef7c33b21306bbcd8ce25096ade35e2e869e06"
+    },
+    "data/core_metrics.csv": {
+      "bytes": 5705,
+      "sha256": "bd035c8140e9b31e5a5cf1108faa39924460f26a454b238181465f5b9a2756c5"
+    },
+    "data/experiment_ledger.csv": {
+      "bytes": 14551,
+      "sha256": "e39fcfa5f047cc27e704783dac0120fe1d9fb5955ef265daf6fca5b06d6a7ac1"
+    },
+    "data/experiment_ledger.json": {
+      "bytes": 18799,
+      "sha256": "5765dcd9fdfd894f60da892c68b09cc85acbecea68cf66239ac2c66704b0ba9d"
+    },
+    "data/figure_manifest.json": {
+      "bytes": 2978,
+      "sha256": "9c39505136993157be86329f206de6449f31260562bbe0c6a2e9f9e2dc91b433"
+    },
+    "data/figure_texts.json": {
+      "bytes": 14455,
+      "sha256": "8e80c2c5b72b7e932d4eb703f50a4a197675315f3f3c96ae3f77e7cc11b87dbf"
+    },
+    "data/presentation_data.json": {
+      "bytes": 98459,
+      "sha256": "29d48226fc560edc89cff40d65735fbca12e0b81b95d7af7905163553775ce4e"
+    },
+    "data/source_manifest.json": {
+      "bytes": 7097,
+      "sha256": "0c4a05c057e86367c2e7f438ae5aaca31a1758ebc03f39f2f547bc772a81b556"
+    },
+    "data/strict_verification_budget.csv": {
+      "bytes": 585,
+      "sha256": "c82b5ff8786ef7cead121216c054efd150b7942e577d15b9c6ba1e956df988a6"
+    },
+    "export_report_pdf.py": {
+      "bytes": 13144,
+      "sha256": "9368329fcfc494c8bb3cafbbe67f2729eec0c95724dd630624490a996ecb65a9"
+    },
+    "figures/01_labels_and_task_outcomes.png": {
+      "bytes": 290656,
+      "sha256": "95e7cdaba241f8bbd68ac9f585452cb0fad7b6c7ad8d332685cdf67bcd48f1b0"
+    },
+    "figures/01_labels_and_task_outcomes.svg": {
+      "bytes": 112707,
+      "sha256": "867e23c104874df93a4094acf0552b509cb9e6f4d69d7545de29b7539ab7e171"
+    },
+    "figures/02_error_types.png": {
+      "bytes": 388733,
+      "sha256": "1f671400b5f0d2450663cbc87458975eb6ef1b68f76be12bfc69a05ed7531d0d"
+    },
+    "figures/02_error_types.svg": {
+      "bytes": 135178,
+      "sha256": "41a5eb5ddfa6ed944c422d9e9b5dcf07f9e1ea0dd5a9b13dc858f6fc2174a849"
+    },
+    "figures/03_signal_discrimination.png": {
+      "bytes": 335347,
+      "sha256": "bd0ab75af497868ad17119d9d7dd3839cf0565e3861961f15a06f6361ad7fb6f"
+    },
+    "figures/03_signal_discrimination.svg": {
+      "bytes": 123132,
+      "sha256": "cd329c17a14870d239b61f0faae34d7e5d2c3bf6836cb294aaa74ac11e27a7d1"
+    },
+    "figures/04_verification_budget.png": {
+      "bytes": 507426,
+      "sha256": "4c22ddaadd575df3fa6ca63286ff1e33e3e263f46ee59ba967d977cbb8b28323"
+    },
+    "figures/04_verification_budget.svg": {
+      "bytes": 140942,
+      "sha256": "755ca96c2d9834c50da58c8933c0a4f336003722fed35bde3aa9f34520b70fee"
+    },
+    "figures/05_development_calibration.png": {
+      "bytes": 409022,
+      "sha256": "67ee11bcc8024eafd2a9d1411e24419cc1f9fdddda3d203c92f1b44c90f7bbe9"
+    },
+    "figures/05_development_calibration.svg": {
+      "bytes": 138407,
+      "sha256": "53a34082f08bdd7528e5a4c04d564bb4b408c59f97e3dbdfb8700e847fdaa99a"
+    },
+    "figures/06_new_task_validation.png": {
+      "bytes": 417034,
+      "sha256": "807a5b10f82c9cda341346324989e3aa5704b59407db85e668739792f075b036"
+    },
+    "figures/06_new_task_validation.svg": {
+      "bytes": 150780,
+      "sha256": "fac886e752985dd08ded52417d91942cf1bfafc261e1284454050054114d3565"
+    },
+    "figures/07_stopped_experiments.png": {
+      "bytes": 390503,
+      "sha256": "70855f71380a99674d543977679611b97628ad32b7aa3d5fbb73e9cd04df8ed9"
+    },
+    "figures/07_stopped_experiments.svg": {
+      "bytes": 130280,
+      "sha256": "d71ad69f5e81c6854334214caec1d1e213d5a5438fb94dfd172db7fba74a1c05"
+    },
+    "figures/08_inference_cost.png": {
+      "bytes": 347680,
+      "sha256": "88d38989567d970a28a6257699c94a1979757bfdb5cee88c5fb14b5253b47ce1"
+    },
+    "figures/08_inference_cost.svg": {
+      "bytes": 124368,
+      "sha256": "3bdf02ac4e99f98ac347be36d2667a506caee2ddd4b170a4ebc91f2da7a3f681"
+    },
+    "figures/09_method_and_scope.png": {
+      "bytes": 370831,
+      "sha256": "2bb2acb3c7b21876e8c73367ef5c56ff61ea7a26661c6a72d9c40d62dc397007"
+    },
+    "figures/09_method_and_scope.svg": {
+      "bytes": 121358,
+      "sha256": "88782c23590c36bbb710a2a880ad013974e1c1a32ae244fd5f72b3da91a793ea"
+    },
+    "中期汇报.pdf": {
+      "bytes": 1932077,
+      "sha256": "1e7cd8313dcc31b17538d9eb7b7423b984e51540f241a32fa255a33eb053543b"
+    },
+    "中期研究报告.html": {
+      "bytes": 4631254,
+      "sha256": "1c1994bf7cfa972b58eb850dee2b46caae22db7dfd35facdade345534e6e6196"
+    },
+    "中期研究报告.md": {
+      "bytes": 17305,
+      "sha256": "94077be4612fec57de2490ba9116727650188670e3b322bd8506e979cb4ccc96"
+    },
+    "中期研究报告.pdf": {
+      "bytes": 3236534,
+      "sha256": "21a84ff900567247c23558de9e1c8c8680259f66588eab489c32e9601ebb956c"
+    },
+    "图表总览.png": {
+      "bytes": 1217223,
+      "sha256": "f564db21cd8d90e3d783df70c3ef9ad37b624b0c239b25457aee8c262b89d14b"
+    },
+    "汇报讲稿.md": {
+      "bytes": 10952,
+      "sha256": "0a41ad3c251fd1b4cc76c667cc6f0e7da8158a3bc93050691a9dfd0ac0b8ec0a"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "version": "minimal-confidence-publication-v1",
+  "description": "Portable public export of frozen research results. Original hashes identify original artifacts; public hashes identify the compact files actually distributed. No new model sampling occurred.",
+  "export_changes": [
+    "Dropped raw model responses, request and process logs, and resource metadata.",
+    "Normalized generated tool-call IDs in message histories to stable task-local call IDs.",
+    "Compact samples preserve parsed actions, seeds, agreement and quality flags.",
+    "Recomputed the same logistic calibration on identical public development labels and scores so provenance matches the public collection protocol and implementation. No validation labels entered this fit.",
+    "Original parameters, OOF predictions and all reported scalar research metrics are unchanged."
+  ],
+  "original_artifact_sha256": {
+    "calibrator.json": "bfb615fb261ba30ff45129b4899d4f1f41851e765a5d5fc5a76382b9d64f4d1e",
+    "calibration_metrics.json": "a87a09ce351947a21881747bf7f6090d93b3350e8c288774f633650dac61c462",
+    "oof_predictions.jsonl": "f02e34e9b807210e6676f9913d250d7766cd715e21494312a2174e328ac1889a",
+    "validation_steps.jsonl": "bd0744608a1a0e80ce620cf00526483646b45d741d68ccef4942c50927a7a86b",
+    "validation_labels.jsonl": "b3f6aa176c044fc50c24f07f088e4df19342c601738707d85104ca6f8a2ee7fb",
+    "validation_labels_original.jsonl": "12c07beca885ab6a68f0b5aace0be937e69c8e634568ebb1a51ffc265e11cfe1",
+    "validation_label_review.json": "6d4c8deebe30ef9a9ad6dec4313d6489489c1000f1a201661a259ef949975f33",
+    "validation_task_outcomes.jsonl": "7309dc9d7b598793ababbf3fb133a5386d6d9a98bab40156e2801e0be461b4da",
+    "validation_task_review.jsonl": "a6020db6b8f0a81bbe97d73ffaccb714ffe90e8389ca97b864ef850a342f5efe",
+    "validation_tasks.jsonl": "c8e229e898b8f6a5426484a4e52f1a56d680bc78cce8184cea1881db41595859",
+    "validation_trajectories.jsonl": "b0c2cd7b15c1cd8aa505ef10c2eea8d3fe8453839004f8ff4218b0a08acac9f4",
+    "validation_protocol.json": "c9f751617890b2f86ce7423dc3cca5e3a99f589e834f75544a76c2e923e7f962",
+    "validation_complete.json": "0581ee8dfe5648f5255d49bd41577e58567819851eebcb2d08ad020444bb6dee",
+    "runtime_example_input.json": "a0151867433f9cd737e99fc201a463002488c5989ec64f37d226e9d5029d0856",
+    "runtime_example_output.json": "d86c874c45463d3888de57f4e77d7d025d1c8149eb7703a2c315694a4823cf2e"
+  },
+  "public_artifact_sha256": {
+    "calibrator.json": "12591f0d7f1b7c65b713590bd61d1b12488d502f96511d4fa61aa211237987fe",
+    "calibration_metrics.json": "49b73ec169cd326020f95a667d2d621ddc9d7bd8e23775eb16cb68bbc4735a99",
+    "oof_predictions.jsonl": "f02e34e9b807210e6676f9913d250d7766cd715e21494312a2174e328ac1889a",
+    "validation_steps.jsonl": "5b535e6f0afb98d6132714edc6aeae44e7bcb942dafffec587e2eb2fadc08b1b",
+    "validation_labels.jsonl": "b3f6aa176c044fc50c24f07f088e4df19342c601738707d85104ca6f8a2ee7fb",
+    "validation_labels_original.jsonl": "12c07beca885ab6a68f0b5aace0be937e69c8e634568ebb1a51ffc265e11cfe1",
+    "validation_label_review.json": "b7aace29222f963a3a07c844794b2f2a325b2d5118f9d06583aca2f44b86cf23",
+    "validation_task_outcomes.jsonl": "7309dc9d7b598793ababbf3fb133a5386d6d9a98bab40156e2801e0be461b4da",
+    "validation_task_review.jsonl": "636a20400796ac2cd00efb43ac1c228a138ac6af78912171d538b7f7ae856348",
+    "validation_tasks.jsonl": "c8e229e898b8f6a5426484a4e52f1a56d680bc78cce8184cea1881db41595859",
+    "validation_trajectories.jsonl": "d90953281a6f6d66e480c858432611cb967404f6f4fa8e6cfbaee5fb11af55b3",
+    "validation_protocol.json": "9342927593a3049996ad251e685a52b346c3f1b297139b69800607515d7d20f6",
+    "validation_complete.json": "5dce5ae5be2de3a7e4fe174d9eb78cd342a171780b3213954c5a3fbd74869eae",
+    "collection_summary.json": "bc047b0b5bf3b9af046f47af8214a1a1f49a743b1aa5003e21c088e8afc9cdd6",
+    "runtime_example_input.json": "a0151867433f9cd737e99fc201a463002488c5989ec64f37d226e9d5029d0856",
+    "runtime_example_output.json": "4e20e21821284cfc5672d793d2be7da36912f381f22f48346ede773888f4733e"
+  },
+  "public_code_sha256": {
+    "calibrate_consistency.py": "ccd7ac8d949d6e9b50810dfbf7a783da82539155e1180b13121ea9f2786c648b",
+    "confidence_runtime.py": "a6dafb6c77dab265c4ced15a0578d6d60bbeb97787b01bb2587fd7a5dfeb6b75",
+    "evaluate_minimal_validation.py": "420905560124b7039a582630cdabab3b337ded5141dbde9dc49362a3f6223a84"
+  },
+  "checks": {
+    "model_parameters_unchanged": true,
+    "oof_predictions_byte_identical": true,
+    "calibration_metrics_and_folds_unchanged": true,
+    "new_model_requests_for_publication": 0
+  },
+  "scope": "Tool-call confidence prototype. New validation has 49 correct and 1 incorrect call, with 22/30 successful task deliveries; too few errors to establish broad generalization. Model-agent score-blind review is not independent human double annotation."
+}

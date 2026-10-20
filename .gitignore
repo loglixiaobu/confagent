@@ -44,3 +44,8 @@ outputs/**/environment.json
 outputs/**/run_status.json
 outputs/**/server_startup.*
 outputs/**/cpu_validation.log
+
+# Published aggregate data and numeric snapshots used to redraw the report
+!mid_presentation/data/
+!mid_presentation/data/*.json
+!mid_presentation/data/*.csv
