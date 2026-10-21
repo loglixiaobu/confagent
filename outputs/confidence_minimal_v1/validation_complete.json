@@ -1,0 +1,19 @@
+{
+  "complete": true,
+  "tasks": 30,
+  "steps": 50,
+  "correct": 49,
+  "errors": 1,
+  "calibrator_sha256": "12591f0d7f1b7c65b713590bd61d1b12488d502f96511d4fa61aa211237987fe",
+  "calibrator_unchanged": true,
+  "real_tool_executions": 0,
+  "recommendations_applied": false,
+  "automatic_label_counts": {
+    "correct": 48,
+    "errors": 2
+  },
+  "labels_reviewed_score_blind": true,
+  "label_review_file": "validation_label_review.json",
+  "label_review_sha256": "b7aace29222f963a3a07c844794b2f2a325b2d5118f9d06583aca2f44b86cf23",
+  "publication_note": "Original counts and frozen parameter mapping are retained. The public calibrator hash is updated after an offline fit against identical development scores; model parameters and every recorded probability are unchanged."
+}

@@ -1,0 +1,167 @@
+{
+  "scope": "Actual published files supporting the report and its numeric snapshot. Paths are relative to the repository root; checksums refer to this publication, not the private archive.",
+  "sources": {
+    "code/README_step_confidence.md": {
+      "bytes": 6344,
+      "sha256": "e3eab4555e50e565fe1eb7868b9781307f1e3d2974d81e054534884d5ba2010d"
+    },
+    "code/calibrate_consistency.py": {
+      "bytes": 20848,
+      "sha256": "ccd7ac8d949d6e9b50810dfbf7a783da82539155e1180b13121ea9f2786c648b"
+    },
+    "code/confidence_runtime.py": {
+      "bytes": 18298,
+      "sha256": "a6dafb6c77dab265c4ced15a0578d6d60bbeb97787b01bb2587fd7a5dfeb6b75"
+    },
+    "code/evaluate_minimal_validation.py": {
+      "bytes": 38275,
+      "sha256": "420905560124b7039a582630cdabab3b337ded5141dbde9dc49362a3f6223a84"
+    },
+    "mid_presentation/data/experiment_ledger.json": {
+      "bytes": 18799,
+      "sha256": "5765dcd9fdfd894f60da892c68b09cc85acbecea68cf66239ac2c66704b0ba9d"
+    },
+    "mid_presentation/data/presentation_data.json": {
+      "bytes": 98459,
+      "sha256": "29d48226fc560edc89cff40d65735fbca12e0b81b95d7af7905163553775ce4e"
+    },
+    "outputs/confidence_minimal_v1/calibration_metrics.json": {
+      "bytes": 14676,
+      "sha256": "49b73ec169cd326020f95a667d2d621ddc9d7bd8e23775eb16cb68bbc4735a99"
+    },
+    "outputs/confidence_minimal_v1/calibration_reliability.png": {
+      "bytes": 192827,
+      "sha256": "5a1b7e6802ccfd48992b44b5ee890a0ebffa662c2caab8fd590db71596038706"
+    },
+    "outputs/confidence_minimal_v1/calibrator.json": {
+      "bytes": 1313,
+      "sha256": "12591f0d7f1b7c65b713590bd61d1b12488d502f96511d4fa61aa211237987fe"
+    },
+    "outputs/confidence_minimal_v1/collection_summary.json": {
+      "bytes": 559,
+      "sha256": "bc047b0b5bf3b9af046f47af8214a1a1f49a743b1aa5003e21c088e8afc9cdd6"
+    },
+    "outputs/confidence_minimal_v1/oof_predictions.csv": {
+      "bytes": 15086,
+      "sha256": "c2ffd8a970d70637d87ead77473e90fd30054ef3d3cfd70c32b5df5dbf4d5483"
+    },
+    "outputs/confidence_minimal_v1/oof_predictions.jsonl": {
+      "bytes": 62014,
+      "sha256": "f02e34e9b807210e6676f9913d250d7766cd715e21494312a2174e328ac1889a"
+    },
+    "outputs/confidence_minimal_v1/publication.json": {
+      "bytes": 4857,
+      "sha256": "492a405c5a3abdae376f038f0c2af12edcc8b0983fdedf3a9ac63ffd257e95c2"
+    },
+    "outputs/confidence_minimal_v1/runtime_example_input.json": {
+      "bytes": 4091,
+      "sha256": "a0151867433f9cd737e99fc201a463002488c5989ec64f37d226e9d5029d0856"
+    },
+    "outputs/confidence_minimal_v1/runtime_example_output.json": {
+      "bytes": 665,
+      "sha256": "4e20e21821284cfc5672d793d2be7da36912f381f22f48346ede773888f4733e"
+    },
+    "outputs/confidence_minimal_v1/validation_complete.json": {
+      "bytes": 774,
+      "sha256": "5dce5ae5be2de3a7e4fe174d9eb78cd342a171780b3213954c5a3fbd74869eae"
+    },
+    "outputs/confidence_minimal_v1/validation_diagnostic.png": {
+      "bytes": 198565,
+      "sha256": "45b451646cf63193c7db834c5738c3244ec27aadcd8526d54cfb93b6c29feb3e"
+    },
+    "outputs/confidence_minimal_v1/validation_label_review.json": {
+      "bytes": 2749,
+      "sha256": "b7aace29222f963a3a07c844794b2f2a325b2d5118f9d06583aca2f44b86cf23"
+    },
+    "outputs/confidence_minimal_v1/validation_labels.jsonl": {
+      "bytes": 73282,
+      "sha256": "b3f6aa176c044fc50c24f07f088e4df19342c601738707d85104ca6f8a2ee7fb"
+    },
+    "outputs/confidence_minimal_v1/validation_labels_original.jsonl": {
+      "bytes": 67494,
+      "sha256": "12c07beca885ab6a68f0b5aace0be937e69c8e634568ebb1a51ffc265e11cfe1"
+    },
+    "outputs/confidence_minimal_v1/validation_metrics.json": {
+      "bytes": 26610,
+      "sha256": "dcac0e1b8e5beb78eb498b78099cdd85f567b00fc94c9b04cb1cb9b4c5ccfbd2"
+    },
+    "outputs/confidence_minimal_v1/validation_protocol.json": {
+      "bytes": 3090,
+      "sha256": "9342927593a3049996ad251e685a52b346c3f1b297139b69800607515d7d20f6"
+    },
+    "outputs/confidence_minimal_v1/validation_steps.jsonl": {
+      "bytes": 277232,
+      "sha256": "5b535e6f0afb98d6132714edc6aeae44e7bcb942dafffec587e2eb2fadc08b1b"
+    },
+    "outputs/confidence_minimal_v1/validation_task_outcomes.jsonl": {
+      "bytes": 29639,
+      "sha256": "7309dc9d7b598793ababbf3fb133a5386d6d9a98bab40156e2801e0be461b4da"
+    },
+    "outputs/confidence_minimal_v1/validation_task_review.jsonl": {
+      "bytes": 185465,
+      "sha256": "636a20400796ac2cd00efb43ac1c228a138ac6af78912171d538b7f7ae856348"
+    },
+    "outputs/confidence_minimal_v1/validation_tasks.jsonl": {
+      "bytes": 93930,
+      "sha256": "c8e229e898b8f6a5426484a4e52f1a56d680bc78cce8184cea1881db41595859"
+    },
+    "outputs/confidence_minimal_v1/validation_trajectories.jsonl": {
+      "bytes": 53602,
+      "sha256": "d90953281a6f6d66e480c858432611cb967404f6f4fa8e6cfbaee5fb11af55b3"
+    },
+    "outputs/confidence_minimal_v1/一致性校准报告.md": {
+      "bytes": 4345,
+      "sha256": "caa71c2b1d46a866ab37c481529530b09a76b1752b92f331a99476a9547f17b6"
+    },
+    "outputs/confidence_minimal_v1/新任务验证报告.md": {
+      "bytes": 6410,
+      "sha256": "5315bc7e4a7ba0d17b8fa26d361e709282317bebc16c50f9aa13f91fa1839957"
+    },
+    "outputs/confidence_v1/frozen_model_spec.json": {
+      "bytes": 985,
+      "sha256": "af01159d9788b86dd87b07afb596ab27468bbccdec1c274b7fad17968d085946"
+    },
+    "outputs/confidence_v1/prefix_diagnostic_summary.json": {
+      "bytes": 889,
+      "sha256": "4ace2284f86945d85d8b005937fa016d9f0d9dd3bb132a9c37c17212be71deba"
+    },
+    "outputs/confidence_v1/stress_frozen_spec.json": {
+      "bytes": 999,
+      "sha256": "1f6774ce4556722fde083eabd62e585e8f221f2f6797a726776d1fc7e573d557"
+    },
+    "outputs/legacy_binary_v2/label_summary.json": {
+      "bytes": 1837,
+      "sha256": "f11b6b07d7dd291845e2fc82ff835bf3f9478d78b04d563260a735ed35a1404c"
+    },
+    "outputs/legacy_binary_v2/logprob_metrics.json": {
+      "bytes": 32401,
+      "sha256": "6629139e3bbc5e97574c6fc1805f4164a6e7d96ea4c6469c6e08ff25bc9c98ce"
+    },
+    "outputs/legacy_relabel_v1/label_summary.json": {
+      "bytes": 7632,
+      "sha256": "1d70436d9ce36a6471be4fe5300bd16ecdff6595a32f92089ed503eacfd6c296"
+    },
+    "outputs/legacy_relabel_v1/修订标签与logprob评估.md": {
+      "bytes": 9950,
+      "sha256": "7aca5ffbb550084a40b82ee64c9a6dd9c43a0653c774c36a2b21290284e4c711"
+    },
+    "outputs/new_signals_fast_v1/joined_scores.csv": {
+      "bytes": 18778,
+      "sha256": "a0b0ae4978d3c0fe416583c2266a461f3a1f4ef9656529b0c478e6e831265ec6"
+    },
+    "outputs/new_signals_fast_v1/new_signal_metrics.json": {
+      "bytes": 80797,
+      "sha256": "e4a53c9cd64d9a93545d4364622dbba36eff557bde4edeaadf9581113af8d4d4"
+    },
+    "outputs/new_signals_v1/试运行说明.md": {
+      "bytes": 641,
+      "sha256": "ab5f4332cf77e652944e29c3a87901096721cecde84afc0c12846d64ef87989b"
+    }
+  },
+  "archive_only_source_paths": [
+    "outputs/new_signals_v1/scores.jsonl",
+    "outputs/new_signals_v1/requests.jsonl",
+    "outputs/confidence_v1/stress_dev.jsonl"
+  ],
+  "archive_provenance": "archive_source_manifest.json"
+}

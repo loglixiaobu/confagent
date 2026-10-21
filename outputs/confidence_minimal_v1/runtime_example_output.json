@@ -1,0 +1,29 @@
+{
+  "raw_consistency": 1.0,
+  "p_correct": 0.9454530817867228,
+  "needs_verification": false,
+  "reason": "all_samples_agree",
+  "calibrator_version": "consistency-platt-v1",
+  "cost": {
+    "n_samples_requested": 3,
+    "n_model_requests": 3,
+    "usage": {
+      "prompt_tokens": 1701,
+      "completion_tokens": 84,
+      "total_tokens": 1785
+    }
+  },
+  "quality": {
+    "complete": true,
+    "n_samples": 3,
+    "n_agree": 3,
+    "n_no_tool": 0,
+    "n_truncated": 0,
+    "n_multiple_tool_calls": 0,
+    "n_invalid_tool_arguments": 0,
+    "n_transport_failures": 0,
+    "n_invalid_responses": 0,
+    "n_gate_blocks": 0,
+    "first_tool_call_only": true
+  }
+}

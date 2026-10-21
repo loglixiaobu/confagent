@@ -1,0 +1,32 @@
+{
+  "dev": {
+    "assigned_tasks": 29,
+    "observed_tasks": 29,
+    "candidate_count": 70,
+    "correct": 61,
+    "incorrect": 0,
+    "ungraded": 9,
+    "reasons": {
+      "semantic_match": 57,
+      "free_text_review": 3,
+      "reference_humidity_unit_conflict": 3,
+      "no_tool_action": 3,
+      "multiple_calls_require_joint_evaluation": 3,
+      "verified_total_from_visible_results": 1
+    }
+  },
+  "test": {
+    "assigned_tasks": 20,
+    "observed_tasks": 9,
+    "candidate_count": 20,
+    "correct": 14,
+    "incorrect": 0,
+    "ungraded": 6,
+    "reasons": {
+      "semantic_match": 14,
+      "multiple_calls_require_joint_evaluation": 3,
+      "no_tool_action": 3
+    }
+  },
+  "interpretation": "Reference-prefix diagnostic stopped early; no negative development labels. No discriminative calibrator fitted. Test collection incomplete; no full held-out evaluation claimed."
+}

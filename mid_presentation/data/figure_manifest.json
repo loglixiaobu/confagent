@@ -1,0 +1,65 @@
+[
+  {
+    "stem": "01_labels_and_task_outcomes",
+    "title": "Define correctness before measuring performance",
+    "takeaway": "85 call labels changed. Evaluate local calls and complete tasks separately.",
+    "png": "figures/01_labels_and_task_outcomes.png",
+    "svg": "figures/01_labels_and_task_outcomes.svg"
+  },
+  {
+    "stem": "02_error_types",
+    "title": "Unsupported inputs and missing dependencies drive errors",
+    "takeaway": "24/40 incorrect calls invent missing inputs. Counts include retries within a task.",
+    "png": "figures/02_error_types.png",
+    "svg": "figures/02_error_types.svg"
+  },
+  {
+    "stem": "03_signal_discrimination",
+    "title": "Consistency is the strongest signal on these development tasks",
+    "takeaway": "The paired AUROC difference supports consistency over logprob;\nthe self-report advantage remains uncertain.",
+    "png": "figures/03_signal_discrimination.png",
+    "svg": "figures/03_signal_discrimination.svg"
+  },
+  {
+    "stem": "04_verification_budget",
+    "title": "Rank steps for review; correction gains remain untested",
+    "takeaway": "Use the same strict budget of 39/198 steps.\nSeparate random-tie expectations from fixed-seed selections.",
+    "png": "figures/04_verification_budget.png",
+    "svg": "figures/04_verification_budget.svg"
+  },
+  {
+    "stem": "05_development_calibration",
+    "title": "Internal calibration improves probability error, not ranking",
+    "takeaway": "Task-grouped five-fold OOF reduces Brier error; the prior still has lower ECE.",
+    "png": "figures/05_development_calibration.png",
+    "svg": "figures/05_development_calibration.svg"
+  },
+  {
+    "stem": "06_new_task_validation",
+    "title": "New tasks expose probability shift and final-output failures",
+    "takeaway": "Only one incorrect call was observed. Calibrated Brier does not beat the prior.",
+    "png": "figures/06_new_task_validation.png",
+    "svg": "figures/06_new_task_validation.svg"
+  },
+  {
+    "stem": "07_stopped_experiments",
+    "title": "Stopped experiments clarified the next research steps",
+    "takeaway": "Reference prefixes lacked errors; thinking probes were slow;\nsynthetic stress data had no independent holdout evaluation.",
+    "png": "figures/07_stopped_experiments.png",
+    "svg": "figures/07_stopped_experiments.svg"
+  },
+  {
+    "stem": "08_inference_cost",
+    "title": "Review budgets and scoring costs are different",
+    "takeaway": "Every new candidate incurs three probes. Probe tokens equal 102.8% of primary tokens.",
+    "png": "figures/08_inference_cost.png",
+    "svg": "figures/08_inference_cost.svg"
+  },
+  {
+    "stem": "09_method_and_scope",
+    "title": "A callable prototype is ready; the research loop is incomplete",
+    "takeaway": "Pre-call probabilities and review flags work.\nStopping confidence, actual correction, and experience updates remain untested.",
+    "png": "figures/09_method_and_scope.png",
+    "svg": "figures/09_method_and_scope.svg"
+  }
+]

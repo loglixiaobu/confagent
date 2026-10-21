@@ -1,0 +1,36 @@
+{
+  "dev_pairs": 17,
+  "cohort": [
+    "l3-001-g01-s0-corruption",
+    "l3-003-g01-s0-corruption",
+    "l3-005-g01-s0-corruption",
+    "l3-008-g01-s0-corruption",
+    "l3-011-g01-s0-corruption",
+    "l3-013-g01-s0-corruption",
+    "l3-016-g01-s0-corruption",
+    "l3-017-g01-s0-corruption",
+    "l3-020-g03-s0-corruption",
+    "l3-021-g03-s0-corruption",
+    "l3-025-g01-s0-corruption",
+    "l3-027-g01-s0-corruption",
+    "l3-030-g01-s0-corruption",
+    "l3-032-g01-s0-corruption",
+    "l3-041-g01-s0-corruption",
+    "l3-045-g01-s0-corruption",
+    "l3-046-g01-s0-corruption"
+  ],
+  "target": "balanced synthetic one-parameter corruption, not natural correctness",
+  "selection": "Fixed comparisons: verifier Platt, literal-grounding Platt, two-feature logistic fusion. No test selection.",
+  "features": {
+    "stress_platt": [
+      "verifier"
+    ],
+    "stress_grounding_platt": [
+      "literal_grounding"
+    ],
+    "stress_fusion": [
+      "verifier",
+      "literal_grounding"
+    ]
+  }
+}

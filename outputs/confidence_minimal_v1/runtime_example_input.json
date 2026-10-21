@@ -1,0 +1,122 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an AI assistant that completes a user's requirement by calling APIs step by step.\n\nRules:\n1. At each step, call EXACTLY ONE tool.\n2. The available APIs are listed in your tool set. If you need an API that is not listed, call `ToolSearcher` with keywords describing the capability you need.\n3. Before each call, verify every argument value comes from the requirement or from a previous API output. Never invent values.\n4. If a call fails, READ the error message carefully and change the arguments before retrying. Do not repeat the same failing call.\n5. Only when EVERY part of the requirement has been carried out, reply with a final answer and DO NOT call any tool. Before finishing, re-read the requirement clause by clause and confirm that each requested action has actually been executed by an API call.\n\nBe concise in your final answer."
+    },
+    {
+      "role": "user",
+      "content": "Requirement: Find the best health insurance plan for a family of four in California.TIME: 2034-01-01 08:00:00"
+    }
+  ],
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "ToolSearcher",
+        "description": "Search for a suitable API by keywords. Returns the API name, description and its input parameters.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "keywords": {
+              "type": "string",
+              "description": "Keywords describing the capability you need."
+            }
+          },
+          "required": [
+            "keywords"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "InsurancePlanFinder",
+        "description": "API for finding health insurance plans based on user requirements.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "family_size": {
+              "type": "integer",
+              "description": "The size of the family."
+            },
+            "location": {
+              "type": "string",
+              "description": "The location of the family."
+            }
+          },
+          "required": [
+            "family_size",
+            "location"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "PlanEvaluator",
+        "description": "API for evaluating health insurance plans based on predetermined criteria.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "plan_details": {
+              "type": "array",
+              "items": {},
+              "description": "The details of health insurance plans."
+            }
+          },
+          "required": [
+            "plan_details"
+          ]
+        }
+      }
+    }
+  ],
+  "candidate": {
+    "api_name": "InsurancePlanFinder",
+    "arguments": {
+      "family_size": 4,
+      "location": "California"
+    }
+  },
+  "api_documents": [
+    {
+      "name": "InsurancePlanFinder",
+      "description": "API for finding health insurance plans based on user requirements.",
+      "input_parameters": {
+        "family_size": {
+          "type": "int",
+          "description": "The size of the family."
+        },
+        "location": {
+          "type": "str",
+          "description": "The location of the family."
+        }
+      },
+      "output_parameters": {
+        "plan_details": {
+          "type": "list",
+          "description": "List of health insurance plans that match the user requirements."
+        }
+      }
+    },
+    {
+      "name": "PlanEvaluator",
+      "description": "API for evaluating health insurance plans based on predetermined criteria.",
+      "input_parameters": {
+        "plan_details": {
+          "type": "list",
+          "description": "The details of health insurance plans."
+        }
+      },
+      "output_parameters": {
+        "best_plan": {
+          "type": "str",
+          "description": "The best health insurance plan based on the evaluation criteria."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "scope": "Original experiment archive before publication sanitization. These hashes are archival provenance, not checksums of the published files. Some collection artifacts are intentionally unpublished.",
+  "sources": {
+    "outputs/legacy_binary_v2/label_summary.json": {
+      "sha256": "4cb733c02e6765c4127a70308aa8d097c637f099def152d2d4017e6ddf3d7f46",
+      "bytes": 1938
+    },
+    "outputs/legacy_binary_v2/logprob_metrics.json": {
+      "sha256": "928d15849e715b516990aee875d46cb49adcc13fc4b97943bba12455ae8e9133",
+      "bytes": 32502
+    },
+    "outputs/new_signals_fast_v1/new_signal_metrics.json": {
+      "sha256": "7dd9347c5434adc77aedf8a75827069e05d311e4bf77e02105547d0845d9044a",
+      "bytes": 82433
+    },
+    "outputs/new_signals_fast_v1/joined_scores.csv": {
+      "sha256": "a0b0ae4978d3c0fe416583c2266a461f3a1f4ef9656529b0c478e6e831265ec6",
+      "bytes": 18778
+    },
+    "outputs/confidence_minimal_v1/calibration_metrics.json": {
+      "sha256": "a87a09ce351947a21881747bf7f6090d93b3350e8c288774f633650dac61c462",
+      "bytes": 14677
+    },
+    "outputs/confidence_minimal_v1/calibrator.json": {
+      "sha256": "bfb615fb261ba30ff45129b4899d4f1f41851e765a5d5fc5a76382b9d64f4d1e",
+      "bytes": 1313
+    },
+    "outputs/confidence_minimal_v1/validation_metrics.json": {
+      "sha256": "38cefe8acaaf1dc01652a3121b4cc1eb8cbee9a829f6edd89bafe7244e1893be",
+      "bytes": 26608
+    },
+    "outputs/confidence_minimal_v1/validation_task_outcomes.jsonl": {
+      "sha256": "7309dc9d7b598793ababbf3fb133a5386d6d9a98bab40156e2801e0be461b4da",
+      "bytes": 29639
+    },
+    "outputs/confidence_v1/prefix_diagnostic_summary.json": {
+      "sha256": "4ace2284f86945d85d8b005937fa016d9f0d9dd3bb132a9c37c17212be71deba",
+      "bytes": 889
+    },
+    "outputs/confidence_v1/stress_frozen_spec.json": {
+      "sha256": "1f6774ce4556722fde083eabd62e585e8f221f2f6797a726776d1fc7e573d557",
+      "bytes": 999
+    },
+    "outputs/new_signals_v1/scores.jsonl": {
+      "sha256": "d4d3f21fa124af9b168060ab3aafa47c74065c88e16789b7d9ee8ebcf2b2df49",
+      "bytes": 2777
+    },
+    "outputs/new_signals_v1/requests.jsonl": {
+      "sha256": "d70438e2494b8972f3f1b1ad6886c6f35cc2a979bebb27d062a91ba692c8d2b7",
+      "bytes": 188744
+    },
+    "outputs/legacy_relabel_v1/label_summary.json": {
+      "sha256": "793eb604d1f9d272381a549b77a010ec68baf2cb08be73c2d7fb115455824ff2",
+      "bytes": 7321
+    },
+    "outputs/confidence_v1/stress_dev.jsonl": {
+      "sha256": "4fc029d14df9252f143827bc9e432c28e682789bb21ec1fcc61d7c9eb590dbc5",
+      "bytes": 26763
+    }
+  }
+}

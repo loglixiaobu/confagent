@@ -1,0 +1,33 @@
+{
+  "primary": "constant",
+  "status": "insufficient_label_diversity",
+  "protocol_hashes": {
+    "states.jsonl": "eb1b546f1b9490fa39d5a175bb598335e5c7e8284b321dc3e872ce4d2c01f78d",
+    "oracle.jsonl": "afef62a8b139fceb2a3625326622804576a2a78bd5180df91ca93bb54027b524",
+    "protocol_amendments.json": "f45b2ee9766372e910f95d80b68e8da0655e7c18bf0621ab4f96e8fa7bcc4cfc"
+  },
+  "selection": "No discriminative calibrator fitted: only one development label class.",
+  "dev_n": 61,
+  "dev_errors": 0,
+  "dev_tasks": 27,
+  "features": {
+    "logprob_platt": [
+      "logprob"
+    ],
+    "verifier_platt": [
+      "verifier"
+    ],
+    "grounding_platt": [
+      "grounding"
+    ],
+    "fusion": [
+      "verifier",
+      "support_ratio",
+      "logprob"
+    ]
+  },
+  "dev_oof_metrics": {},
+  "coefficients": {},
+  "split_sha256": "2de3e6ad7ffd6974b775239c4e435eab013cdff8e347212e138c4a85051eb84d",
+  "dev_labels_sha256": "2dc189c4ed95763aa10b484665bb9e818a69b103d7e0b447c799008c859c2fa7"
+}

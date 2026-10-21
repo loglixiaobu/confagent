@@ -1,7 +1,13 @@
-# Frozen protocols hash file bytes; keep checkout bytes identical on Windows.
+# Keep text file line endings consistent across platforms
 *.py text eol=lf
 *.md text eol=lf
 *.json text eol=lf
 *.jsonl text eol=lf
 *.csv text eol=lf
 *.sh text eol=lf
+
+# Binary and generated files
+*.pdf binary
+*.png binary
+*.svg whitespace=-blank-at-eol
+*.csv whitespace=cr-at-eol

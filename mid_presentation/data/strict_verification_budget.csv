@@ -1,0 +1,4 @@
+﻿signal,n,budget,selected_fraction,errors,captured_fixed_seed,capture_fixed_seed,captured_tie_expectation,capture_tie_expectation,seed,tie_method
+logprob,198,39,0.19696969696969696,40,11,0.275,11.0,0.275,20261019,NumPy default_rng permutation; frozen joined_scores row order
+self_report,198,39,0.19696969696969696,40,17,0.425,13.2,0.32999999999999996,20261019,NumPy default_rng permutation; frozen joined_scores row order
+consistency,198,39,0.19696969696969696,40,26,0.65,27.06122448979592,0.676530612244898,20261019,NumPy default_rng permutation; frozen joined_scores row order

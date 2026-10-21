@@ -1,0 +1,23 @@
+{
+  "version": "minimal-confidence-public-collection-summary-v1",
+  "n_model_requests": 230,
+  "by_kind": {
+    "primary": {
+      "requests": 80,
+      "successful_responses": 80,
+      "usage_records": 80,
+      "prompt_tokens": 49173,
+      "completion_tokens": 40696,
+      "total_tokens": 89869
+    },
+    "confidence_probe": {
+      "requests": 150,
+      "successful_responses": 150,
+      "usage_records": 150,
+      "prompt_tokens": 87684,
+      "completion_tokens": 4699,
+      "total_tokens": 92383
+    }
+  },
+  "total_tokens_with_usage": 182252
+}

@@ -1,0 +1,43 @@
+{
+  "version": "consistency-platt-v1",
+  "signal": "consistency",
+  "link": "sigmoid",
+  "coefficient": 3.2337181067110983,
+  "intercept": -0.3811150584592347,
+  "unconstrained_coefficient": 3.2337181067110983,
+  "fit_status": "positive_slope",
+  "score_direction": "higher_is_more_correct",
+  "input_range": [
+    0,
+    1
+  ],
+  "input_standardization": "none",
+  "training_prior": 0.797979797979798,
+  "fit_n": 198,
+  "regularization_C": 1.0,
+  "fit_tasks": 47,
+  "collection_protocol": {
+    "consistency_k": 3,
+    "consistency_thinking": false,
+    "consistency_temperature": 0.7,
+    "consistency_top_p": 1.0,
+    "max_tokens": 4096
+  },
+  "decision_rule": {
+    "signal": "consistency",
+    "operator": "<",
+    "threshold": 1.0,
+    "missing_score": "verify"
+  },
+  "provenance": {
+    "labels_sha256": "1e98a6a80fd87c4e4db9e2daf6d1f3af93415cb43dfbafd7cde5a3fca9930b43",
+    "scores_sha256": "8b48e67ea5bf74176cd791ea8ca70baafbe618f71399d7e7bf1362453981b33b",
+    "collection_protocol_sha256": "d4f7a3f41b8c2031c78b106750516097154ba63fc20ab72ba92cd5c7f0ae3db2",
+    "code_sha256": "ccd7ac8d949d6e9b50810dfbf7a783da82539155e1180b13121ea9f2786c648b"
+  },
+  "development_evaluation": {
+    "method": "task-grouped-5fold-OOF",
+    "seed": 20261019,
+    "performance_scope": "internal_development_only"
+  }
+}
