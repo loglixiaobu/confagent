@@ -1,0 +1,119 @@
+[
+  {
+    "requirement": "Use the GetWeather API to get the current weather for Paris, then tell me the result.",
+    "response": "The current weather in Paris is sunny, 22 degrees Celsius.",
+    "apis": [
+      {
+        "api_name": "ToolSearcher",
+        "input": {"keywords": "weather lookup"},
+        "output": {
+          "output": {
+            "name": "GetWeather",
+            "description": "Get the current weather for a city.",
+            "input_parameters": {
+              "city": {"type": "str", "description": "City name supplied by the user."}
+            },
+            "output_parameters": {}
+          },
+          "exception": null
+        }
+      },
+      {
+        "api_name": "GetWeather",
+        "input": {"city": "Paris"},
+        "output": {
+          "output": {"city": "Paris", "condition": "sunny", "temperature_c": 22},
+          "exception": null
+        }
+      }
+    ]
+  },
+  {
+    "requirement": "First use LookupUser to find the email address for user Alice. Then use SendEmail to send exactly this message to that returned address: Project meeting is at 10:00 tomorrow. Do not invent the address.",
+    "response": "The email was sent to Alice's returned email address.",
+    "apis": [
+      {
+        "api_name": "ToolSearcher",
+        "input": {"keywords": "user lookup"},
+        "output": {
+          "output": {
+            "name": "LookupUser",
+            "description": "Look up a user's profile by name.",
+            "input_parameters": {
+              "user_name": {"type": "str", "description": "The user's name."}
+            },
+            "output_parameters": {}
+          },
+          "exception": null
+        }
+      },
+      {
+        "api_name": "LookupUser",
+        "input": {"user_name": "Alice"},
+        "output": {
+          "output": {"user_name": "Alice", "email": "alice@example.com", "user_id": "u-100"},
+          "exception": null
+        }
+      },
+      {
+        "api_name": "ToolSearcher",
+        "input": {"keywords": "send email"},
+        "output": {
+          "output": {
+            "name": "SendEmail",
+            "description": "Send an email message to one recipient.",
+            "input_parameters": {
+              "recipient": {"type": "str", "description": "Recipient email returned by a previous lookup."},
+              "content": {"type": "str", "description": "Email body requested by the user."}
+            },
+            "output_parameters": {}
+          },
+          "exception": null
+        }
+      },
+      {
+        "api_name": "SendEmail",
+        "input": {
+          "recipient": "alice@example.com",
+          "content": "Project meeting is at 10:00 tomorrow."
+        },
+        "output": {
+          "output": {"status": "sent", "recipient": "alice@example.com", "message_id": "msg-001"},
+          "exception": null
+        }
+      }
+    ]
+  },
+  {
+    "requirement": "Use ReserveRoom to reserve room Atlas for 4 people on 2026-11-03 at 14:00.",
+    "response": "Room Atlas was reserved for 4 people on 2026-11-03 at 14:00.",
+    "apis": [
+      {
+        "api_name": "ToolSearcher",
+        "input": {"keywords": "room reservation"},
+        "output": {
+          "output": {
+            "name": "ReserveRoom",
+            "description": "Reserve a named meeting room for a specified party size and time.",
+            "input_parameters": {
+              "room": {"type": "str", "description": "Room name."},
+              "people": {"type": "int", "description": "Number of people."},
+              "start_time": {"type": "str", "description": "Reservation date and time in YYYY-MM-DD HH:MM format."}
+            },
+            "output_parameters": {}
+          },
+          "exception": null
+        }
+      },
+      {
+        "api_name": "ReserveRoom",
+        "input": {"room": "Atlas", "people": 4, "start_time": "2026-11-03 14:00"},
+        "output": {
+          "output": {"status": "reserved", "reservation_id": "r-404", "room": "Atlas"},
+          "exception": null
+        }
+      }
+    ]
+  }
+]
+

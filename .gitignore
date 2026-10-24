@@ -1,3 +1,4 @@
+
 # 本地环境与个人数据（禁止上传）
 .workbuddy-ai/
 
@@ -44,6 +45,12 @@ outputs/**/environment.json
 outputs/**/run_status.json
 outputs/**/server_startup.*
 outputs/**/cpu_validation.log
+
+# Small model smoke test
+/small_model_smoke/models/
+/small_model_smoke/cache/
+/small_model_smoke/tmp/
+/small_model_smoke/outputs/
 
 # Published aggregate data and numeric snapshots used to redraw the report
 !mid_presentation/data/

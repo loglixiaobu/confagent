@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-ReAct 循环 + 步骤级置信度提取（研究内容一的基础设施）。
+ReAct 循环 + 步骤级置信度提取 + 预算约束验证纠错闭环。
+
+研究内容二的执行顺序是：候选动作 -> 风险/预算决策 -> 执行前验证与修订 ->
+工具执行 -> 环境反馈局部重试/重规划。gold 标签只用于轨迹评估，不进入模型上下文。
 
 【本文件最重要的设计决策】
 --------------------------------------------------------------------
@@ -39,6 +42,7 @@ import json
 import math
 import os
 import re
+import random
 import sys
 import time
 from dataclasses import dataclass
@@ -48,7 +52,14 @@ from openai import OpenAI
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from apibank_env import APIBankMockEnv, load_level3  # noqa: E402
+from confidence_runtime import (K as FROZEN_CONFIDENCE_K,  # noqa: E402
+                                estimate_step_confidence)
 from trajectory import Trajectory, TrajectoryStep, TrajectoryWriter  # noqa: E402
+from verification import (BudgetState, CandidateAction, UsageCost, VerificationResult,  # noqa: E402
+                          check_argument_provenance, check_revision_safety,
+                          correction_outcome,
+                          fuse_risk, grounded_label, run_consistency_vote, run_critic,
+                          should_verify, usage_from_response)
 
 # 推理段少于这么多 token 视为"没有真正思考"，置信度不可用
 MIN_THINK_TOKENS = 5
@@ -57,6 +68,8 @@ MIN_THINK_TOKENS = 5
 MAX_REPEAT = 3
 
 _THINK_RE = re.compile(r"<think>.*?</think>", re.S)
+DEFAULT_CALIBRATOR = str(Path(__file__).resolve().parents[1]
+                         / "outputs/confidence_minimal_v1/calibrator.json")
 
 
 # ---------------------------------------------------------------------------
@@ -77,11 +90,58 @@ class AgentConfig:
     # k=0 表示关闭（每步会额外产生 k 次模型调用，成本显著）。
     consistency_k: int = 0
     consistency_temp: float = 0.7
+
+    # 研究内容二：验证预算以“额外模型调用次数”为统一单位。
+    verify_policy: str = "vanilla"
+    verifier: str = "critic"        # critic/consistency/hybrid
+    verify_budget: int = 0
+    risk_threshold: float = 0.60
+    calibrator_path: str = DEFAULT_CALIBRATOR
+    confidence_cooldown: float = 1.0
+    random_check_rate: float = 0.50
+    max_checks_per_task: int = 1
+    revision_guard: bool = True
+    replan_after: int = 2
+    max_retries: int = 3
+    feedback_mode: str = "realistic"  # realistic/diagnostic
     verbose: bool = False
 
     seed: int = 0
     round_idx: int = 0
     method: str = "vanilla_react"
+
+    def __post_init__(self) -> None:
+        if self.verify_policy not in {
+            "vanilla", "direct", "random_check", "confidence_check",
+            "always", "random", "exception", "provenance", "threshold", "fused"
+        }:
+            raise ValueError("未知 verify_policy: %s" % self.verify_policy)
+        if self.verifier not in {"critic", "consistency", "hybrid"}:
+            raise ValueError("未知 verifier: %s" % self.verifier)
+        if self.verify_budget < 0:
+            raise ValueError("verify_budget 不能为负")
+        if self.consistency_k < 0:
+            raise ValueError("consistency_k 不能为负")
+        if self.max_checks_per_task < 0:
+            raise ValueError("max_checks_per_task 不能为负")
+        if not 0.0 <= self.random_check_rate <= 1.0:
+            raise ValueError("random_check_rate 必须位于 [0,1]")
+        if self.confidence_cooldown < 1.0:
+            raise ValueError("confidence_cooldown 必须至少为 1 秒，以匹配冻结协议")
+        if not 0.0 <= self.risk_threshold <= 1.0:
+            raise ValueError("risk_threshold 必须位于 [0,1]")
+        if self.feedback_mode not in {"realistic", "diagnostic"}:
+            raise ValueError("feedback_mode 必须是 realistic 或 diagnostic")
+        if self.verify_policy in {"random_check", "confidence_check"} and self.verifier != "critic":
+            raise ValueError("random_check/confidence_check 核心协议固定使用 critic")
+        if (self.verify_policy in {"random_check", "confidence_check"}
+                and self.verify_budget < FROZEN_CONFIDENCE_K + 1):
+            raise ValueError(
+                "random_check/confidence_check 至少需要 K=3 次评分调用和 1 次 critic 调用")
+        if (self.verify_policy in {"direct", "random_check", "confidence_check"}
+                and (self.self_report or self.consistency_k != 0)):
+            raise ValueError(
+                "Q2 核心三组禁止额外 self-report/legacy consistency 信号")
 
 
 SYSTEM_PROMPT = """You are an AI assistant that completes a user's requirement by calling APIs step by step.
@@ -179,85 +239,66 @@ def extract_confidence_features(choice) -> Dict[str, Any]:
     return feats
 
 
-def _action_sig(name: str, args_raw: str) -> str:
-    """把一次动作规范化为可比较的签名（解析 JSON 后按 key 排序）。"""
-    try:
-        obj = json.loads(args_raw or "{}")
-        return "%s|%s" % (name, json.dumps(obj, sort_keys=True, ensure_ascii=False))
-    except Exception:
-        return "%s|%s" % (name, (args_raw or "").strip())
-
-
-def measure_consistency(client: OpenAI, cfg: AgentConfig,
-                        messages: List[Dict[str, Any]], tools: List[Dict[str, Any]],
-                        chosen_sig: str, k: int) -> Dict[str, Any]:
-    """多采样一致性信号（消融 A1 的第三种信号源）。
-
-    做法：在**同一对话状态**下，以 temperature>0 重新采样 k 次，
-    统计与贪心动作（temperature=0 得到的那次）一致的比例。
-
-    直觉：如果模型对这一步真有把握，不同采样路径会收敛到同一个动作；
-    如果它在猜，采样结果会发散。这是一个**不依赖 token logprob** 的信号，
-    因此对"约束解码导致 logprob 无信息"的情形特别有价值。
-    """
-    if k <= 0:
-        return {"available": False}
-    agree = 0
-    sigs: List[str] = []
-    for _ in range(k):
-        try:
-            r = client.chat.completions.create(
-                model=cfg.model, messages=messages, tools=tools, tool_choice="auto",
-                temperature=cfg.consistency_temp, max_tokens=cfg.max_tokens,
-                extra_body={"chat_template_kwargs": {"enable_thinking": cfg.enable_thinking}},
-            )
-        except Exception:
-            continue
-        tcs = getattr(r.choices[0].message, "tool_calls", None) or []
-        if tcs:
-            s = _action_sig(tcs[0].function.name, tcs[0].function.arguments)
-        else:
-            s = "__no_tool__|"
-        sigs.append(s)
-        if s == chosen_sig:
-            agree += 1
-    if not sigs:
-        return {"available": False}
-    return {
-        "available": True,
-        "consistency": agree / len(sigs),
-        "n_samples": len(sigs),
-        "n_agree": agree,
-        "sample_sigs": sigs,
-    }
-
-
 def ask_self_report(client: OpenAI, cfg: AgentConfig, messages: List[Dict[str, Any]],
-                    action_desc: str) -> Optional[float]:
-    """自陈置信度（消融 A1 的第二种信号源）。"""
+                    action_desc: str) -> tuple[Optional[float], UsageCost]:
+    """自陈置信度及其真实调用成本（消融 A1 的第二种信号源）。"""
     probe = messages + [
         {"role": "assistant", "content": "I am about to execute: %s" % action_desc},
         {"role": "user", "content": ("On a scale from 0.0 to 1.0, how confident are you that this "
                                      "action is CORRECT (right API, right arguments)? "
                                      "Reply with ONLY a number.")},
     ]
+    t0 = time.time()
     try:
         r = client.chat.completions.create(
             model=cfg.model, messages=probe, temperature=0.0, max_tokens=64,
             extra_body={"chat_template_kwargs": {"enable_thinking": False}},
         )
+        cost = usage_from_response(r, int((time.time() - t0) * 1000))
         for tok in (r.choices[0].message.content or "").replace(",", " ").split():
             try:
                 v = float(tok)
                 if 0.0 <= v <= 1.0:
-                    return v
+                    return v, cost
                 if 1.0 < v <= 100.0:
-                    return v / 100.0
+                    return v / 100.0, cost
             except ValueError:
                 continue
     except Exception:
-        return None
-    return None
+        return None, UsageCost(model_calls=1, latency_ms=int((time.time() - t0) * 1000))
+    return None, cost
+
+
+def _compact_confidence_result(result: Dict[str, Any]) -> Dict[str, Any]:
+    """Keep the frozen score auditable without duplicating raw model responses."""
+    samples = []
+    for sample in result.get("samples") or []:
+        samples.append({key: sample.get(key) for key in (
+            "index", "request_id", "seed", "status", "action", "agrees",
+            "strict_agrees", "finish_reason", "n_tool_calls", "truncated",
+            "multiple_tool_calls", "invalid_tool_arguments",
+        )})
+    return {
+        "raw_consistency": result.get("raw_consistency"),
+        "p_correct": result.get("p_correct"),
+        "needs_verification": result.get("needs_verification"),
+        "reason": result.get("reason"),
+        "calibrator_version": result.get("calibrator_version"),
+        "quality": result.get("quality"),
+        "cost": result.get("cost"),
+        "samples": samples,
+    }
+
+
+def _confidence_usage(result: Dict[str, Any]) -> UsageCost:
+    cost = result.get("cost") or {}
+    usage = cost.get("usage") or {}
+    return UsageCost(
+        prompt_tokens=int(usage.get("prompt_tokens", 0) or 0),
+        completion_tokens=int(usage.get("completion_tokens", 0) or 0),
+        model_calls=int(cost.get("n_model_requests", 0) or 0),
+        latency_ms=int(1000 * float(cost.get("elapsed_s", 0.0) or 0.0)),
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -266,14 +307,36 @@ def ask_self_report(client: OpenAI, cfg: AgentConfig, messages: List[Dict[str, A
 def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
              task_index: int = 0,
              distractors: Optional[List[Dict[str, Any]]] = None) -> Trajectory:
-    env = APIBankMockEnv(task, distractor_apis=distractors)
-    task_id = "l3-%03d" % task_index
+    env = APIBankMockEnv(task, distractor_apis=distractors,
+                         feedback_mode=cfg.feedback_mode)
+    task_id = str(task.get("_task_id") or ("l3-%03d" % task_index))
 
     traj = Trajectory(
         task_id=task_id, model=cfg.model, seed=cfg.seed,
         round_idx=cfg.round_idx, method=cfg.method,
         config={"max_steps": cfg.max_steps, "temperature": cfg.temperature,
-                "enable_thinking": cfg.enable_thinking, "self_report": cfg.self_report},
+                "q2_protocol_version": "q2-online-v4-confidence-check",
+                "action_equivalence": "published-semantic-v1",
+                "enable_thinking": cfg.enable_thinking, "self_report": cfg.self_report,
+                "consistency_k": cfg.consistency_k,
+                "consistency_temp": cfg.consistency_temp,
+                "verify_policy": cfg.verify_policy, "verifier": cfg.verifier,
+                "verify_budget": cfg.verify_budget,
+                "risk_threshold": cfg.risk_threshold,
+                "calibrator_path": cfg.calibrator_path,
+                "confidence_protocol": "consistency-platt-v1-k3-no-thinking",
+                "confidence_cooldown": cfg.confidence_cooldown,
+                "random_check_rate": cfg.random_check_rate,
+                "max_checks_per_task": cfg.max_checks_per_task,
+                "revision_guard": cfg.revision_guard,
+                "replan_after": cfg.replan_after, "max_retries": cfg.max_retries,
+                "feedback_mode": cfg.feedback_mode,
+                "tool_exposure": "task-apis-preunlocked-plus-distractors",
+                "distractors": len(distractors or []),
+                "dataset_split": task.get("_dataset_split"),
+                "dataset_index": task.get("_dataset_index", task_index),
+                "task_fingerprint": task.get("_task_fingerprint"),
+                "task_manifest": task.get("_manifest_id")},
     )
 
     tool_searcher = {
@@ -304,6 +367,14 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
     last_sig: Optional[str] = None
     repeat_count = 0
     stop_reason = "max_steps"
+    budget = BudgetState(max(0, cfg.verify_budget))
+    rng = random.Random(cfg.seed * 1000003 + task_index)
+    observations: List[Any] = []
+    previous_failed = False
+    consecutive_failures = 0
+    replan_pending = False
+    last_failed_step_id: Optional[int] = None
+    checks_used = 0
 
     for _ in range(cfg.max_steps):
         tools = [tool_searcher] + [api_schema_to_tool(a) for a in unlocked.values()]
@@ -324,14 +395,21 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
         latency_ms = int((time.time() - t0) * 1000)
         choice = resp.choices[0]
         msg = choice.message
-        usage = getattr(resp, "usage", None)
-        step_tokens = getattr(usage, "completion_tokens", 0) if usage else 0
+        base_cost = usage_from_response(resp, latency_ms)
 
         feats = extract_confidence_features(choice)
         tool_calls = getattr(msg, "tool_calls", None) or []
 
         if not tool_calls:
             traj.final_answer = msg.content or ""
+            traj.add(TrajectoryStep(
+                task_id=task_id, step_id=0, action_type="answer",
+                action_input={"content": traj.final_answer}, observation=None,
+                cost_tokens=base_cost.total_tokens, cost_calls=0,
+                prompt_tokens=base_cost.prompt_tokens,
+                completion_tokens=base_cost.completion_tokens,
+                model_calls=1, tool_calls=0, latency_ms=latency_ms,
+            ))
             stop_reason = "final_answer"
             break
 
@@ -342,64 +420,363 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
         except Exception:
             args = {"_raw": tc.function.arguments}
 
-        action_type = "tool_search" if name == "ToolSearcher" else "tool_call"
+        original = CandidateAction(name, args)
+        final = original
+        original_eval = env.evaluate_candidate(original.api_name, original.arguments)
+        provenance = check_argument_provenance(
+            task.get("requirement", ""), observations, original, tools)
+        budget_before = budget.remaining
+        extra_cost = UsageCost()
+        signal_cost = UsageCost()
+        verifier_cost = UsageCost()
+        confidence_result: Optional[Dict[str, Any]] = None
+        selection_policy = cfg.verify_policy
+        selection_draw: Optional[float] = None
 
-        # --- 重复调用熔断 ---
-        sig = "%s|%s" % (name, json.dumps(args, sort_keys=True, ensure_ascii=False))
+        # Core Q2 comparison: random_check and confidence_check pay for the
+        # identical frozen Q1 score.  Keep one critic call in reserve; every
+        # actual score request (including a transport retry) spends budget via
+        # before_request rather than assuming the nominal K is the real cost.
+        core_check_policy = cfg.verify_policy in {"random_check", "confidence_check"}
+        selection_eligible = bool(
+            core_check_policy and checks_used < cfg.max_checks_per_task
+            and budget.can_spend(FROZEN_CONFIDENCE_K + 1))
+        if selection_eligible:
+            score_started = time.time()
+            used_before_score = budget.used
+
+            def before_score_request() -> bool:
+                if budget.remaining <= 1:  # reserve one request for the shared critic
+                    return False
+                return budget.spend(1)
+
+            try:
+                scored = estimate_step_confidence(
+                    messages=messages,
+                    tools=tools,
+                    candidate=original.to_dict(),
+                    api_documents=list(unlocked.values()),
+                    calibrator=cfg.calibrator_path,
+                    client=client,
+                    before_request=before_score_request,
+                    request_namespace="%s:step-%d" % (task_id, len(traj.steps) + 1),
+                    seed=cfg.seed * 1000003 + task_index * 101 + len(traj.steps) * 17,
+                    cooldown_s=cfg.confidence_cooldown,
+                )
+            except Exception as exc:
+                spent = budget.used - used_before_score
+                frozen_cost = UsageCost(
+                    model_calls=spent,
+                    latency_ms=int((time.time() - score_started) * 1000),
+                )
+                confidence_result = {
+                    "raw_consistency": None, "p_correct": None,
+                    "needs_verification": True, "reason": "score_error",
+                    "calibrator_version": None,
+                    "quality": {"complete": False, "error": "%s: %s" % (
+                        type(exc).__name__, exc)},
+                    "cost": frozen_cost.to_dict(), "samples": [],
+                }
+            else:
+                confidence_result = _compact_confidence_result(scored)
+                frozen_cost = _confidence_usage(scored)
+                spent = budget.used - used_before_score
+                # Callback accounting is authoritative. A mismatch invalidates
+                # the equal-budget comparison and must stop the task.
+                if frozen_cost.model_calls != spent:
+                    raise RuntimeError(
+                        "frozen confidence request count %d != budget spend %d"
+                        % (frozen_cost.model_calls, spent))
+            extra_cost.add(frozen_cost)
+            signal_cost.add(frozen_cost)
+
+        # 自陈属于额外模型调用，必须占用同一验证预算。
+        self_rep: Optional[float] = None
+        if (cfg.self_report and cfg.verify_policy in ("vanilla", "direct", "fused")
+                and (cfg.verify_policy in {"vanilla", "direct"} or budget.can_spend(1))):
+            if cfg.verify_policy not in {"vanilla", "direct"}:
+                budget.spend(1)
+            self_rep, sr_cost = ask_self_report(
+                client, cfg, messages,
+                "%s(%s)" % (name, json.dumps(args, ensure_ascii=False)))
+            extra_cost.add(sr_cost)
+            signal_cost.add(sr_cost)
+
+        token_conf = feats.get("confidence") if feats.get("available") else None
+        signal_vote = None
+        if cfg.consistency_k > 0 and cfg.verify_policy in ("vanilla", "direct", "fused"):
+            if cfg.verify_policy in {"vanilla", "direct"} or budget.can_spend(cfg.consistency_k):
+                if cfg.verify_policy not in {"vanilla", "direct"}:
+                    budget.spend(cfg.consistency_k)
+                signal_vote = run_consistency_vote(
+                    client, cfg.model, messages, tools, original, cfg.consistency_k,
+                    cfg.consistency_temp, cfg.max_tokens, cfg.enable_thinking,
+                    seed=cfg.seed * 1000003 + task_index * 101 + len(traj.steps) * 17)
+                extra_cost.add(signal_vote.usage)
+                signal_cost.add(signal_vote.usage)
+        consistency_signal = None
+        if signal_vote is not None and signal_vote.raw:
+            consistency_signal = signal_vote.raw.get("agreement")
+        fused_risk = fuse_risk(token_conf, self_rep, consistency_signal, provenance.risk)
+        if cfg.verify_policy in {"random_check", "confidence_check"}:
+            p_correct = ((confidence_result or {}).get("p_correct"))
+            risk = 1.0 - p_correct if isinstance(p_correct, (int, float)) else 1.0
+        elif cfg.verify_policy == "threshold":
+            # 单信号阈值基线：只使用原始步骤置信度，不借用 provenance。
+            risk = 1.0 - token_conf if token_conf is not None else 0.5
+        elif cfg.verify_policy == "provenance":
+            risk = provenance.risk
+        else:
+            risk = fused_risk
+        if cfg.verifier == "consistency":
+            required_verify_calls = 0 if signal_vote is not None else (
+                cfg.consistency_k if cfg.consistency_k > 0 else 3)
+        else:
+            # Hybrid can still run its critic with one remaining call; its
+            # consistency branch is optional when the fixed K is unavailable.
+            required_verify_calls = 1
+        if core_check_policy:
+            if checks_used >= cfg.max_checks_per_task:
+                do_verify, trigger_reason = False, "per-task check limit reached"
+            elif confidence_result is None:
+                do_verify, trigger_reason = False, "insufficient budget for frozen K=3 score plus critic"
+            elif cfg.verify_policy == "confidence_check":
+                do_verify = bool(confidence_result.get("needs_verification")) and budget.can_spend(1)
+                trigger_reason = ("frozen confidence requests check: %s"
+                                  % confidence_result.get("reason") if do_verify
+                                  else "frozen confidence does not request check")
+            else:
+                selection_draw = rng.random()
+                do_verify = selection_draw < cfg.random_check_rate and budget.can_spend(1)
+                trigger_reason = ("label-blind random draw %.6f < %.6f"
+                                  % (selection_draw, cfg.random_check_rate) if do_verify
+                                  else "label-blind random draw rejected")
+        else:
+            do_verify, trigger_reason = should_verify(
+                cfg.verify_policy, risk, provenance, budget,
+                cfg.risk_threshold, rng, required_verify_calls)
+
+        verification = None
+        verification_usage_precounted = False
+        revision_guard = None
+        if do_verify:
+            if cfg.verifier == "critic" and budget.can_spend(1):
+                budget.spend(1)
+                checks_used += 1
+                verification = run_critic(
+                    client, cfg.model, messages, tools, original, provenance,
+                    max_tokens=min(768, cfg.max_tokens))
+            elif cfg.verifier == "consistency":
+                if signal_vote is not None:
+                    verification = signal_vote
+                    verification_usage_precounted = True
+                else:
+                    k = cfg.consistency_k if cfg.consistency_k > 0 else 3
+                    if k >= 2 and budget.can_spend(k):
+                        budget.spend(k)
+                        verification = run_consistency_vote(
+                            client, cfg.model, messages, tools, original, k,
+                            cfg.consistency_temp, cfg.max_tokens, cfg.enable_thinking,
+                            seed=cfg.seed * 1000003 + task_index * 101 + len(traj.steps) * 17)
+            elif cfg.verifier == "hybrid" and budget.can_spend(1):
+                budget.spend(1)
+                critic_result = run_critic(
+                    client, cfg.model, messages, tools, original, provenance,
+                    max_tokens=min(768, cfg.max_tokens))
+                vote_result = signal_vote
+                if vote_result is None:
+                    k = cfg.consistency_k if cfg.consistency_k > 0 else 3
+                    if k >= 2 and budget.can_spend(k):
+                        budget.spend(k)
+                        vote_result = run_consistency_vote(
+                            client, cfg.model, messages, tools, original, k,
+                            cfg.consistency_temp, cfg.max_tokens, cfg.enable_thinking,
+                            seed=cfg.seed * 1000003 + task_index * 101 + len(traj.steps) * 17)
+                hybrid_usage = UsageCost()
+                hybrid_usage.add(critic_result.usage)
+                if vote_result is not None:
+                    hybrid_usage.add(vote_result.usage)
+                revised = critic_result.revised_action
+                if revised is None and vote_result is not None:
+                    revised = vote_result.revised_action
+                risks = [critic_result.risk]
+                if vote_result is not None:
+                    risks.append(vote_result.risk)
+                verification = VerificationResult(
+                    verifier="hybrid",
+                    valid=(critic_result.valid if vote_result is None
+                           else bool(critic_result.valid and vote_result.valid)),
+                    risk=sum(risks) / len(risks),
+                    issues=critic_result.issues + (vote_result.issues if vote_result else []),
+                    revised_action=revised, usage=hybrid_usage,
+                    raw={"critic": critic_result.to_dict(),
+                         "consistency": vote_result.to_dict() if vote_result else None},
+                    available=critic_result.available or bool(vote_result and vote_result.available),
+                )
+                if signal_vote is not None:
+                    # signal_vote 已计入 extra_cost，只需补 critic 成本。
+                    extra_cost.add(critic_result.usage)
+                    verifier_cost.add(critic_result.usage)
+                    verification_usage_precounted = True
+            if verification is not None:
+                if not verification_usage_precounted:
+                    extra_cost.add(verification.usage)
+                    verifier_cost.add(verification.usage)
+                if verification.revised_action is not None:
+                    revision_guard = check_revision_safety(
+                        task.get("requirement", ""), observations,
+                        verification.revised_action, tools)
+                    revision_guard["enabled"] = cfg.revision_guard
+                    if revision_guard["accepted"] or not cfg.revision_guard:
+                        final = verification.revised_action
+
+        changed = final.signature() != original.signature()
+        final_eval = env.evaluate_candidate(final.api_name, final.arguments)
+        final_provenance = check_argument_provenance(
+            task.get("requirement", ""), observations, final, tools)
+        outcome = correction_outcome(
+            original_eval.matched_gold, final_eval.matched_gold, changed)
+
+        # --- 重复调用熔断：按真正即将执行的动作判断 ---
+        sig = final.signature()
         if sig == last_sig:
             repeat_count += 1
         else:
             repeat_count = 0
             last_sig = sig
 
-        res = env.call(name, args)
+        res = env.call(final.api_name, final.arguments)
+        retry_outcome = None
+        if previous_failed:
+            retry_outcome = "recovered" if res.matched_gold else "retry_failed"
 
-        if name == "ToolSearcher" and isinstance(res.observation, dict) and res.observation.get("name"):
+        if final.api_name == "ToolSearcher" and isinstance(res.observation, dict) and res.observation.get("name"):
             unlocked[res.observation["name"]] = res.observation
 
-        self_rep = ask_self_report(client, cfg, messages, "%s(%s)" % (
-            name, json.dumps(args, ensure_ascii=False))) if cfg.self_report else None
-
-        # 多采样一致性：在同一状态下重采样 k 次
-        cons = (measure_consistency(client, cfg, messages, tools,
-                                    _action_sig(name, tc.function.arguments),
-                                    cfg.consistency_k)
-                if cfg.consistency_k > 0 else {"available": False})
-
-        conf = feats.get("confidence") if feats.get("available") else None
+        conf = token_conf
+        conf_source = feats.get("confidence_source") if conf is not None else None
+        if core_check_policy and confidence_result is not None:
+            conf = confidence_result.get("p_correct")
+            conf_source = "calibrated_consistency" if conf is not None else None
+        elif cfg.verify_policy == "fused":
+            conf = 1.0 - fused_risk
+            conf_source = "fused"
         raw = {k: v for k, v in feats.items()} if feats.get("available") else None
         if raw is None:
             raw = {}
         if self_rep is not None:
             raw["self_report"] = self_rep
-        if cons.get("available"):
-            raw["consistency"] = cons["consistency"]
-            raw["consistency_n"] = cons["n_samples"]
-            raw["consistency_agree"] = cons["n_agree"]
+        raw["provenance_risk"] = provenance.risk
+        raw["fused_risk"] = fused_risk
+        vote_for_raw = verification if (verification is not None and verification.verifier == "consistency") else signal_vote
+        if vote_for_raw is not None and vote_for_raw.raw:
+            raw["consistency"] = vote_for_raw.raw.get("agreement")
+            raw["consistency_n"] = vote_for_raw.raw.get("n_samples")
+            raw["consistency_agree"] = vote_for_raw.raw.get("n_agree")
+        elif verification is not None and verification.verifier == "hybrid" and verification.raw:
+            vote = verification.raw.get("consistency") or {}
+            vote_raw = vote.get("raw") or {}
+            if vote_raw.get("agreement") is not None:
+                raw["consistency"] = vote_raw.get("agreement")
+                raw["consistency_n"] = vote_raw.get("n_samples")
+                raw["consistency_agree"] = vote_raw.get("n_agree")
         if not raw:
             raw = None
 
-        traj.add(TrajectoryStep(
+        if replan_pending:
+            action_type = "replan"
+        elif previous_failed:
+            action_type = "retry"
+        else:
+            action_type = "tool_search" if final.api_name == "ToolSearcher" else "tool_call"
+        correction_type = None
+        correction_text = None
+        if changed:
+            if final.api_name != original.api_name:
+                correction_type = "tool_revision"
+            elif any(i.get("kind") in {"unsupported_value", "unit_mismatch"}
+                     for i in provenance.issues):
+                correction_type = "information_supplement"
+            else:
+                correction_type = "argument_revision"
+            correction_text = "%s revised candidate before execution" % (
+                verification.verifier if verification else "verifier")
+        elif (revision_guard is not None and not revision_guard.get("accepted")
+              and cfg.revision_guard):
+            correction_type = "revision_rejected"
+            correction_text = "verifier revision rejected by schema/provenance guard"
+        elif verification is not None:
+            correction_type = "none"
+        if replan_pending:
+            correction_type = "replan"
+            correction_text = "replanned after repeated execution failures"
+        elif previous_failed and correction_type in (None, "none"):
+            correction_type = "local_retry"
+            correction_text = "local retry after environment feedback"
+
+        step = traj.add(TrajectoryStep(
             task_id=task_id, step_id=0, action_type=action_type,
-            action_input={"api_name": name, "arguments": args},
+            action_input=final.to_dict(),
             observation=res.observation if res.observation is not None else {"error": res.exception},
             confidence=conf,
-            confidence_source=(feats.get("confidence_source") if conf is not None else None),
-            verified=False, correction=None,
-            cost_tokens=step_tokens, cost_calls=1,
+            confidence_source=conf_source,
+            verified=verification is not None,
+            correction=correction_text,
+            candidate_action=original.to_dict(),
+            verification_type=(cfg.verifier if verification is not None else None),
+            trigger_reason=trigger_reason, risk_score=risk,
+            verification_result=(verification.to_dict() if verification else
+                                 {"provenance": provenance.to_dict()}),
+            confidence_result=confidence_result,
+            selection_policy=selection_policy,
+            selection_eligible=selection_eligible,
+            selection_draw=selection_draw,
+            selection_threshold=(cfg.random_check_rate if cfg.verify_policy == "random_check"
+                                 else (1.0 if cfg.verify_policy == "confidence_check" else None)),
+            selected_for_check=verification is not None,
+            revision_guard=revision_guard,
+            correction_type=correction_type, correction_changed=changed,
+            correction_outcome=outcome,
+            candidate_matched_gold=original_eval.matched_gold,
+            candidate_grounded_correct=grounded_label(provenance, original_eval.matched_gold),
+            executed_grounded_correct=grounded_label(final_provenance, res.matched_gold),
+            candidate_grounding=provenance.to_dict(),
+            executed_grounding=final_provenance.to_dict(),
+            retry_outcome=retry_outcome,
+            parent_step_id=last_failed_step_id if previous_failed else None,
+            budget_before=budget_before, budget_after=budget.remaining,
+            cost_tokens=base_cost.total_tokens + extra_cost.total_tokens,
+            cost_calls=1,
+            prompt_tokens=base_cost.prompt_tokens + extra_cost.prompt_tokens,
+            completion_tokens=base_cost.completion_tokens + extra_cost.completion_tokens,
+            model_calls=base_cost.model_calls + extra_cost.model_calls,
+            tool_calls=1,
+            verification_prompt_tokens=extra_cost.prompt_tokens,
+            verification_completion_tokens=extra_cost.completion_tokens,
+            verification_model_calls=extra_cost.model_calls,
+            verification_latency_ms=extra_cost.latency_ms,
+            signal_model_calls=signal_cost.model_calls,
+            verifier_model_calls=verifier_cost.model_calls,
+            signal_prompt_tokens=signal_cost.prompt_tokens,
+            signal_completion_tokens=signal_cost.completion_tokens,
+            signal_latency_ms=signal_cost.latency_ms,
+            verifier_prompt_tokens=verifier_cost.prompt_tokens,
+            verifier_completion_tokens=verifier_cost.completion_tokens,
+            verifier_latency_ms=verifier_cost.latency_ms,
             matched_gold=res.matched_gold,
             strict_matched_gold=res.strict_matched_gold,
             failure_type=res.failure_type,
-            latency_ms=latency_ms,
+            latency_ms=latency_ms + extra_cost.latency_ms,
             raw_logprobs=raw,
         ))
 
         # --- 回灌历史：**剥离 <think> 段**，强制每步重新思考 ---
         clean_content = _THINK_RE.sub("", msg.content or "").strip()
+        final_args_json = json.dumps(final.arguments, ensure_ascii=False)
         messages.append({
             "role": "assistant", "content": clean_content,
             "tool_calls": [{"id": tc.id, "type": "function",
-                            "function": {"name": name, "arguments": tc.function.arguments}}],
+                            "function": {"name": final.api_name, "arguments": final_args_json}}],
         })
         messages.append({
             "role": "tool", "tool_call_id": tc.id,
@@ -407,18 +784,14 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                 res.observation if res.observation is not None else {"error": res.exception},
                 ensure_ascii=False, default=str)[:4000],
         })
+        observations.append(res.observation if res.observation is not None else {"error": res.exception})
 
         if cfg.verbose:
             print("   step%-2d %-14s matched=%-5s conf=%-6s n_tok=%s%s" % (
-                len(traj.steps), name, res.matched_gold,
+                len(traj.steps), final.api_name, res.matched_gold,
                 ("%.3f" % conf) if conf is not None else "None",
                 (feats.get("n_tokens") if feats.get("available") else "-"),
                 "  [DEGENERATE]" if feats.get("degenerate") else ""))
-
-        if env.success():
-            traj.final_answer = clean_content
-            stop_reason = "success"
-            break
 
         if repeat_count >= MAX_REPEAT - 1:
             stop_reason = "repeated_call"
@@ -429,8 +802,39 @@ def run_task(task: Dict[str, Any], cfg: AgentConfig, client: OpenAI,
                 "The previous call failed with the same arguments. Read the error message again "
                 "and change the arguments before retrying.")})
 
-    traj.final_success = env.success()
+        previous_failed = res.matched_gold is False
+        if previous_failed:
+            last_failed_step_id = step.step_id
+        replan_pending = False
+        if previous_failed:
+            consecutive_failures += 1
+            adaptive_retry = cfg.verify_policy not in {"vanilla", "direct"}
+            if adaptive_retry and consecutive_failures >= cfg.max_retries:
+                stop_reason = "max_retries"
+                break
+            if adaptive_retry and consecutive_failures >= cfg.replan_after:
+                replan_pending = True
+                messages.append({"role": "user", "content": (
+                    "Multiple local attempts failed. Re-plan the remaining task from the original "
+                    "requirement and successful observations. Choose a materially different next action.")})
+            elif adaptive_retry:
+                messages.append({"role": "user", "content": (
+                    "The last API call failed. Correct only the unsupported or invalid part, use values "
+                    "grounded in the requirement or prior tool outputs, and retry locally.")})
+        else:
+            consecutive_failures = 0
+
+    traj.replay_success = env.success()
+    # Completing the replay chain is not by itself a completed user-facing
+    # task: require an explicit non-empty terminal response as well.
+    answered = stop_reason == "final_answer" and bool((traj.final_answer or "").strip())
+    traj.final_success = bool(traj.replay_success and answered)
+    traj.clean_success = bool(traj.final_success and env.clean_success())
+    traj.recovered_success = bool(traj.final_success and env.recovered_success())
     traj.config["stop_reason"] = stop_reason
+    traj.config["verification_budget_used"] = budget.used
+    traj.config["verification_budget_remaining"] = budget.remaining
+    traj.config["checks_used"] = checks_used
     return traj
 
 
@@ -441,8 +845,11 @@ def main() -> None:
     ap.add_argument("--model", default="Qwen3-8B")
     ap.add_argument("--data-dir", default=str(Path(__file__).resolve().parents[1] / 'data/api-bank'))
     ap.add_argument("--out", default=str(Path(__file__).resolve().parents[1] / 'outputs/traj_vanilla.jsonl'))
+    ap.add_argument("--allow-append", action="store_true",
+                    help="显式允许向已有非空轨迹追加")
     ap.add_argument("--limit", type=int, default=3)
     ap.add_argument("--offset", type=int, default=0)
+    ap.add_argument("--split", choices=["train", "test"], default="test")
     ap.add_argument("--max-steps", type=int, default=12)
     ap.add_argument("--temperature", type=float, default=0.0)
     ap.add_argument("--seed", type=int, default=0)
@@ -451,18 +858,52 @@ def main() -> None:
     ap.add_argument("--consistency-k", type=int, default=0,
                     help="多采样一致性的采样次数（0=关闭；每步额外 k 次模型调用）")
     ap.add_argument("--consistency-temp", type=float, default=0.7)
+    ap.add_argument("--verify-policy", default="vanilla",
+                    choices=["vanilla", "direct", "random_check", "confidence_check",
+                             "always", "random", "exception",
+                             "provenance", "threshold", "fused"])
+    ap.add_argument("--verifier", default="critic",
+                    choices=["critic", "consistency", "hybrid"])
+    ap.add_argument("--verify-budget", type=int, default=0,
+                    help="每任务允许的额外模型调用次数")
+    ap.add_argument("--risk-threshold", type=float, default=0.60)
+    ap.add_argument("--calibrator", default=DEFAULT_CALIBRATOR)
+    ap.add_argument("--confidence-cooldown", type=float, default=1.0)
+    ap.add_argument("--random-check-rate", type=float, default=0.50)
+    ap.add_argument("--max-checks-per-task", type=int, default=1)
+    ap.add_argument("--no-revision-guard", action="store_true")
+    ap.add_argument("--replan-after", type=int, default=2)
+    ap.add_argument("--max-retries", type=int, default=3)
+    ap.add_argument("--feedback-mode", default="realistic",
+                    choices=["realistic", "diagnostic"])
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args()
+
+    if args.verify_policy in {"vanilla", "direct"} and args.verify_budget != 0:
+        ap.error("vanilla/direct 基线的 --verify-budget 必须为 0")
+    if os.path.exists(args.out) and os.path.getsize(args.out) > 0 and not args.allow_append:
+        ap.error("输出文件已存在且非空：%s；请换新路径，或明确使用 --allow-append" % args.out)
 
     cfg = AgentConfig(
         base_url=args.base_url, model=args.model, max_steps=args.max_steps,
         temperature=args.temperature, enable_thinking=not args.no_thinking,
         self_report=args.self_report, consistency_k=args.consistency_k,
         consistency_temp=args.consistency_temp,
+        verify_policy=args.verify_policy, verifier=args.verifier,
+        verify_budget=args.verify_budget, risk_threshold=args.risk_threshold,
+        calibrator_path=args.calibrator,
+        confidence_cooldown=args.confidence_cooldown,
+        random_check_rate=args.random_check_rate,
+        max_checks_per_task=args.max_checks_per_task,
+        revision_guard=not args.no_revision_guard,
+        replan_after=args.replan_after, max_retries=args.max_retries,
+        feedback_mode=args.feedback_mode,
         seed=args.seed, verbose=args.verbose,
+        method=("direct" if args.verify_policy in {"vanilla", "direct"}
+                else "conf_verify_%s_%s" % (args.verify_policy, args.verifier)),
     )
     client = OpenAI(base_url=cfg.base_url, api_key="EMPTY")
-    tasks = load_level3(args.data_dir, "test")[args.offset: args.offset + args.limit]
+    tasks = load_level3(args.data_dir, args.split)[args.offset: args.offset + args.limit]
 
     print("=" * 72)
     print("ReAct | model=%s | thinking=%s | tasks=%d | max_steps=%d"

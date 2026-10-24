@@ -176,7 +176,8 @@ python code/run_batch.py \
 或一条命令完成"起副本 → 跑批 → 报温度"：
 
 ```bash
-bash code/run_experiment.sh "1 2" 8000 --limit 50 --concurrency 2 --tag seed0
+bash code/run_experiment.sh "1 2" 8000 --limit 50 --concurrency 2 \
+  --verify-policy direct --verify-budget 0 --out results/traj_seed0.jsonl
 ```
 
 常用参数：`--distractors N`（注入 N 个干扰 API 提高难度）、`--self-report`（采集自陈置信度）、`--consistency-k K`（多采样一致性）、`--no-thinking`（关闭思维链）。
@@ -194,6 +195,42 @@ python code/calibration.py --traj results/traj_main.jsonl --out-dir outputs
 ```bash
 python code/analyze_results.py results/traj_main_clean.jsonl
 ```
+
+### 步骤 5 · 自主验证与纠错（研究内容二）
+
+新实验统一使用 `feedback_mode=realistic` 和 schema v4。核心问题是：在相同的 K=3
+置信度评分成本、相同 Critic 与相同检查次数上限下，低置信选择是否优于标签盲随机选择。
+正式测试应让三组复用同一冻结 task manifest；以下用开发运行展示命令形式。
+
+```bash
+# 直接执行：无评分、无执行前检查
+python code/run_batch.py --endpoints localhost:8000 --limit 50 \
+  --verify-policy direct --verify-budget 0 --feedback-mode realistic \
+  --out results/q2_direct.jsonl
+
+# 随机选择：仍支付相同 K=3 评分成本，但忽略分数
+python code/run_batch.py --endpoints localhost:8000 --limit 50 \
+  --verify-policy random_check --verifier critic --verify-budget 4 \
+  --random-check-rate 0.5 --max-checks-per-task 1 \
+  --feedback-mode realistic --out results/q2_random.jsonl
+
+# 主要方法：冻结置信度选择可疑步骤，再由 Critic 检查和修订
+python code/run_batch.py --endpoints localhost:8000 --limit 50 \
+  --verify-policy confidence_check --verifier critic --verify-budget 4 \
+  --max-checks-per-task 1 --feedback-mode realistic \
+  --out results/q2_confidence.jsonl
+
+# 多条件等预算分析（第一个文件作为配对比较基线）
+python code/analyze_verification.py \
+  results/q2_direct.jsonl results/q2_random.jsonl results/q2_confidence.jsonl \
+  --require-complete-pairs --json-out outputs/q2_metrics.json \
+  --plot-out outputs/q2_summary.png \
+  --corrections-out outputs/q2_verified_corrections.jsonl
+```
+
+核心策略：`direct / random_check / confidence_check`。`provenance / exception / always /
+threshold / fused` 与 `consistency / hybrid` 保留为辅助基线或消融。完整服务器流程、manifest
+和预算说明见 `研究内容二_自主验证与纠错开发说明.md`。
 
 ---
 
@@ -214,9 +251,11 @@ python code/analyze_results.py results/traj_main_clean.jsonl
 | `trajectory.py` | **全组唯一的轨迹格式定义**。`TrajectoryStep` / `Trajectory` / `TrajectoryWriter`，受控词表校验，JSONL 追加写入，错误传播率计算 |
 | `apibank_env.py` | API-Bank 加载器 + 确定性 mock 环境。字段感知匹配、双口径标签、按 api_name 贪心对齐、失败原因分类 |
 | `react_agent.py` | ReAct 主循环 + 步骤级置信度提取。推理段 logprob 特征（geo_mean_prob 等）、多采样一致性、自陈置信度、重复调用熔断 |
-| `run_batch.py` | 多卡并行批处理。任务分片到多个 vLLM 端点、干扰 API 注入、`ThermalGuard` 温度保护 |
+| `run_batch.py` | 多端点批处理、任务 manifest/数据哈希、endpoint 预检、实验协议与完成摘要、`ThermalGuard` 温度保护 |
 | `calibration.py` | 校准评估（研究内容一核心分析）。ECE/Brier/NLL/AUROC/AURC、温度缩放/Platt/Isotonic、可靠性图与风险—覆盖率曲线 |
 | `analyze_results.py` | 纯 Python 结果分析（无第三方依赖），用于本地复盘已采集轨迹 |
+| `verification.py` | **研究内容二核心**：参数来源与单位检查、结构化 critic、修订安全门、多采样验证和纠错归因 |
+| `analyze_verification.py` | 验证触发 precision/recall、纠错收益/伤害、恢复成功率、成本与配对 bootstrap 分析 |
 | `run_vllm.sh` | 启动单个 vLLM 服务（Qwen3-8B，单卡） |
 | `launch_replicas.sh` | 在指定 GPU 组上启动多个 vLLM 副本 |
 | `stop_replicas.sh` | 停止 vLLM 副本并等待显存释放 |
@@ -224,6 +263,14 @@ python code/analyze_results.py results/traj_main_clean.jsonl
 | `thermal_watch.sh` | GPU 温度后台监控，超阈值写告警日志 |
 | `vllm_serve_patched.py` | vLLM 启动包装器：绕过"某张 GPU 故障导致 vLLM 无法启动"（NVML 容错补丁） |
 | `verify_logprobs.py` | 技术验证：vLLM 能否同时返回 tool_call 与 token logprob |
+
+### tests/
+
+`tests/test_verification.py` 使用纯本地假客户端验证状态机，不下载或加载任何模型：
+
+```bash
+python -m unittest discover -s tests -v
+```
 
 ### results/
 
@@ -241,6 +288,18 @@ task_id, step_id, action_type, action_input, observation,
 confidence, confidence_source, verified, correction,
 cost_tokens, cost_calls, final_success
 ```
+
+schema v4 额外记录 `candidate_action / confidence_result / selection_policy /
+selected_for_check / verification_result / revision_guard / correction_outcome / budget_before /
+budget_after`，并把 Actor、置信评分、Critic、工具调用、token 和延迟分开计量。任务终局同时区分：
+
+- `final_success`：最终完成全部必要步骤，允许先失败后恢复；
+- `clean_success`：无任何已执行错误的成功；
+- `recovered_success`：发生过执行错误、后来成功恢复。
+
+Q2 新运行统一写为 schema v4：区分 `replay_success` 与需要最终回答的 `final_success`，记录
+冻结 Q1 评分、选择决策、修订安全门、replay/grounded 双标签和 signal/verifier 分项成本；
+执行前 verifier 纠错与执行后的局部重试分别归因。
 
 ---
 

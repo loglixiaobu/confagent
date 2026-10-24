@@ -1,4 +1,12 @@
-# Rendered documents are binary artifacts; SVG paths and CSV rows are generated.
+# Keep text file line endings consistent across platforms
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.csv text eol=lf
+*.sh text eol=lf
+
+# Binary and generated files
 *.pdf binary
 *.png binary
 *.svg whitespace=-blank-at-eol
