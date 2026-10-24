@@ -18,7 +18,8 @@
     action_input       动作输入（工具名 + 参数）
     observation        环境返回的观测
     confidence         步骤级置信度 ∈ [0,1]
-    confidence_source  置信度来源：token_logprob / self_report / consistency / fused
+    confidence_source  置信度来源：token_logprob / self_report / consistency /
+                       calibrated_consistency / fused
     verified           是否对该步骤执行了验证动作
     correction         纠错动作描述（无则 None）
     cost_tokens        该步骤全部模型调用消耗的 token（兼容旧字段）
@@ -38,12 +39,13 @@ from typing import Any, Dict, List, Optional
 ACTION_TYPES = ("tool_call", "tool_search", "retry", "replan", "answer")
 
 # 置信度来源的受控词表
-CONFIDENCE_SOURCES = ("token_logprob", "self_report", "consistency", "fused")
+CONFIDENCE_SOURCES = ("token_logprob", "self_report", "consistency",
+                      "calibrated_consistency", "fused")
 
 # 验证/纠错相关受控词表。None 表示未触发对应动作。
 VERIFICATION_TYPES = ("provenance", "critic", "consistency", "hybrid")
 CORRECTION_TYPES = ("information_supplement", "argument_revision", "tool_revision",
-                    "local_retry", "replan", "none")
+                    "revision_rejected", "local_retry", "replan", "none")
 CORRECTION_OUTCOMES = ("error_to_correct", "correct_to_error", "unchanged_correct",
                        "unchanged_error", "changed_but_still_error", "not_evaluated")
 RETRY_OUTCOMES = ("recovered", "retry_failed")
@@ -71,6 +73,14 @@ class TrajectoryStep:
     trigger_reason: Optional[str] = None
     risk_score: Optional[float] = None
     verification_result: Optional[Dict[str, Any]] = None
+    # 冻结 Q1 评分与 Q2 选择决策分开记录，避免把“评分”误算成“已验证”。
+    confidence_result: Optional[Dict[str, Any]] = None
+    selection_policy: Optional[str] = None
+    selection_eligible: bool = False
+    selection_draw: Optional[float] = None
+    selection_threshold: Optional[float] = None
+    selected_for_check: bool = False
+    revision_guard: Optional[Dict[str, Any]] = None
     correction_type: Optional[str] = None
     correction_changed: bool = False
     correction_outcome: Optional[str] = None
@@ -98,6 +108,12 @@ class TrajectoryStep:
     verification_latency_ms: int = 0
     signal_model_calls: int = 0
     verifier_model_calls: int = 0
+    signal_prompt_tokens: int = 0
+    signal_completion_tokens: int = 0
+    signal_latency_ms: int = 0
+    verifier_prompt_tokens: int = 0
+    verifier_completion_tokens: int = 0
+    verifier_latency_ms: int = 0
 
     # --- 以下为分析用辅助字段（可选，便于事后归因） ---
     matched_gold: Optional[bool] = None          # 宽松口径标签（主标签）
@@ -128,6 +144,10 @@ class TrajectoryStep:
             raise ValueError("未知 retry_outcome: %r" % self.retry_outcome)
         if self.risk_score is not None and not (0.0 <= self.risk_score <= 1.0):
             raise ValueError("risk_score 必须落在 [0,1]，收到 %r" % self.risk_score)
+        if self.selection_draw is not None and not (0.0 <= self.selection_draw <= 1.0):
+            raise ValueError("selection_draw 必须落在 [0,1]")
+        if self.selection_threshold is not None and not (0.0 <= self.selection_threshold <= 1.0):
+            raise ValueError("selection_threshold 必须落在 [0,1]")
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -139,7 +159,7 @@ class Trajectory:
 
     task_id: str
     steps: List[TrajectoryStep] = field(default_factory=list)
-    schema_version: int = 3
+    schema_version: int = 4
 
     # 运行配置，便于复现
     model: Optional[str] = None
@@ -207,11 +227,11 @@ class Trajectory:
         这是研究内容二的核心指标之一——衡量"一个错误会污染多远"。
         """
         execution = [s for s in self.steps if s.action_type != "answer"]
-        first_err = next((
-            i for i, s in enumerate(execution)
-            if (s.executed_grounded_correct is False
-                if s.executed_grounded_correct is not None else s.matched_gold is False)
-        ), None)
+        # Primary propagation uses the environment replay label. Grounding is
+        # partly produced by the same deterministic checks used for selection,
+        # so using it here would make a trigger strategy grade itself.
+        first_err = next((i for i, s in enumerate(execution)
+                          if s.matched_gold is False), None)
         if first_err is None:
             return 0.0
         downstream = len(execution) - first_err - 1

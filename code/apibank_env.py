@@ -536,8 +536,14 @@ class APIBankMockEnv:
 # 数据加载
 # ----------------------------------------------------------------------------
 def load_level3(data_dir: str, split: str = "test", limit: Optional[int] = None) -> List[Dict[str, Any]]:
-    fname = "level-3.json" if split == "test" else "lv3-train.json"
-    path = os.path.join(data_dir, "test-data" if split == "test" else "training-data", fname)
+    split_files = {
+        "test": ("test-data", "level-3.json"),
+        "train": ("training-data", "lv3-train.json"),
+    }
+    if split not in split_files:
+        raise ValueError("split 必须是 train 或 test，收到 %r" % split)
+    folder, fname = split_files[split]
+    path = os.path.join(data_dir, folder, fname)
     with open(path, encoding="utf-8") as source:
         tasks = json.load(source)
     tasks = [t for t in tasks if isinstance(t, dict) and t.get("apis")]

@@ -63,7 +63,12 @@ for t in $(seq 1 84); do
   done
   if [ "$ready" -eq "$i" ]; then
     echo "全部 $ready 个副本已就绪（约 $((t*5)) 秒）"
-    echo "ENDPOINTS=$(echo $PORTS | tr ' ' ',' | sed 's/^,//' | sed 's/,/&localhost:/g' | sed 's/localhost:/,/g' | cut -c2-)"
+    ENDPOINTS=""
+    for p in $PORTS; do
+      ENDPOINTS="${ENDPOINTS}localhost:${p},"
+    done
+    ENDPOINTS="${ENDPOINTS%,}"
+    echo "ENDPOINTS=$ENDPOINTS"
     echo
     echo "就绪端口:$PORTS"
     exit 0

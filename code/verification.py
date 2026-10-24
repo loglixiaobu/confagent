@@ -60,6 +60,7 @@ class ProvenanceResult:
     risk: float
     issues: List[Dict[str, Any]] = field(default_factory=list)
     supported_fields: List[str] = field(default_factory=list)
+    transformations: List[Dict[str, Any]] = field(default_factory=list)
 
     @property
     def valid(self) -> bool:
@@ -207,6 +208,7 @@ def check_argument_provenance(requirement: str, observations: List[Any],
     schema = _tool_schema(tools, candidate.api_name)
     issues: List[Dict[str, Any]] = []
     supported: List[str] = []
+    transformations: List[Dict[str, Any]] = []
     if schema is None:
         return ProvenanceResult(1.0, [{"kind": "unknown_api", "field": None,
                                       "message": "candidate API is not in the exposed tool set"}], [])
@@ -237,6 +239,7 @@ def check_argument_provenance(requirement: str, observations: List[Any],
                            "message": "argument value is empty"})
             continue
         value_norm = _normalise(value)
+        description = str((properties.get(field_name) or {}).get("description", "")).lower()
         exact = any(value_norm == ev or (len(value_norm) >= 4 and value_norm in ev)
                     for ev in evidence_norm)
         numeric = _number(value)
@@ -263,12 +266,35 @@ def check_argument_provenance(requirement: str, observations: List[Any],
                 compositional = bool(literals) and all(v in evidence_numbers for v in literals)
             except (ValueError, SyntaxError, ArithmeticError):
                 compositional = False
-        description = str((properties.get(field_name) or {}).get("description", "")).lower()
-        if numeric is not None and "meter" in description:
-            km_values = [Decimal(v) * 1000 for v in re.findall(
-                r"(?<![\w.])(\d+(?:\.\d+)?)\s*(?:km|kilometers?)\b", requirement.lower())]
-            if numeric in km_values:
+        # Unit-aware grounding: a visible number is not automatically valid
+        # when the public tool schema requires a different unit.  This is the
+        # canonical Q2 example: requirement=1 km, parameter=distance in meters.
+        meter_parameter = bool(re.search(r"\b(?:meters?|metres?|m)\b", description))
+        km_literals = [Decimal(v) for v in re.findall(
+            r"(?<![\w.])(\d+(?:\.\d+)?)\s*(?:km|kilometers?|kilometres?)\b",
+            requirement.lower())]
+        if numeric is not None and meter_parameter and km_literals:
+            converted = {v * 1000 for v in km_literals}
+            if numeric in converted:
                 compositional = True
+                source_value = next(v for v in km_literals if v * 1000 == numeric)
+                transformations.append({
+                    "field": field_name,
+                    "rule": "kilometers_to_meters",
+                    "source_value": str(source_value),
+                    "source_unit": "km",
+                    "target_value": str(numeric),
+                    "target_unit": "m",
+                })
+            elif numeric in km_literals and numeric not in converted:
+                issues.append({
+                    "kind": "unit_mismatch",
+                    "field": field_name,
+                    "value": value,
+                    "message": "requirement uses kilometers but tool parameter requires meters",
+                    "supported_conversions": [str(v) for v in sorted(converted)],
+                })
+                continue
         # 布尔值和很小的枚举通常由任务语义决定，单纯字符串检索会产生大量假阳性。
         primitive_ok = isinstance(value, bool) or value_norm in {"true", "false", "yes", "no"}
         if exact or compositional or primitive_ok:
@@ -286,10 +312,12 @@ def check_argument_provenance(requirement: str, observations: List[Any],
     else:
         severities = {
             "unknown_api": 1.0, "missing_argument": 0.95, "empty_value": 0.9,
-            "unsupported_value": 0.75, "unknown_argument": 0.45,
+            "unit_mismatch": 0.9, "unsupported_value": 0.75,
+            "unknown_argument": 0.45,
         }
         risk = max(severities.get(i["kind"], 0.5) for i in issues)
-    return ProvenanceResult(risk=risk, issues=issues, supported_fields=supported)
+    return ProvenanceResult(risk=risk, issues=issues, supported_fields=supported,
+                            transformations=transformations)
 
 
 def fuse_risk(token_confidence: Optional[float], self_report: Optional[float],
@@ -313,8 +341,8 @@ def fuse_risk(token_confidence: Optional[float], self_report: Optional[float],
 def should_verify(policy: str, risk: float, provenance: ProvenanceResult,
                   budget: BudgetState, threshold: float,
                   rng: random.Random, required_calls: int = 1) -> Tuple[bool, str]:
-    if policy == "vanilla":
-        return False, "policy=vanilla"
+    if policy in ("vanilla", "direct"):
+        return False, "policy=%s" % policy
     if policy == "exception":
         return False, "exception policy waits for execution feedback"
     if not budget.can_spend(required_calls):
@@ -332,6 +360,67 @@ def should_verify(policy: str, risk: float, provenance: ProvenanceResult,
                 "risk %.3f >= threshold %.3f" % (risk, threshold)
                 if risk >= threshold else "risk below threshold")
     raise ValueError("未知验证策略: %s" % policy)
+
+
+def _json_type_matches(value: Any, kind: Optional[str]) -> bool:
+    """Small dependency-free subset of JSON Schema used by revision guards."""
+    if kind in (None, ""):
+        return True
+    if kind == "string":
+        return isinstance(value, str)
+    if kind == "boolean":
+        return isinstance(value, bool)
+    if kind == "integer":
+        return isinstance(value, int) and not isinstance(value, bool)
+    if kind == "number":
+        return isinstance(value, (int, float, Decimal)) and not isinstance(value, bool)
+    if kind == "array":
+        return isinstance(value, list)
+    if kind == "object":
+        return isinstance(value, dict)
+    return True
+
+
+def check_revision_safety(requirement: str, observations: List[Any],
+                          candidate: CandidateAction,
+                          tools: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Validate a verifier-proposed action without consulting hidden gold.
+
+    The guard checks the exposed function schema and then reruns deterministic
+    provenance.  It deliberately returns an audit record rather than silently
+    discarding a harmful revision.
+    """
+    schema = _tool_schema(tools, candidate.api_name)
+    schema_issues: List[Dict[str, Any]] = []
+    if schema is None:
+        schema_issues.append({"kind": "unknown_api", "field": None,
+                              "message": "revised API is not exposed"})
+        provenance = ProvenanceResult(1.0, list(schema_issues), [])
+    else:
+        params = schema.get("parameters") or {}
+        properties = params.get("properties") or {}
+        required = params.get("required") or []
+        for field_name in required:
+            if field_name not in candidate.arguments:
+                schema_issues.append({"kind": "missing_argument", "field": field_name,
+                                      "message": "required revised argument is missing"})
+        for field_name, value in candidate.arguments.items():
+            spec = properties.get(field_name)
+            if spec is None:
+                schema_issues.append({"kind": "unknown_argument", "field": field_name,
+                                      "message": "revised argument is not declared"})
+            elif not _json_type_matches(value, spec.get("type")):
+                schema_issues.append({"kind": "type_mismatch", "field": field_name,
+                                      "expected": spec.get("type"),
+                                      "message": "revised argument has the wrong JSON type"})
+        provenance = check_argument_provenance(
+            requirement, observations, candidate, tools)
+    accepted = not schema_issues and provenance.valid
+    return {
+        "accepted": accepted,
+        "schema_issues": schema_issues,
+        "provenance": provenance.to_dict(),
+    }
 
 
 def _extract_json(text: str) -> Optional[Dict[str, Any]]:
@@ -365,6 +454,8 @@ def run_critic(client: Any, model: str, messages: List[Dict[str, Any]],
     prompt = (
         "You are the action verifier. Verify the candidate using only the requirement and "
         "tool observations already shown. Never invent a value.\n"
+        "Check parameter units against the public tool schema. Convert only when the source "
+        "value and both units are explicit (for example, 1 km becomes 1000 meters).\n"
         "Return exactly ONE JSON object and no other text. It must have these three keys:\n"
         '{"valid": true_or_false, "issues": [], "revised_action": null}\n'
         "When a justified correction exists, revised_action must instead be "

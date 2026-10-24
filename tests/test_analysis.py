@@ -6,11 +6,11 @@ import unittest
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "code"))
 
-from analyze_verification import paired_delta_ci, summarize  # noqa: E402
+from analyze_verification import paired_delta_ci, summarize, verified_corrections  # noqa: E402
 
 
 class VerificationAnalysisTests(unittest.TestCase):
-    def test_grounded_labels_take_priority_over_lucky_replay_match(self):
+    def test_replay_is_primary_and_grounding_is_reported_separately(self):
         traj = {
             "task_id": "t1", "seed": 0, "final_success": False,
             "replay_success": True, "total_verification_calls": 1,
@@ -23,9 +23,10 @@ class VerificationAnalysisTests(unittest.TestCase):
             }],
         }
         out = summarize([traj])
-        self.assertEqual(out["trigger_label_basis"], "grounded")
-        self.assertEqual(out["trigger_precision"], 1.0)
+        self.assertEqual(out["trigger_label_basis"], "replay")
+        self.assertEqual(out["trigger_precision"], 0.0)
         self.assertEqual(out["replay_trigger_precision"], 0.0)
+        self.assertEqual(out["grounded_trigger_precision"], 1.0)
         self.assertEqual(out["replay_success_rate"], 1.0)
 
     def test_summary_counts_fix_and_harm(self):
@@ -49,6 +50,25 @@ class VerificationAnalysisTests(unittest.TestCase):
         self.assertEqual(out["trigger_precision"], 0.5)
         self.assertEqual(out["correction_precision"], 0.5)
 
+    def test_confidence_diagnostics_use_candidate_replay_labels(self):
+        traj = {
+            "task_id": "t1", "seed": 0, "final_success": False,
+            "steps": [
+                {"action_type": "tool_call", "candidate_matched_gold": True,
+                 "confidence": 0.9, "verified": False,
+                 "confidence_result": {"needs_verification": False}},
+                {"action_type": "tool_call", "candidate_matched_gold": False,
+                 "confidence": 0.2, "verified": True,
+                 "confidence_result": {"needs_verification": True}},
+            ],
+        }
+        out = summarize([traj])
+        self.assertEqual(out["confidence_label_coverage"], 1.0)
+        self.assertEqual(out["confidence_auroc"], 1.0)
+        self.assertAlmostEqual(out["confidence_brier"], 0.025)
+        self.assertEqual(out["low_confidence_error_rate"], 1.0)
+        self.assertEqual(out["high_confidence_error_rate"], 0.0)
+
     def test_paired_comparison_uses_task_and_seed(self):
         base = [
             {"task_id": "a", "seed": 0, "final_success": False},
@@ -63,6 +83,29 @@ class VerificationAnalysisTests(unittest.TestCase):
         self.assertEqual(out["wins"], 1)
         self.assertEqual(out["losses"], 0)
         self.assertEqual(out["success_delta"], 0.5)
+        self.assertTrue(out["complete_pairing"])
+        with self.assertRaisesRegex(ValueError, "重复"):
+            paired_delta_ci(base + [base[0]], method, n_boot=10, seed=0)
+
+    def test_q3_export_keeps_only_accepted_successful_repairs(self):
+        traj = {
+            "task_id": "a", "seed": 0, "config": {"task_manifest": "m1"},
+            "steps": [
+                {"step_id": 1, "action_type": "tool_call",
+                 "candidate_action": {"api_name": "D", "arguments": {"distance": 1}},
+                 "action_input": {"api_name": "D", "arguments": {"distance": 1000}},
+                 "candidate_grounding": {"issues": [{"kind": "unit_mismatch"}]},
+                 "verification_result": {"issues": [{"kind": "unit_mismatch"}]},
+                 "revision_guard": {"accepted": True},
+                 "correction_changed": True, "correction_outcome": "error_to_correct"},
+                {"step_id": 2, "action_type": "tool_call",
+                 "revision_guard": {"accepted": False},
+                 "correction_changed": True, "correction_outcome": "error_to_correct"},
+            ],
+        }
+        rows = verified_corrections([traj])
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["error_types"], ["unit_mismatch"])
 
 
 if __name__ == "__main__":

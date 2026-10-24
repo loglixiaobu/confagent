@@ -20,9 +20,9 @@ BASE_PORT="${1:-8000}"
 shift 2>/dev/null || true
 
 STOP_AFTER=0
-ARGS=""
+ARGS=()
 for a in "$@"; do
-  if [ "$a" = "--stop" ]; then STOP_AFTER=1; else ARGS="$ARGS $a"; fi
+  if [ "$a" = "--stop" ]; then STOP_AFTER=1; else ARGS+=("$a"); fi
 done
 
 CODE=${PROJECT_ROOT}/code
@@ -42,7 +42,9 @@ ENDPOINTS=$(echo "$ENDPOINTS" | sed 's/,$//')
 echo "################################################################"
 echo "# 实验轮次   GPU 组: $GPUS"
 echo "# 端点: $ENDPOINTS"
-echo "# 参数:$ARGS"
+printf '# 参数:'
+printf ' %q' "${ARGS[@]}"
+echo
 echo "################################################################"
 echo
 
@@ -57,8 +59,8 @@ echo "--- 运行中温度 ---"
 nvidia-smi --query-gpu=index,temperature.gpu,memory.used,power.draw --format=csv,noheader
 echo
 
-cd "$CODE"
-python run_batch.py --endpoints "$ENDPOINTS" $ARGS
+cd "$PROJECT_ROOT"
+python "$CODE/run_batch.py" --endpoints "$ENDPOINTS" "${ARGS[@]}"
 RC=$?
 
 echo

@@ -3,6 +3,7 @@ import os
 import sys
 import unittest
 from types import SimpleNamespace
+from unittest.mock import patch
 
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -12,7 +13,8 @@ from apibank_env import APIBankMockEnv, api_schema_to_tool  # noqa: E402
 from action_semantics import semantic_action_equal  # noqa: E402
 from react_agent import AgentConfig, run_task  # noqa: E402
 from verification import (BudgetState, CandidateAction,  # noqa: E402
-                          check_argument_provenance, correction_outcome,
+                          check_argument_provenance, check_revision_safety,
+                          correction_outcome,
                           grounded_label, run_consistency_vote, run_critic,
                           should_verify)
 
@@ -135,6 +137,42 @@ class VerificationUnitTests(unittest.TestCase):
             }), [api_schema_to_tool(api)])
         self.assertTrue(result.valid)
         self.assertEqual(result.supported_fields, ["room", "people", "start_time"])
+
+    def test_unit_conversion_is_audited_and_raw_kilometers_are_rejected(self):
+        api = {
+            "name": "SetDistance", "description": "Set travel distance.",
+            "input_parameters": {
+                "distance": {"type": "float", "description": "Distance in meters."},
+            },
+        }
+        tools = [api_schema_to_tool(api)]
+        raw = check_argument_provenance(
+            "Set the distance to 1 km.", [],
+            CandidateAction("SetDistance", {"distance": 1}), tools)
+        converted = check_argument_provenance(
+            "Set the distance to 1 km.", [],
+            CandidateAction("SetDistance", {"distance": 1000}), tools)
+        converted_decimal = check_argument_provenance(
+            "Set the distance to 2.5 km.", [],
+            CandidateAction("SetDistance", {"distance": 2500}), tools)
+        self.assertFalse(raw.valid)
+        self.assertEqual(raw.issues[0]["kind"], "unit_mismatch")
+        self.assertTrue(converted.valid)
+        self.assertEqual(converted.transformations[0]["rule"], "kilometers_to_meters")
+        self.assertTrue(converted_decimal.valid)
+
+    def test_revision_guard_rejects_unsupported_value_and_wrong_type(self):
+        task, api = task_fixture()
+        tools = [api_schema_to_tool(api)]
+        unsupported = check_revision_safety(
+            task["requirement"], [],
+            CandidateAction("LookupUser", {"user_name": "Bob"}), tools)
+        wrong_type = check_revision_safety(
+            task["requirement"], [],
+            CandidateAction("LookupUser", {"user_name": 7}), tools)
+        self.assertFalse(unsupported["accepted"])
+        self.assertFalse(wrong_type["accepted"])
+        self.assertEqual(wrong_type["schema_issues"][0]["kind"], "type_mismatch")
 
     def test_critic_json_without_boolean_valid_is_unavailable(self):
         task, api = task_fixture()
@@ -265,10 +303,132 @@ class AgentFlowTests(unittest.TestCase):
         cfg = AgentConfig(
             model="fake", max_steps=1, verify_policy="always", verifier="critic",
             verify_budget=1, feedback_mode="realistic", enable_thinking=False,
+            revision_guard=False,
         )
         traj = run_task(task, cfg, client, task_index=0)
         self.assertFalse(traj.final_success)
         self.assertEqual(traj.steps[0].correction_outcome, "correct_to_error")
+
+    def test_revision_guard_keeps_original_when_critic_invents_value(self):
+        task, _ = task_fixture()
+        critic = text_response(json.dumps({
+            "valid": False,
+            "issues": [{"field": "user_name", "reason": "incorrect critique"}],
+            "revised_action": {"api_name": "LookupUser", "arguments": {"user_name": "Bob"}},
+        }))
+        client = FakeClient([tool_response("LookupUser", {"user_name": "Alice"}), critic])
+        cfg = AgentConfig(
+            model="fake", max_steps=1, verify_policy="always", verifier="critic",
+            verify_budget=1, feedback_mode="realistic", enable_thinking=False,
+        )
+        traj = run_task(task, cfg, client, task_index=0)
+        step = traj.steps[0]
+        self.assertTrue(step.matched_gold)
+        self.assertEqual(step.action_input["arguments"]["user_name"], "Alice")
+        self.assertEqual(step.correction_type, "revision_rejected")
+        self.assertFalse(step.revision_guard["accepted"])
+
+    @staticmethod
+    def _score_result(p_correct, needs_verification):
+        def fake_score(**kwargs):
+            for _ in range(3):
+                if not kwargs["before_request"]():
+                    raise AssertionError("score budget unexpectedly blocked")
+            return {
+                "raw_consistency": 2 / 3 if needs_verification else 1.0,
+                "p_correct": p_correct,
+                "needs_verification": needs_verification,
+                "reason": "inconsistent_samples" if needs_verification else "all_samples_agree",
+                "calibrator_version": "consistency-platt-v1",
+                "samples": [],
+                "quality": {"complete": True, "n_samples": 3},
+                "cost": {"n_model_requests": 3, "elapsed_s": 0.01,
+                         "usage": {"prompt_tokens": 30, "completion_tokens": 15}},
+            }
+        return fake_score
+
+    def test_confidence_check_spends_k_plus_critic_and_repairs(self):
+        task, _ = task_fixture()
+        critic = text_response(json.dumps({
+            "valid": False, "issues": [{"field": "user_name"}],
+            "revised_action": {"api_name": "LookupUser", "arguments": {"user_name": "Alice"}},
+        }))
+        client = FakeClient([tool_response("LookupUser", {"user_name": "Bob"}), critic,
+                             text_response("Alice was found.")])
+        cfg = AgentConfig(
+            model="fake", max_steps=2, verify_policy="confidence_check",
+            verifier="critic", verify_budget=4, feedback_mode="realistic",
+            enable_thinking=False,
+        )
+        with patch("react_agent.estimate_step_confidence",
+                   side_effect=self._score_result(0.2, True)):
+            traj = run_task(task, cfg, client, task_index=0)
+        step = traj.steps[0]
+        self.assertTrue(traj.final_success)
+        self.assertTrue(step.selected_for_check)
+        self.assertEqual(step.signal_model_calls, 3)
+        self.assertEqual(step.verifier_model_calls, 1)
+        self.assertEqual(traj.config["verification_budget_used"], 4)
+        self.assertEqual(traj.config["checks_used"], 1)
+
+    def test_kilometers_to_meters_full_confidence_check_flow(self):
+        api = {
+            "name": "SetDistance", "description": "Set travel distance.",
+            "input_parameters": {
+                "distance": {"type": "float", "description": "Distance in meters."},
+            },
+        }
+        task = {
+            "requirement": "Set the distance to 1 km.",
+            "response": "Distance set.",
+            "apis": [
+                {"api_name": "ToolSearcher", "input": {"keywords": "set distance"},
+                 "output": {"output": api}, "exception": None},
+                {"api_name": "SetDistance", "input": {"distance": 1000},
+                 "output": {"output": {"distance": 1000}}, "exception": None},
+            ],
+        }
+        critic = text_response(json.dumps({
+            "valid": False, "issues": [{"field": "distance", "reason": "unit mismatch"}],
+            "revised_action": {"api_name": "SetDistance", "arguments": {"distance": 1000}},
+        }))
+        client = FakeClient([tool_response("SetDistance", {"distance": 1}), critic,
+                             text_response("Distance set.")])
+        cfg = AgentConfig(
+            model="fake", max_steps=2, verify_policy="confidence_check",
+            verifier="critic", verify_budget=4, feedback_mode="realistic",
+            enable_thinking=False,
+        )
+        with patch("react_agent.estimate_step_confidence",
+                   side_effect=self._score_result(0.1, True)):
+            traj = run_task(task, cfg, client, task_index=0)
+        step = traj.steps[0]
+        self.assertTrue(traj.final_success)
+        self.assertEqual(step.action_input["arguments"]["distance"], 1000)
+        self.assertEqual(step.correction_outcome, "error_to_correct")
+        self.assertEqual(step.revision_guard["provenance"]["transformations"][0]["rule"],
+                         "kilometers_to_meters")
+
+    def test_random_check_pays_same_score_cost_but_ignores_score_for_selection(self):
+        task, _ = task_fixture()
+        critic = text_response(json.dumps({
+            "valid": True, "issues": [], "revised_action": None,
+        }))
+        client = FakeClient([tool_response("LookupUser", {"user_name": "Alice"}), critic,
+                             text_response("Alice was found.")])
+        cfg = AgentConfig(
+            model="fake", max_steps=2, verify_policy="random_check",
+            verifier="critic", verify_budget=4, random_check_rate=1.0,
+            feedback_mode="realistic", enable_thinking=False,
+        )
+        with patch("react_agent.estimate_step_confidence",
+                   side_effect=self._score_result(0.99, False)):
+            traj = run_task(task, cfg, client, task_index=0)
+        step = traj.steps[0]
+        self.assertTrue(step.selected_for_check)
+        self.assertEqual(step.signal_model_calls, 3)
+        self.assertEqual(step.verifier_model_calls, 1)
+        self.assertIn("random draw", step.trigger_reason)
 
     def test_environment_feedback_drives_local_retry(self):
         task, _ = task_fixture()
