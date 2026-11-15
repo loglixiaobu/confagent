@@ -1,0 +1,2634 @@
+{
+  "version": "cross-session-versioned-provenance-v1",
+  "provenance": {
+    "construction": "44 synthetic independently authored scenario families fixed before inference. All tool contracts come from local API-Bank corpora.",
+    "history": "Every save or revoke is supported by earlier explicit user authorization and assistant acknowledgement. A shared natural detail identifies the requested fact without revealing its value in the follow-up.",
+    "boundary": "The current conversation is separate from prior observations and answer annotations. Only records belonging to the current profile and semantic slot can support the request.",
+    "allocation": "Sixteen retentions, twenty revised facts, and eight non-held-out controls."
+  },
+  "schemas": {
+    "AddAgenda": {
+      "corpus": "level1_response",
+      "record_index": 18
+    },
+    "AddAlarm": {
+      "corpus": "level1_response",
+      "record_index": 152
+    },
+    "AddReminder": {
+      "corpus": "level1_response",
+      "record_index": 23
+    },
+    "QueryHealthData": {
+      "corpus": "level1_response",
+      "record_index": 0
+    },
+    "Dictionary": {
+      "corpus": "level1_response",
+      "record_index": 69
+    },
+    "FindHealthcareProviderReviews": {
+      "corpus": "level3_train_response",
+      "record_index": 219
+    },
+    "FitnessStoreLocator": {
+      "corpus": "level3_train_response",
+      "record_index": 95
+    },
+    "MedicalProcedureCostEstimator": {
+      "corpus": "level3_train_response",
+      "record_index": 208
+    },
+    "AutoInsuranceCoverageLimit": {
+      "corpus": "level3_train_response",
+      "record_index": 258
+    },
+    "AcupunctureBenefits": {
+      "corpus": "level3_train_response",
+      "record_index": 267
+    },
+    "ImageCaption": {
+      "corpus": "level1_response",
+      "record_index": 51
+    },
+    "SpeechRecognition": {
+      "corpus": "level1_response",
+      "record_index": 272
+    },
+    "QueryHistoryToday": {
+      "corpus": "level1_response",
+      "record_index": 64
+    },
+    "Wiki": {
+      "corpus": "level1_response",
+      "record_index": 196
+    },
+    "MovieRecommendations": {
+      "corpus": "level3",
+      "record_index": 20
+    },
+    "HealthcareProviderDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 75
+    },
+    "ModifyAlarm": {
+      "corpus": "level1_response",
+      "record_index": 71
+    },
+    "ModifyAgenda": {
+      "corpus": "level1_response",
+      "record_index": 244
+    },
+    "ModifyReminder": {
+      "corpus": "level1_response",
+      "record_index": 253
+    },
+    "ModifyMeeting": {
+      "corpus": "level1_response",
+      "record_index": 71
+    },
+    "TimedSwitch": {
+      "corpus": "level1_response",
+      "record_index": 237
+    },
+    "BookHotel": {
+      "corpus": "level1_response",
+      "record_index": 234
+    },
+    "DocumentQA": {
+      "corpus": "level1_response",
+      "record_index": 258
+    },
+    "Translate": {
+      "corpus": "level1_response",
+      "record_index": 229
+    },
+    "SendEmail": {
+      "corpus": "level1_response",
+      "record_index": 310
+    },
+    "QueryRegistration": {
+      "corpus": "level1_response",
+      "record_index": 24
+    },
+    "FlightSearch": {
+      "corpus": "level3",
+      "record_index": 35
+    },
+    "HotelAvailability": {
+      "corpus": "level3",
+      "record_index": 35
+    },
+    "PhysicianRatingsAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 161
+    },
+    "TreatmentRecommendation": {
+      "corpus": "level3_train_response",
+      "record_index": 201
+    },
+    "MedicationPriceComparer": {
+      "corpus": "level3_train_response",
+      "record_index": 281
+    },
+    "NearestHospitalFinder": {
+      "corpus": "level3_train_response",
+      "record_index": 77
+    },
+    "TravelStatus": {
+      "corpus": "level3",
+      "record_index": 10
+    },
+    "TreadmillPurchaseOptions": {
+      "corpus": "level3_train_response",
+      "record_index": 232
+    },
+    "ResearchPaperSummarizer": {
+      "corpus": "level3_train_response",
+      "record_index": 268
+    },
+    "ReminderDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 231
+    },
+    "PlayMusic": {
+      "corpus": "level1_response",
+      "record_index": 233
+    },
+    "Geocoding": {
+      "corpus": "level3",
+      "record_index": 15
+    },
+    "MedicalResearchStudyFinder": {
+      "corpus": "level3_train_response",
+      "record_index": 307
+    },
+    "OrganizationMembers": {
+      "corpus": "level3",
+      "record_index": 10
+    },
+    "FitnessEquipmentSearch": {
+      "corpus": "level3_train_response",
+      "record_index": 232
+    },
+    "EquipmentRentalAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 49
+    },
+    "AppointmentScheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 313
+    },
+    "GetTreadmillPrices": {
+      "corpus": "level3_train_response",
+      "record_index": 67
+    }
+  },
+  "validation": [
+    {
+      "task_id": "provenance-revoked-beacon-song-request",
+      "base_task_id": "provenance-revoked-beacon-song",
+      "target_tool": "PlayMusic",
+      "profile_id": "provenance-revoked-beacon-song-member",
+      "requested_slot": "provenance-revoked-beacon-song-music_name",
+      "memory_field": "music_name",
+      "natural_detail": "shore walk practice track",
+      "requirement": "Play the track from my shore walk practice track entry.",
+      "known_arguments": {},
+      "condition": "revoked",
+      "aliases": [
+        "track",
+        "song",
+        "which track",
+        "music",
+        "song name",
+        "title"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-revoked-beacon-song-saved-2",
+          "profile_id": "provenance-revoked-beacon-song-member",
+          "slot": "provenance-revoked-beacon-song-music_name",
+          "kind": "revoke",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Delete the shore walk practice track from my profile and do not rely on the record again."
+            },
+            {
+              "role": "assistant",
+              "content": "I removed the saved detail and will no longer use it."
+            }
+          ]
+        },
+        {
+          "record_id": "provenance-revoked-beacon-song-saved-1",
+          "profile_id": "provenance-revoked-beacon-song-member",
+          "slot": "provenance-revoked-beacon-song-music_name",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The shore walk practice track is Bright Copper Tide."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Bright Copper Tide"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "provenance-revoked-load-in-address-request",
+      "base_task_id": "provenance-revoked-load-in-address",
+      "target_tool": "Geocoding",
+      "profile_id": "provenance-revoked-load-in-address-member",
+      "requested_slot": "provenance-revoked-load-in-address-address",
+      "memory_field": "address",
+      "natural_detail": "tool van unloading point address",
+      "requirement": "Find the coordinates using the tool van unloading point address from my profile.",
+      "known_arguments": {},
+      "condition": "revoked",
+      "aliases": [
+        "address",
+        "street address",
+        "location",
+        "where",
+        "point"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-revoked-load-in-address-saved-1",
+          "profile_id": "provenance-revoked-load-in-address-member",
+          "slot": "provenance-revoked-load-in-address-address",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The tool van unloading point address is 39 Tin Lane, Agnesford."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "39 Tin Lane, Agnesford"
+        },
+        {
+          "record_id": "provenance-revoked-load-in-address-saved-2",
+          "profile_id": "provenance-revoked-load-in-address-member",
+          "slot": "provenance-revoked-load-in-address-address",
+          "kind": "revoke",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remove the tool van unloading point address from my profile. I revoke permission to reuse it."
+            },
+            {
+              "role": "assistant",
+              "content": "I removed the saved detail and will no longer use it."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "provenance-foreign-trial-brief-request",
+      "base_task_id": "provenance-foreign-trial-brief",
+      "target_tool": "MedicalResearchStudyFinder",
+      "profile_id": "provenance-foreign-trial-brief-member",
+      "requested_slot": "provenance-foreign-trial-brief-health_condition",
+      "memory_field": "health_condition",
+      "natural_detail": "seminar trial search topic",
+      "requirement": "Look up studies in Worcester for the health condition under my seminar trial search topic.",
+      "known_arguments": {
+        "location": "Worcester"
+      },
+      "condition": "wrong_profile",
+      "aliases": [
+        "condition",
+        "topic",
+        "which condition",
+        "health concern",
+        "health issue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-foreign-trial-brief-saved-1",
+          "profile_id": "provenance-foreign-trial-brief-other-member",
+          "slot": "provenance-foreign-trial-brief-health_condition",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The health condition in my seminar trial search topic is psoriasis."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "psoriasis"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "provenance-foreign-club-directory-request",
+      "base_task_id": "provenance-foreign-club-directory",
+      "target_tool": "OrganizationMembers",
+      "profile_id": "provenance-foreign-club-directory-member",
+      "requested_slot": "provenance-foreign-club-directory-organization",
+      "memory_field": "organization",
+      "natural_detail": "shore survey club directory name",
+      "requirement": "List members in the organization listed as my shore survey club directory name.",
+      "known_arguments": {},
+      "condition": "wrong_profile",
+      "aliases": [
+        "organization",
+        "club",
+        "directory name",
+        "which group",
+        "which organization"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-foreign-club-directory-saved-1",
+          "profile_id": "provenance-foreign-club-directory-other-member",
+          "slot": "provenance-foreign-club-directory-organization",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. The shore survey club directory name is Tin Heron Surveyors."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Tin Heron Surveyors"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "provenance-equipment-list-other-project-request",
+      "base_task_id": "provenance-equipment-list-other-project",
+      "target_tool": "FitnessEquipmentSearch",
+      "profile_id": "provenance-equipment-list-other-project-member",
+      "requested_slot": "provenance-equipment-list-other-project-equipment_type",
+      "memory_field": "equipment_type",
+      "natural_detail": "training studio floor equipment type",
+      "requirement": "Search product information for the training studio floor equipment type on my plan.",
+      "known_arguments": {},
+      "condition": "wrong_slot",
+      "aliases": [
+        "equipment type",
+        "which equipment",
+        "what equipment",
+        "type of machine",
+        "which machine"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-equipment-list-other-project-saved-1",
+          "profile_id": "provenance-equipment-list-other-project-member",
+          "slot": "provenance-equipment-list-other-project-other-equipment_type",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The outdoor track storage equipment type is air bikes."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "air bikes"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "provenance-rental-city-stage-mismatch-request",
+      "base_task_id": "provenance-rental-city-stage-mismatch",
+      "target_tool": "EquipmentRentalAPI",
+      "profile_id": "provenance-rental-city-stage-mismatch-member",
+      "requested_slot": "provenance-rental-city-stage-mismatch-location",
+      "memory_field": "location",
+      "natural_detail": "installation rental city",
+      "requirement": "Find exercise equipment rental providers at the installation rental city I filed.",
+      "known_arguments": {},
+      "condition": "wrong_slot",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-rental-city-stage-mismatch-saved-1",
+          "profile_id": "provenance-rental-city-stage-mismatch-member",
+          "slot": "provenance-rental-city-stage-mismatch-other-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. My unrelated winter storage city is Rochester."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Rochester"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "provenance-current-rehab-specialist-request",
+      "base_task_id": "provenance-current-rehab-specialist",
+      "target_tool": "AppointmentScheduler",
+      "profile_id": "provenance-current-rehab-specialist-member",
+      "requested_slot": "provenance-current-rehab-specialist-specialist",
+      "memory_field": "specialist",
+      "natural_detail": "therapy scheduling specialist",
+      "requirement": "In the scheduler demo, the therapy scheduling specialist for this visit is Perri Vane. Schedule 2031-07-14 from 13:45 to 14:25 and use Perri Vane for this request.",
+      "known_arguments": {
+        "start_time": "2031-07-14 13:45:00",
+        "end_time": "2031-07-14 14:25:00"
+      },
+      "condition": "current_update",
+      "aliases": [
+        "name",
+        "who",
+        "which person",
+        "full name",
+        "which",
+        "specialist",
+        "clinician",
+        "doctor"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-current-rehab-specialist-saved-1",
+          "profile_id": "provenance-current-rehab-specialist-member",
+          "slot": "provenance-current-rehab-specialist-specialist",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The therapy scheduling specialist on file is Malik Rook."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Malik Rook"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-current-rehab-specialist-saved-1"
+      ],
+      "current_value": "Perri Vane"
+    },
+    {
+      "task_id": "provenance-current-pricing-city-request",
+      "base_task_id": "provenance-current-pricing-city",
+      "target_tool": "GetTreadmillPrices",
+      "profile_id": "provenance-current-pricing-city-member",
+      "requested_slot": "provenance-current-pricing-city-location",
+      "memory_field": "location",
+      "natural_detail": "market sample city",
+      "requirement": "Pull treadmill rental prices for the market sample city. Use Scranton today, even if I saved a different city.",
+      "known_arguments": {},
+      "condition": "current_update",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-current-pricing-city-saved-1",
+          "profile_id": "provenance-current-pricing-city-member",
+          "slot": "provenance-current-pricing-city-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The market sample city is Oxford."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Oxford"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-current-pricing-city-saved-1"
+      ],
+      "current_value": "Scranton"
+    }
+  ],
+  "replication": [
+    {
+      "task_id": "provenance-mock-calendar-fixture-request",
+      "base_task_id": "provenance-mock-calendar-fixture",
+      "target_tool": "AddAgenda",
+      "profile_id": "provenance-mock-calendar-fixture-member",
+      "requested_slot": "provenance-mock-calendar-fixture-location",
+      "memory_field": "location",
+      "natural_detail": "print-room inspection site",
+      "requirement": "In the calendar sandbox, add an agenda item with content \"Print-room inspection\" for 2031-04-11 14:20. Use my saved print-room inspection site. The demo token is SIM-AG-830.",
+      "known_arguments": {
+        "content": "Print-room inspection",
+        "time": "2031-04-11 14:20:00",
+        "token": "SIM-AG-830"
+      },
+      "condition": "saved",
+      "aliases": [
+        "site",
+        "where",
+        "location",
+        "room",
+        "address",
+        "venue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-mock-calendar-fixture-saved-1",
+          "profile_id": "provenance-mock-calendar-fixture-member",
+          "slot": "provenance-mock-calendar-fixture-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The print-room inspection site is Copper Bay Annex."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Copper Bay Annex"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-mock-calendar-fixture-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-press-cycle-alarm-request",
+      "base_task_id": "provenance-press-cycle-alarm",
+      "target_tool": "AddAlarm",
+      "profile_id": "provenance-press-cycle-alarm-member",
+      "requested_slot": "provenance-press-cycle-alarm-time",
+      "memory_field": "time",
+      "natural_detail": "paper press check-in alarm time",
+      "requirement": "Set the alarm using the paper press check-in alarm time from my record. This is a sandbox and the provided token is SIM-AL-257.",
+      "known_arguments": {
+        "token": "SIM-AL-257"
+      },
+      "condition": "saved",
+      "aliases": [
+        "date",
+        "time",
+        "when",
+        "schedule",
+        "slot",
+        "alarm time"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-press-cycle-alarm-saved-1",
+          "profile_id": "provenance-press-cycle-alarm-member",
+          "slot": "provenance-press-cycle-alarm-time",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The paper press check-in alarm time is 2031-09-07 06:40:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "2031-09-07 06:40:00"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-press-cycle-alarm-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-bindery-reminder-copy-request",
+      "base_task_id": "provenance-bindery-reminder-copy",
+      "target_tool": "AddReminder",
+      "profile_id": "provenance-bindery-reminder-copy-member",
+      "requested_slot": "provenance-bindery-reminder-copy-content",
+      "memory_field": "content",
+      "natural_detail": "bindery pickup reminder wording",
+      "requirement": "Create a reminder for 2031-10-13 16:00 under demo token SIM-RM-653. Use the bindery pickup reminder wording I gave you.",
+      "known_arguments": {
+        "time": "2031-10-13 16:00:00",
+        "token": "SIM-RM-653"
+      },
+      "condition": "saved",
+      "aliases": [
+        "wording",
+        "reminder content",
+        "exact text",
+        "message",
+        "what to remind you",
+        "what should the reminder say"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-bindery-reminder-copy-saved-1",
+          "profile_id": "provenance-bindery-reminder-copy-member",
+          "slot": "provenance-bindery-reminder-copy-content",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The exact bindery pickup reminder wording is Bring the striped parcel sleeve."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Bring the striped parcel sleeve."
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-bindery-reminder-copy-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-training-wearable-window-request",
+      "base_task_id": "provenance-training-wearable-window",
+      "target_tool": "QueryHealthData",
+      "profile_id": "provenance-training-wearable-window-member",
+      "requested_slot": "provenance-training-wearable-window-start_time",
+      "memory_field": "start_time",
+      "natural_detail": "training wristband playback start time",
+      "requirement": "In the simulated wearable log, query demo user STAGED-188 through 2031-03-06 19:00, beginning at my training wristband playback start time.",
+      "known_arguments": {
+        "user_id": "STAGED-188",
+        "end_time": "2031-03-06 19:00:00"
+      },
+      "condition": "saved",
+      "aliases": [
+        "start time",
+        "beginning",
+        "start",
+        "earliest",
+        "when should it start"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-training-wearable-window-saved-1",
+          "profile_id": "provenance-training-wearable-window-member",
+          "slot": "provenance-training-wearable-window-start_time",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The training wristband playback start time is 2031-03-06 17:40:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "2031-03-06 17:40:00"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-training-wearable-window-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-food-writing-gloss-request",
+      "base_task_id": "provenance-food-writing-gloss",
+      "target_tool": "Dictionary",
+      "profile_id": "provenance-food-writing-gloss-member",
+      "requested_slot": "provenance-food-writing-gloss-keyword",
+      "memory_field": "keyword",
+      "natural_detail": "food glossary entry",
+      "requirement": "Look up the food glossary entry I tagged for my cooking article.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "word",
+        "term",
+        "keyword",
+        "entry",
+        "which word"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-food-writing-gloss-saved-1",
+          "profile_id": "provenance-food-writing-gloss-member",
+          "slot": "provenance-food-writing-gloss-keyword",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. My tagged food glossary entry is roux."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "roux"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-food-writing-gloss-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-review-roundup-city-request",
+      "base_task_id": "provenance-review-roundup-city",
+      "target_tool": "FindHealthcareProviderReviews",
+      "profile_id": "provenance-review-roundup-city-member",
+      "requested_slot": "provenance-review-roundup-city-city",
+      "memory_field": "city",
+      "natural_detail": "spring provider review city",
+      "requirement": "Pull healthcare provider reviews for my spring provider review city.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-review-roundup-city-saved-1",
+          "profile_id": "provenance-review-roundup-city-member",
+          "slot": "provenance-review-roundup-city-city",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The spring provider review city is Burlington."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Burlington"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-review-roundup-city-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-gym-display-shopping-area-request",
+      "base_task_id": "provenance-gym-display-shopping-area",
+      "target_tool": "FitnessStoreLocator",
+      "profile_id": "provenance-gym-display-shopping-area-member",
+      "requested_slot": "provenance-gym-display-shopping-area-user_location",
+      "memory_field": "user_location",
+      "natural_detail": "display comparison shopping city",
+      "requirement": "Find fitness shops in my display comparison shopping city.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-gym-display-shopping-area-saved-1",
+          "profile_id": "provenance-gym-display-shopping-area-member",
+          "slot": "provenance-gym-display-shopping-area-user_location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The display comparison shopping city is Salisbury."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Salisbury"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-gym-display-shopping-area-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-illustrated-procedure-quote-request",
+      "base_task_id": "provenance-illustrated-procedure-quote",
+      "target_tool": "MedicalProcedureCostEstimator",
+      "profile_id": "provenance-illustrated-procedure-quote-member",
+      "requested_slot": "provenance-illustrated-procedure-quote-medical_procedure",
+      "memory_field": "medical_procedure",
+      "natural_detail": "illustrated estimate procedure",
+      "requirement": "For the sample billing guide, estimate costs in Modesto for the illustrated estimate procedure in my notes.",
+      "known_arguments": {
+        "location": "Modesto"
+      },
+      "condition": "saved",
+      "aliases": [
+        "medical procedure",
+        "procedure",
+        "which procedure",
+        "operation",
+        "what procedure",
+        "which treatment"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-illustrated-procedure-quote-saved-1",
+          "profile_id": "provenance-illustrated-procedure-quote-member",
+          "slot": "provenance-illustrated-procedure-quote-medical_procedure",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The illustrated estimate procedure for my sample guide is wrist ultrasound."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "wrist ultrasound"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-illustrated-procedure-quote-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-vehicle-route-training-policy-request",
+      "base_task_id": "provenance-vehicle-route-training-policy",
+      "target_tool": "AutoInsuranceCoverageLimit",
+      "profile_id": "provenance-vehicle-route-training-policy-member",
+      "requested_slot": "provenance-vehicle-route-training-policy-state",
+      "memory_field": "state",
+      "natural_detail": "teaching policy jurisdiction",
+      "requirement": "For the synthetic coverage example, show the comprehensive limit in my teaching policy jurisdiction.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "state",
+        "jurisdiction",
+        "which state",
+        "which jurisdiction"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-vehicle-route-training-policy-saved-1",
+          "profile_id": "provenance-vehicle-route-training-policy-member",
+          "slot": "provenance-vehicle-route-training-policy-state",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The teaching policy jurisdiction is Nebraska."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Nebraska"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-vehicle-route-training-policy-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-reference-folio-acupuncture-condition-request",
+      "base_task_id": "provenance-reference-folio-acupuncture-condition",
+      "target_tool": "AcupunctureBenefits",
+      "profile_id": "provenance-reference-folio-acupuncture-condition-member",
+      "requested_slot": "provenance-reference-folio-acupuncture-condition-condition",
+      "memory_field": "condition",
+      "natural_detail": "reference folio condition",
+      "requirement": "Look up informational acupuncture benefits for my reference folio condition.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "condition",
+        "topic",
+        "which condition",
+        "health concern",
+        "health issue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-reference-folio-acupuncture-condition-saved-1",
+          "profile_id": "provenance-reference-folio-acupuncture-condition-member",
+          "slot": "provenance-reference-folio-acupuncture-condition-condition",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. The reference folio condition for the informational review is migraine."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "migraine"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-reference-folio-acupuncture-condition-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-artwork-desk-caption-request",
+      "base_task_id": "provenance-artwork-desk-caption",
+      "target_tool": "ImageCaption",
+      "profile_id": "provenance-artwork-desk-caption-member",
+      "requested_slot": "provenance-artwork-desk-caption-url",
+      "memory_field": "url",
+      "natural_detail": "catalog model photograph link",
+      "requirement": "Generate a caption for the image at my catalog model photograph link.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "url",
+        "link",
+        "which file",
+        "web address",
+        "file location",
+        "image",
+        "photograph",
+        "photo",
+        "picture"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-artwork-desk-caption-saved-1",
+          "profile_id": "provenance-artwork-desk-caption-member",
+          "slot": "provenance-artwork-desk-caption-url",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The catalog model photograph link is https://artwork.example.test/maquettes/window-study.jpeg."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "https://artwork.example.test/maquettes/window-study.jpeg"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-artwork-desk-caption-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-oral-history-demo-clip-request",
+      "base_task_id": "provenance-oral-history-demo-clip",
+      "target_tool": "SpeechRecognition",
+      "profile_id": "provenance-oral-history-demo-clip-member",
+      "requested_slot": "provenance-oral-history-demo-clip-url",
+      "memory_field": "url",
+      "natural_detail": "oral history practice recording link",
+      "requirement": "Transcribe the audio from my oral history practice recording link.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "url",
+        "link",
+        "which file",
+        "web address",
+        "file location",
+        "audio",
+        "recording",
+        "audio file"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-oral-history-demo-clip-saved-1",
+          "profile_id": "provenance-oral-history-demo-clip-member",
+          "slot": "provenance-oral-history-demo-clip-url",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The oral history practice recording link is https://voices.example.test/practice/marsh-narration.wav."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "https://voices.example.test/practice/marsh-narration.wav"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-oral-history-demo-clip-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-choir-retrospective-day-request",
+      "base_task_id": "provenance-choir-retrospective-day",
+      "target_tool": "QueryHistoryToday",
+      "profile_id": "provenance-choir-retrospective-day-member",
+      "requested_slot": "provenance-choir-retrospective-day-date",
+      "memory_field": "date",
+      "natural_detail": "choir retrospective date",
+      "requirement": "What happened on my choir retrospective date in history?",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "date",
+        "time",
+        "when",
+        "schedule",
+        "slot",
+        "month and day",
+        "day of the year"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-choir-retrospective-day-saved-1",
+          "profile_id": "provenance-choir-retrospective-day-member",
+          "slot": "provenance-choir-retrospective-day-date",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The choir retrospective date is January 27, formatted 01-27."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "01-27"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-choir-retrospective-day-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-archive-invention-index-request",
+      "base_task_id": "provenance-archive-invention-index",
+      "target_tool": "Wiki",
+      "profile_id": "provenance-archive-invention-index-member",
+      "requested_slot": "provenance-archive-invention-index-keyword",
+      "memory_field": "keyword",
+      "natural_detail": "illustrators archive subject",
+      "requirement": "Open an encyclopedia entry for the illustrators archive subject I recorded.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "subject",
+        "topic",
+        "keyword",
+        "search term",
+        "entry"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-archive-invention-index-saved-1",
+          "profile_id": "provenance-archive-invention-index-member",
+          "slot": "provenance-archive-invention-index-keyword",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The illustrators archive subject is camera lucida."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "camera lucida"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-archive-invention-index-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-night-screening-palette-request",
+      "base_task_id": "provenance-night-screening-palette",
+      "target_tool": "MovieRecommendations",
+      "profile_id": "provenance-night-screening-palette-member",
+      "requested_slot": "provenance-night-screening-palette-preferences",
+      "memory_field": "preferences",
+      "natural_detail": "late screening preference list",
+      "requirement": "Recommend films using my late screening preference list.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "preferences",
+        "genres",
+        "film types",
+        "movies",
+        "what kind",
+        "what films",
+        "preference list"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-night-screening-palette-saved-1",
+          "profile_id": "provenance-night-screening-palette-member",
+          "slot": "provenance-night-screening-palette-preferences",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. My late screening preference list contains exactly \"silent comedy\" and \"short animation\"."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": [
+            "silent comedy",
+            "short animation"
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-night-screening-palette-saved-1"
+      ]
+    },
+    {
+      "task_id": "provenance-insurance-directory-office-request",
+      "base_task_id": "provenance-insurance-directory-office",
+      "target_tool": "HealthcareProviderDetails",
+      "profile_id": "provenance-insurance-directory-office-member",
+      "requested_slot": "provenance-insurance-directory-office-provider_name",
+      "memory_field": "provider_name",
+      "natural_detail": "ambulatory directory entry",
+      "requirement": "Find details for my ambulatory directory entry, using the provider name I noted.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "provider name",
+        "name of the provider",
+        "which provider",
+        "who is",
+        "healthcare provider"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-insurance-directory-office-saved-1",
+          "profile_id": "provenance-insurance-directory-office-member",
+          "slot": "provenance-insurance-directory-office-provider_name",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The provider for my ambulatory directory entry is Wrenbank Hand Clinic."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Wrenbank Hand Clinic"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-insurance-directory-office-saved-1"
+      ]
+    }
+  ],
+  "updated": [
+    {
+      "task_id": "provenance-watchtower-clock-correction-request",
+      "base_task_id": "provenance-watchtower-clock-correction",
+      "target_tool": "ModifyAlarm",
+      "profile_id": "provenance-watchtower-clock-correction-member",
+      "requested_slot": "provenance-watchtower-clock-correction-to_time",
+      "memory_field": "to_time",
+      "natural_detail": "watchtower drill revised alarm time",
+      "requirement": "In the alarm sandbox, move the 2031-08-14 08:30 alarm to my watchtower drill revised alarm time. Use demo token SIM-WA-440.",
+      "known_arguments": {
+        "from_time": "2031-08-14 08:30:00",
+        "token": "SIM-WA-440"
+      },
+      "condition": "updated",
+      "aliases": [
+        "date",
+        "time",
+        "when",
+        "schedule",
+        "slot",
+        "new alarm time",
+        "alarm time",
+        "move it to"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-watchtower-clock-correction-saved-2",
+          "profile_id": "provenance-watchtower-clock-correction-member",
+          "slot": "provenance-watchtower-clock-correction-to_time",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Replace the earlier saved detail with this correction. The watchtower drill revised alarm time is now 2031-08-14 07:55:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "2031-08-14 07:55:00"
+        },
+        {
+          "record_id": "provenance-watchtower-clock-correction-saved-1",
+          "profile_id": "provenance-watchtower-clock-correction-member",
+          "slot": "provenance-watchtower-clock-correction-to_time",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The watchtower drill revised alarm time is 2031-08-14 08:10:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "2031-08-14 08:10:00"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-watchtower-clock-correction-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-installation-agenda-room-revision-request",
+      "base_task_id": "provenance-installation-agenda-room-revision",
+      "target_tool": "ModifyAgenda",
+      "profile_id": "provenance-installation-agenda-room-revision-member",
+      "requested_slot": "provenance-installation-agenda-room-revision-location",
+      "memory_field": "location",
+      "natural_detail": "mural installation agenda venue",
+      "requirement": "Update my sandbox agenda entry with content \"Hang the mural panels\" at 2031-03-04 11:00 to use the latest mural installation agenda venue. Demo token is SIM-MU-881.",
+      "known_arguments": {
+        "content": "Hang the mural panels",
+        "time": "2031-03-04 11:00:00",
+        "token": "SIM-MU-881"
+      },
+      "condition": "updated",
+      "aliases": [
+        "venue",
+        "location",
+        "where",
+        "site",
+        "room",
+        "place"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-installation-agenda-room-revision-saved-3",
+          "profile_id": "provenance-installation-agenda-room-revision-member",
+          "slot": "provenance-installation-agenda-room-revision-other-location",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. My delivery registration location is North Loading Dock."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "North Loading Dock"
+        },
+        {
+          "record_id": "provenance-installation-agenda-room-revision-saved-1",
+          "profile_id": "provenance-installation-agenda-room-revision-member",
+          "slot": "provenance-installation-agenda-room-revision-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The mural installation agenda venue is East Window Hall."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "East Window Hall"
+        },
+        {
+          "record_id": "provenance-installation-agenda-room-revision-saved-2",
+          "profile_id": "provenance-installation-agenda-room-revision-member",
+          "slot": "provenance-installation-agenda-room-revision-location",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Use this update going forward and discard the earlier value. The mural installation agenda venue is now Kestrel Workshop."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Kestrel Workshop"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-installation-agenda-room-revision-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-pottery-reminder-line-request",
+      "base_task_id": "provenance-pottery-reminder-line",
+      "target_tool": "ModifyReminder",
+      "profile_id": "provenance-pottery-reminder-line-member",
+      "requested_slot": "provenance-pottery-reminder-line-content",
+      "memory_field": "content",
+      "natural_detail": "kiln inspection reminder text",
+      "requirement": "In the simulator, amend the 2031-07-12 12:40 reminder to my updated kiln inspection reminder text. The provided token is SIM-KI-198.",
+      "known_arguments": {
+        "time": "2031-07-12 12:40:00",
+        "token": "SIM-KI-198"
+      },
+      "condition": "updated",
+      "aliases": [
+        "text",
+        "wording",
+        "content",
+        "message",
+        "what should the reminder say"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-pottery-reminder-line-saved-2",
+          "profile_id": "provenance-pottery-reminder-line-member",
+          "slot": "provenance-pottery-reminder-line-content",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please change the value on record to the following. The kiln inspection reminder text is now Photograph the cone pack."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Photograph the cone pack."
+        },
+        {
+          "record_id": "provenance-pottery-reminder-line-saved-1",
+          "profile_id": "provenance-pottery-reminder-line-member",
+          "slot": "provenance-pottery-reminder-line-content",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The kiln inspection reminder text is Check the lower vent."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Check the lower vent."
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-pottery-reminder-line-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-stained-glass-review-location-request",
+      "base_task_id": "provenance-stained-glass-review-location",
+      "target_tool": "ModifyMeeting",
+      "profile_id": "provenance-stained-glass-review-location-member",
+      "requested_slot": "provenance-stained-glass-review-location-location",
+      "memory_field": "location",
+      "natural_detail": "glass draft review venue",
+      "requirement": "In the calendar sandbox, modify meeting \"Glass drafts\" on 2031-08-12 from 15:30 to 16:15 with Mara Finn and Otto Kent to use the glass draft review venue on my updated plan. The token is SIM-GL-819.",
+      "known_arguments": {
+        "meeting_topic": "Glass drafts",
+        "start_time": "2031-08-12 15:30:00",
+        "end_time": "2031-08-12 16:15:00",
+        "attendees": [
+          "Mara Finn",
+          "Otto Kent"
+        ],
+        "token": "SIM-GL-819"
+      },
+      "condition": "updated",
+      "aliases": [
+        "venue",
+        "location",
+        "where",
+        "site",
+        "room",
+        "meeting venue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-stained-glass-review-location-saved-1",
+          "profile_id": "provenance-stained-glass-review-location-member",
+          "slot": "provenance-stained-glass-review-location-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. The glass draft review venue is Wicker Reading Room."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Wicker Reading Room"
+        },
+        {
+          "record_id": "provenance-stained-glass-review-location-saved-2",
+          "profile_id": "provenance-stained-glass-review-location-member",
+          "slot": "provenance-stained-glass-review-location-location",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Save this revision in place of the previous answer: The glass draft review venue is now Shale Hall."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Shale Hall"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-stained-glass-review-location-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-nursery-retimed-switch-request",
+      "base_task_id": "provenance-nursery-retimed-switch",
+      "target_tool": "TimedSwitch",
+      "profile_id": "provenance-nursery-retimed-switch-member",
+      "requested_slot": "provenance-nursery-retimed-switch-time",
+      "memory_field": "time",
+      "natural_detail": "greenhouse misting switch time",
+      "requirement": "In the smart-device simulator, schedule greenhouse mister to switch on at the latest greenhouse misting switch time.",
+      "known_arguments": {
+        "name": "greenhouse mister",
+        "on": true
+      },
+      "condition": "updated",
+      "aliases": [
+        "date",
+        "time",
+        "when",
+        "schedule",
+        "slot",
+        "switch time",
+        "turn on",
+        "when to switch"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-nursery-retimed-switch-saved-2",
+          "profile_id": "provenance-nursery-retimed-switch-member",
+          "slot": "provenance-nursery-retimed-switch-time",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Replace the earlier saved detail with this correction. The revised greenhouse misting switch time is 2031-11-06 04:45:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "2031-11-06 04:45:00"
+        },
+        {
+          "record_id": "provenance-nursery-retimed-switch-saved-3",
+          "profile_id": "provenance-nursery-retimed-switch-member",
+          "slot": "provenance-nursery-retimed-switch-other-time",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The grow-lamp switch time is 2031-11-06 07:50:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "2031-11-06 07:50:00"
+        },
+        {
+          "record_id": "provenance-nursery-retimed-switch-saved-1",
+          "profile_id": "provenance-nursery-retimed-switch-member",
+          "slot": "provenance-nursery-retimed-switch-time",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The greenhouse misting switch time is 2031-11-06 05:20:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "2031-11-06 05:20:00"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-nursery-retimed-switch-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-adult-workshop-room-quantity-request",
+      "base_task_id": "provenance-adult-workshop-room-quantity",
+      "target_tool": "BookHotel",
+      "profile_id": "provenance-adult-workshop-room-quantity-member",
+      "requested_slot": "provenance-adult-workshop-room-quantity-room_count",
+      "memory_field": "room_count",
+      "natural_detail": "lace workshop room count",
+      "requirement": "In the lodging sandbox book Birch Vale Lodge, checking in 2030-03-10 and out 2030-03-12 for 14 adults and zero children. Use the latest lace workshop room count from my note.",
+      "known_arguments": {
+        "hotel_name": "Birch Vale Lodge",
+        "check_in_time": "2030-03-10",
+        "check_out_time": "2030-03-12",
+        "adult_count": 14,
+        "child_count": 0
+      },
+      "condition": "updated",
+      "aliases": [
+        "room count",
+        "how many rooms",
+        "number of rooms",
+        "rooms should",
+        "quantity of rooms"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-adult-workshop-room-quantity-saved-2",
+          "profile_id": "provenance-adult-workshop-room-quantity-member",
+          "slot": "provenance-adult-workshop-room-quantity-room_count",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Use this update going forward and discard the earlier value. The revised lace workshop room count is 9 rooms."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": 9
+        },
+        {
+          "record_id": "provenance-adult-workshop-room-quantity-saved-1",
+          "profile_id": "provenance-adult-workshop-room-quantity-member",
+          "slot": "provenance-adult-workshop-room-quantity-room_count",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The lace workshop room count is 7 rooms."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": 7
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-adult-workshop-room-quantity-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-workshop-handbook-revised-question-request",
+      "base_task_id": "provenance-workshop-handbook-revised-question",
+      "target_tool": "DocumentQA",
+      "profile_id": "provenance-workshop-handbook-revised-question-member",
+      "requested_slot": "provenance-workshop-handbook-revised-question-question",
+      "memory_field": "question",
+      "natural_detail": "ceramics safety handbook question",
+      "requirement": "Use https://docs.example.test/ceramics/rules.txt to answer the latest ceramics safety handbook question from my log.",
+      "known_arguments": {
+        "url": "https://docs.example.test/ceramics/rules.txt"
+      },
+      "condition": "updated",
+      "aliases": [
+        "question",
+        "what should i answer",
+        "what question",
+        "which question",
+        "what to ask"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-workshop-handbook-revised-question-saved-1",
+          "profile_id": "provenance-workshop-handbook-revised-question-member",
+          "slot": "provenance-workshop-handbook-revised-question-question",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The ceramics safety handbook question is exactly When must the extraction hood be replaced?"
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "When must the extraction hood be replaced?"
+        },
+        {
+          "record_id": "provenance-workshop-handbook-revised-question-saved-2",
+          "profile_id": "provenance-workshop-handbook-revised-question-member",
+          "slot": "provenance-workshop-handbook-revised-question-question",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please change the value on record to the following. The revised ceramics safety handbook question is exactly Where should unopened glaze tins be stored?"
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Where should unopened glaze tins be stored?"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-workshop-handbook-revised-question-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-script-translation-target-code-request",
+      "base_task_id": "provenance-script-translation-target-code",
+      "target_tool": "Translate",
+      "profile_id": "provenance-script-translation-target-code-member",
+      "requested_slot": "provenance-script-translation-target-code-tgt_lang",
+      "memory_field": "tgt_lang",
+      "natural_detail": "audio tour target language code",
+      "requirement": "Run Translate with source text \"The western stairs are closed.\" and src_lang exactly en. The target argument should be exactly my revised audio tour target language code.",
+      "known_arguments": {
+        "src": "The western stairs are closed.",
+        "src_lang": "en"
+      },
+      "condition": "updated",
+      "aliases": [
+        "target language",
+        "language code",
+        "translate into",
+        "what language",
+        "which language"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-script-translation-target-code-saved-2",
+          "profile_id": "provenance-script-translation-target-code-member",
+          "slot": "provenance-script-translation-target-code-tgt_lang",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Save this revision in place of the previous answer: The audio tour target language code is now de (German)."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "de"
+        },
+        {
+          "record_id": "provenance-script-translation-target-code-saved-1",
+          "profile_id": "provenance-script-translation-target-code-member",
+          "slot": "provenance-script-translation-target-code-tgt_lang",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The audio tour target language code is sv (Swedish)."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "sv"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-script-translation-target-code-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-workroom-invoice-mail-copy-request",
+      "base_task_id": "provenance-workroom-invoice-mail-copy",
+      "target_tool": "SendEmail",
+      "profile_id": "provenance-workroom-invoice-mail-copy-member",
+      "requested_slot": "provenance-workroom-invoice-mail-copy-content",
+      "memory_field": "content",
+      "natural_detail": "parts-arrival notice body",
+      "requirement": "In the mail simulator, send email to crew-desk@example.test with the subject \"Parts arrival\". Use the current parts-arrival notice body.",
+      "known_arguments": {
+        "receiver": "crew-desk@example.test",
+        "subject": "Parts arrival"
+      },
+      "condition": "updated",
+      "aliases": [
+        "body",
+        "email text",
+        "message",
+        "content",
+        "wording",
+        "what the email should say"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-workroom-invoice-mail-copy-saved-2",
+          "profile_id": "provenance-workroom-invoice-mail-copy-member",
+          "slot": "provenance-workroom-invoice-mail-copy-content",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Replace the earlier saved detail with this correction. The revised exact parts-arrival notice body is The casing screws arrive Thursday."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "The casing screws arrive Thursday."
+        },
+        {
+          "record_id": "provenance-workroom-invoice-mail-copy-saved-3",
+          "profile_id": "provenance-workroom-invoice-mail-copy-member",
+          "slot": "provenance-workroom-invoice-mail-copy-other-content",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. The body of the drilling purchase notice is The new drill arrives tomorrow."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "The new drill arrives tomorrow."
+        },
+        {
+          "record_id": "provenance-workroom-invoice-mail-copy-saved-1",
+          "profile_id": "provenance-workroom-invoice-mail-copy-member",
+          "slot": "provenance-workroom-invoice-mail-copy-content",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. The exact parts-arrival notice body is The brass fittings arrive Tuesday."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "The brass fittings arrive Tuesday."
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-workroom-invoice-mail-copy-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-museum-vaccination-registry-check-request",
+      "base_task_id": "provenance-museum-vaccination-registry-check",
+      "target_tool": "QueryRegistration",
+      "profile_id": "provenance-museum-vaccination-registry-check-member",
+      "requested_slot": "provenance-museum-vaccination-registry-check-date",
+      "memory_field": "date",
+      "natural_detail": "demo volunteer registry date",
+      "requirement": "In the practice database check Keira Joss's registration on my revised demo volunteer registry date.",
+      "known_arguments": {
+        "patient_name": "Keira Joss"
+      },
+      "condition": "updated",
+      "aliases": [
+        "date",
+        "time",
+        "when",
+        "schedule",
+        "slot",
+        "appointment day"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-museum-vaccination-registry-check-saved-2",
+          "profile_id": "provenance-museum-vaccination-registry-check-member",
+          "slot": "provenance-museum-vaccination-registry-check-date",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Use this update going forward and discard the earlier value. The revised demo volunteer registry date is 2031-04-19."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "2031-04-19"
+        },
+        {
+          "record_id": "provenance-museum-vaccination-registry-check-saved-1",
+          "profile_id": "provenance-museum-vaccination-registry-check-member",
+          "slot": "provenance-museum-vaccination-registry-check-date",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The demo volunteer registry date is 2031-04-16."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "2031-04-16"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-museum-vaccination-registry-check-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-journal-club-travel-city-request",
+      "base_task_id": "provenance-journal-club-travel-city",
+      "target_tool": "FlightSearch",
+      "profile_id": "provenance-journal-club-travel-city-member",
+      "requested_slot": "provenance-journal-club-travel-city-destination",
+      "memory_field": "destination",
+      "natural_detail": "journal club arrival city",
+      "requirement": "Find flight options leaving Lyon on 2031-05-17 for the latest journal club arrival city.",
+      "known_arguments": {
+        "source": "Lyon",
+        "travel_dates": "2031-05-17"
+      },
+      "condition": "updated",
+      "aliases": [
+        "arrival city",
+        "destination",
+        "where to",
+        "where are you flying",
+        "fly to",
+        "arrival airport"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-journal-club-travel-city-saved-3",
+          "profile_id": "provenance-journal-club-travel-city-other-member",
+          "slot": "provenance-journal-club-travel-city-destination",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The journal club arrival city is Berlin."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Berlin"
+        },
+        {
+          "record_id": "provenance-journal-club-travel-city-saved-2",
+          "profile_id": "provenance-journal-club-travel-city-member",
+          "slot": "provenance-journal-club-travel-city-destination",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please change the value on record to the following. The journal club arrival city is now Toulouse."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Toulouse"
+        },
+        {
+          "record_id": "provenance-journal-club-travel-city-saved-1",
+          "profile_id": "provenance-journal-club-travel-city-member",
+          "slot": "provenance-journal-club-travel-city-destination",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The journal club arrival city is Turin."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Turin"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-journal-club-travel-city-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-school-photo-retreat-checkin-request",
+      "base_task_id": "provenance-school-photo-retreat-checkin",
+      "target_tool": "HotelAvailability",
+      "profile_id": "provenance-school-photo-retreat-checkin-member",
+      "requested_slot": "provenance-school-photo-retreat-checkin-check_in_date",
+      "memory_field": "check_in_date",
+      "natural_detail": "studio trip check-in date",
+      "requirement": "Look for hotel availability in Strasbourg, with checkout on 2031-09-15, starting from the latest studio trip check-in date.",
+      "known_arguments": {
+        "destination": "Strasbourg",
+        "check_out_date": "2031-09-15"
+      },
+      "condition": "updated",
+      "aliases": [
+        "check-in",
+        "check in",
+        "arrival date",
+        "date of arrival",
+        "starting date"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-school-photo-retreat-checkin-saved-1",
+          "profile_id": "provenance-school-photo-retreat-checkin-member",
+          "slot": "provenance-school-photo-retreat-checkin-check_in_date",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The studio trip check-in date is 2031-09-10."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "2031-09-10"
+        },
+        {
+          "record_id": "provenance-school-photo-retreat-checkin-saved-2",
+          "profile_id": "provenance-school-photo-retreat-checkin-member",
+          "slot": "provenance-school-photo-retreat-checkin-check_in_date",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Save this revision in place of the previous answer: The revised studio trip check-in date is 2031-09-12."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "2031-09-12"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-school-photo-retreat-checkin-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-search-threshold-archive-override-request",
+      "base_task_id": "provenance-search-threshold-archive-override",
+      "target_tool": "PhysicianRatingsAPI",
+      "profile_id": "provenance-search-threshold-archive-override-member",
+      "requested_slot": "provenance-search-threshold-archive-override-rating",
+      "memory_field": "rating",
+      "natural_detail": "provider audit rating floor",
+      "requirement": "Search for physicians in Akron using the revised provider audit rating floor.",
+      "known_arguments": {
+        "location": "Akron"
+      },
+      "condition": "updated",
+      "aliases": [
+        "rating",
+        "rating floor",
+        "stars",
+        "minimum rating",
+        "threshold",
+        "cutoff"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-search-threshold-archive-override-saved-2",
+          "profile_id": "provenance-search-threshold-archive-override-member",
+          "slot": "provenance-search-threshold-archive-override-rating",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Replace the earlier saved detail with this correction. The provider audit rating floor is now 4.8 stars."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": 4.8
+        },
+        {
+          "record_id": "provenance-search-threshold-archive-override-saved-1",
+          "profile_id": "provenance-search-threshold-archive-override-member",
+          "slot": "provenance-search-threshold-archive-override-rating",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The provider audit rating floor is 3.6 stars."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": 3.6
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-search-threshold-archive-override-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-condition-index-training-revision-request",
+      "base_task_id": "provenance-condition-index-training-revision",
+      "target_tool": "TreatmentRecommendation",
+      "profile_id": "provenance-condition-index-training-revision-member",
+      "requested_slot": "provenance-condition-index-training-revision-condition",
+      "memory_field": "condition",
+      "natural_detail": "teaching handout condition",
+      "requirement": "For the simulated reference tool, collect treatment-option recommendations for the revised teaching handout condition.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "condition",
+        "topic",
+        "which condition",
+        "health concern",
+        "health issue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-condition-index-training-revision-saved-1",
+          "profile_id": "provenance-condition-index-training-revision-member",
+          "slot": "provenance-condition-index-training-revision-condition",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. The teaching handout condition is exercise-induced asthma."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "exercise-induced asthma"
+        },
+        {
+          "record_id": "provenance-condition-index-training-revision-saved-2",
+          "profile_id": "provenance-condition-index-training-revision-member",
+          "slot": "provenance-condition-index-training-revision-condition",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Use this update going forward and discard the earlier value. The revised teaching handout condition is tension headache."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "tension headache"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-condition-index-training-revision-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-lab-price-list-update-request",
+      "base_task_id": "provenance-lab-price-list-update",
+      "target_tool": "MedicationPriceComparer",
+      "profile_id": "provenance-lab-price-list-update-member",
+      "requested_slot": "provenance-lab-price-list-update-medication_names",
+      "memory_field": "medication_names",
+      "natural_detail": "comparison lab medicine pair",
+      "requirement": "Compare prices for the two medicines in the latest comparison lab medicine pair.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "medicine pair",
+        "medications",
+        "which medicines",
+        "which drugs",
+        "names of",
+        "drug list"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-lab-price-list-update-saved-2",
+          "profile_id": "provenance-lab-price-list-update-member",
+          "slot": "provenance-lab-price-list-update-medication_names",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please change the value on record to the following. The updated comparison lab medicine pair contains exactly \"famotidine\" and \"fexofenadine\"."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": [
+            "famotidine",
+            "fexofenadine"
+          ]
+        },
+        {
+          "record_id": "provenance-lab-price-list-update-saved-1",
+          "profile_id": "provenance-lab-price-list-update-member",
+          "slot": "provenance-lab-price-list-update-medication_names",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The comparison lab medicine pair contains exactly \"naproxen\" and \"ketotifen\"."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": [
+            "naproxen",
+            "ketotifen"
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-lab-price-list-update-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-district-drill-relocation-request",
+      "base_task_id": "provenance-district-drill-relocation",
+      "target_tool": "NearestHospitalFinder",
+      "profile_id": "provenance-district-drill-relocation-member",
+      "requested_slot": "provenance-district-drill-relocation-location",
+      "memory_field": "location",
+      "natural_detail": "night-shift training search district",
+      "requirement": "For the fictional night-shift drill, find the nearest hospital to the latest night-shift training search district.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where",
+        "district",
+        "place"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-district-drill-relocation-saved-2",
+          "profile_id": "provenance-district-drill-relocation-member",
+          "slot": "provenance-district-drill-relocation-location",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Save this revision in place of the previous answer: The night-shift training search district is now Dover."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Dover"
+        },
+        {
+          "record_id": "provenance-district-drill-relocation-saved-3",
+          "profile_id": "provenance-district-drill-relocation-member",
+          "slot": "provenance-district-drill-relocation-other-location",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The walk-in staffing search district is Hythe."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Hythe"
+        },
+        {
+          "record_id": "provenance-district-drill-relocation-saved-1",
+          "profile_id": "provenance-district-drill-relocation-member",
+          "slot": "provenance-district-drill-relocation-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Keep the following in my profile so I can refer to it later. The night-shift training search district is Hastings."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Hastings"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-district-drill-relocation-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-recital-day-travel-contact-request",
+      "base_task_id": "provenance-recital-day-travel-contact",
+      "target_tool": "TravelStatus",
+      "profile_id": "provenance-recital-day-travel-contact-member",
+      "requested_slot": "provenance-recital-day-travel-contact-member_name",
+      "memory_field": "member_name",
+      "natural_detail": "recital travel contact name",
+      "requirement": "Check travel status using the updated recital travel contact name.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "name",
+        "who",
+        "which person",
+        "full name",
+        "which",
+        "member name",
+        "contact name",
+        "which contact"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-recital-day-travel-contact-saved-1",
+          "profile_id": "provenance-recital-day-travel-contact-member",
+          "slot": "provenance-recital-day-travel-contact-member_name",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "File this as the saved detail for my next request. The recital travel contact name is Zane Isla."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Zane Isla"
+        },
+        {
+          "record_id": "provenance-recital-day-travel-contact-saved-2",
+          "profile_id": "provenance-recital-day-travel-contact-member",
+          "slot": "provenance-recital-day-travel-contact-member_name",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Replace the earlier saved detail with this correction. The revised recital travel contact name is Imani Frost."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Imani Frost"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-recital-day-travel-contact-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-club-gym-equipment-model-request",
+      "base_task_id": "provenance-club-gym-equipment-model",
+      "target_tool": "TreadmillPurchaseOptions",
+      "profile_id": "provenance-club-gym-equipment-model-member",
+      "requested_slot": "provenance-club-gym-equipment-model-equipment_name",
+      "memory_field": "equipment_name",
+      "natural_detail": "club purchase model",
+      "requirement": "Show treadmill purchase options for the revised club purchase model in my procurement log.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "model",
+        "treadmill",
+        "equipment name",
+        "which treadmill",
+        "model name"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-club-gym-equipment-model-saved-2",
+          "profile_id": "provenance-club-gym-equipment-model-member",
+          "slot": "provenance-club-gym-equipment-model-equipment_name",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Use this update going forward and discard the earlier value. The treadmill now selected as the club purchase model is Firth Step 710."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Firth Step 710"
+        },
+        {
+          "record_id": "provenance-club-gym-equipment-model-saved-1",
+          "profile_id": "provenance-club-gym-equipment-model-member",
+          "slot": "provenance-club-gym-equipment-model-equipment_name",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this setting for future requests: The treadmill selected as the club purchase model is Ridge Arc 310."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Ridge Arc 310"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-club-gym-equipment-model-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-docket-article-title-correction-request",
+      "base_task_id": "provenance-docket-article-title-correction",
+      "target_tool": "ResearchPaperSummarizer",
+      "profile_id": "provenance-docket-article-title-correction-member",
+      "requested_slot": "provenance-docket-article-title-correction-paper_title",
+      "memory_field": "paper_title",
+      "natural_detail": "coastal mapping reading paper title",
+      "requirement": "Summarize the paper published on 2031-01-09 whose title is the corrected coastal mapping reading paper title from my file.",
+      "known_arguments": {
+        "publish_date": "2031-01-09"
+      },
+      "condition": "updated",
+      "aliases": [
+        "paper title",
+        "title of the paper",
+        "which paper",
+        "name of the paper",
+        "what paper",
+        "article title"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-docket-article-title-correction-saved-2",
+          "profile_id": "provenance-docket-article-title-correction-member",
+          "slot": "provenance-docket-article-title-correction-paper_title",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please change the value on record to the following. The revised coastal mapping reading paper title is Gravel Fans Under Coastal Fog."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": "Gravel Fans Under Coastal Fog"
+        },
+        {
+          "record_id": "provenance-docket-article-title-correction-saved-1",
+          "profile_id": "provenance-docket-article-title-correction-member",
+          "slot": "provenance-docket-article-title-correction-paper_title",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "I'm giving you permission to keep this item for when I ask for it. The coastal mapping reading paper title is Reeds Along the Western Margin."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": "Reeds Along the Western Margin"
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-docket-article-title-correction-saved-2"
+      ]
+    },
+    {
+      "task_id": "provenance-packing-day-reminder-record-request",
+      "base_task_id": "provenance-packing-day-reminder-record",
+      "target_tool": "ReminderDetails",
+      "profile_id": "provenance-packing-day-reminder-record-member",
+      "requested_slot": "provenance-packing-day-reminder-record-reminder_id",
+      "memory_field": "reminder_id",
+      "natural_detail": "furniture collection reminder ID",
+      "requirement": "Get the details for the updated furniture collection reminder ID.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "reminder id",
+        "identifier",
+        "which reminder",
+        "reminder number",
+        "id for",
+        "id of"
+      ],
+      "memory_events": [
+        {
+          "record_id": "provenance-packing-day-reminder-record-saved-2",
+          "profile_id": "provenance-packing-day-reminder-record-member",
+          "slot": "provenance-packing-day-reminder-record-reminder_id",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Save this revision in place of the previous answer: The revised furniture collection reminder ID is 71942."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the old entry with that correction."
+            }
+          ],
+          "value": 71942
+        },
+        {
+          "record_id": "provenance-packing-day-reminder-record-saved-1",
+          "profile_id": "provenance-packing-day-reminder-record-member",
+          "slot": "provenance-packing-day-reminder-record-reminder_id",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please retain this detail for next time: The furniture collection reminder ID is 42103."
+            },
+            {
+              "role": "assistant",
+              "content": "I recorded that detail in the requested slot."
+            }
+          ],
+          "value": 42103
+        }
+      ],
+      "permitted_memory_ids": [
+        "provenance-packing-day-reminder-record-saved-2"
+      ]
+    }
+  ]
+}

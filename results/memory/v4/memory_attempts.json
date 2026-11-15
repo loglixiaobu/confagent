@@ -1,0 +1,360 @@
+[
+  {
+    "attempt": 1,
+    "status": "passed",
+    "cost": {
+      "requests": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0
+    },
+    "repaired_historical_errors": 3,
+    "correct_complete_controls": 3,
+    "diagnostics": [
+      {
+        "task_id": "stress-blue-birch-newsletter-missing",
+        "base_task_id": "stress-blue-birch-newsletter",
+        "finish_reason": "stop",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1032,
+          "completion_tokens": 315,
+          "total_tokens": 1347
+        },
+        "action": {
+          "kind": "clarify"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "trial_id"
+          ]
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": true,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [
+            "trial_id"
+          ],
+          "reason": "required_fields_requested"
+        }
+      },
+      {
+        "task_id": "stress-blue-birch-newsletter-complete",
+        "base_task_id": "stress-blue-birch-newsletter",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1047,
+          "completion_tokens": 260,
+          "total_tokens": 1307
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClinicalTrialEnrollment"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ClinicalTrialEnrollment"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "stress-workshop-back-exercise-missing",
+        "base_task_id": "stress-workshop-back-exercise",
+        "finish_reason": "stop",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1068,
+          "completion_tokens": 450,
+          "total_tokens": 1518
+        },
+        "action": {
+          "kind": "clarify"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "pain_type"
+          ]
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": true,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [
+            "pain_type"
+          ],
+          "reason": "required_fields_requested"
+        }
+      },
+      {
+        "task_id": "stress-workshop-back-exercise-complete",
+        "base_task_id": "stress-workshop-back-exercise",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1082,
+          "completion_tokens": 296,
+          "total_tokens": 1378
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "BackPainExerciseRecommendations"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "BackPainExerciseRecommendations"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "stress-tarragona-outdoor-lunch-missing",
+        "base_task_id": "stress-tarragona-outdoor-lunch",
+        "finish_reason": "stop",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1079,
+          "completion_tokens": 856,
+          "total_tokens": 1935
+        },
+        "action": {
+          "kind": "clarify"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "humidity"
+          ]
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": true,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [
+            "humidity"
+          ],
+          "reason": "required_fields_requested"
+        }
+      },
+      {
+        "task_id": "stress-tarragona-outdoor-lunch-complete",
+        "base_task_id": "stress-tarragona-outdoor-lunch",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1090,
+          "completion_tokens": 299,
+          "total_tokens": 1389
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClothingRecommendation"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ClothingRecommendation"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      }
+    ],
+    "validation": [
+      {
+        "task_id": "validation-nyc-rental-length",
+        "base_task_id": "nyc-rental-length",
+        "finish_reason": "stop",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1047,
+          "completion_tokens": 141,
+          "total_tokens": 1188
+        },
+        "action": {
+          "kind": "clarify"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "duration"
+          ]
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": true,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [
+            "duration"
+          ],
+          "reason": "required_fields_requested"
+        }
+      },
+      {
+        "task_id": "validation-harborlight-availability",
+        "base_task_id": "harborlight-availability",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1039,
+          "completion_tokens": 124,
+          "total_tokens": 1163
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ServiceAvailabilityChecker"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ServiceAvailabilityChecker"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "validation-travel-reminder-id",
+        "base_task_id": "travel-reminder-id",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1034,
+          "completion_tokens": 117,
+          "total_tokens": 1151
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ReminderDetails"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ReminderDetails"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "validation-weather-current-position",
+        "base_task_id": "weather-current-position",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "source_binding_episode_1",
+          "source_binding_episode_2",
+          "source_binding_episode_3"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 1080,
+          "completion_tokens": 210,
+          "total_tokens": 1290
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "GetUserLocation"
+        },
+        "expected": {
+          "kind": "lookup",
+          "api_name": "GetUserLocation"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_lookup"
+        }
+      }
+    ]
+  }
+]

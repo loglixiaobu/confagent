@@ -1,0 +1,307 @@
+{
+  "status": "completed",
+  "experiment": "source-linked-versioned-memory-v8",
+  "criteria": {
+    "replication_cases": 16,
+    "updated_cases": 20,
+    "control_cases": 8,
+    "minimum_correct_controls": 7,
+    "test": "exact one-sided paired binomial (McNemar)",
+    "replication": {
+      "alpha": 0.0015625,
+      "minimum_absolute_reduction": 0.25,
+      "minimum_grounded_call_replacement": 0.9
+    },
+    "updated": {
+      "alpha": 0.0015625,
+      "minimum_absolute_increase": 0.5,
+      "minimum_correct_latest_calls": 18
+    },
+    "safeguards": {
+      "control_correctness": "B >= A and B >= 7/8",
+      "unsupported_test_calls": "B <= A within each A/B held-out cohort",
+      "invalid_test_decisions": "B <= A within each A/B held-out cohort",
+      "noncurrent_value_use": "B never uses a stale, revoked, or otherwise ineligible value",
+      "memory_scope": "no group injects an ineligible observation"
+    },
+    "provenance": {
+      "status": "exploratory",
+      "comparison": "B active value with an exact scope-match statement and verbatim user authorization versus C bare active value",
+      "test": "exact one-sided paired binomial (McNemar)",
+      "safeguard": "zero use of stale or forbidden values in B across test and controls"
+    }
+  },
+  "analysis": {
+    "groups": {
+      "replication": {
+        "A": {
+          "cases": 16,
+          "correct": 14,
+          "targeted_questions": 14,
+          "grounded_calls": 0,
+          "unsupported_calls": 1,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 16,
+            "prompt_tokens": 10141,
+            "completion_tokens": 7388,
+            "total_tokens": 17529
+          }
+        },
+        "B": {
+          "cases": 16,
+          "correct": 16,
+          "targeted_questions": 0,
+          "grounded_calls": 16,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 16,
+          "cost": {
+            "requests": 16,
+            "prompt_tokens": 12139,
+            "completion_tokens": 3636,
+            "total_tokens": 15775
+          }
+        },
+        "C": {
+          "cases": 16,
+          "correct": 11,
+          "targeted_questions": 5,
+          "grounded_calls": 11,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 16,
+          "cost": {
+            "requests": 16,
+            "prompt_tokens": 11185,
+            "completion_tokens": 7359,
+            "total_tokens": 18544
+          }
+        }
+      },
+      "updated": {
+        "A": {
+          "cases": 20,
+          "correct": 13,
+          "targeted_questions": 13,
+          "grounded_calls": 0,
+          "unsupported_calls": 3,
+          "invalid_decisions": 2,
+          "truncated": 1,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 13439,
+            "completion_tokens": 9646,
+            "total_tokens": 23085
+          }
+        },
+        "B": {
+          "cases": 20,
+          "correct": 20,
+          "targeted_questions": 0,
+          "grounded_calls": 20,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 20,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 15961,
+            "completion_tokens": 6447,
+            "total_tokens": 22408
+          }
+        },
+        "C": {
+          "cases": 20,
+          "correct": 16,
+          "targeted_questions": 2,
+          "grounded_calls": 16,
+          "unsupported_calls": 1,
+          "invalid_decisions": 1,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 20,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 14744,
+            "completion_tokens": 11296,
+            "total_tokens": 26040
+          }
+        }
+      },
+      "controls": {
+        "A": {
+          "cases": 8,
+          "correct": 6,
+          "targeted_questions": 4,
+          "grounded_calls": 2,
+          "unsupported_calls": 1,
+          "invalid_decisions": 1,
+          "truncated": 1,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 8,
+            "prompt_tokens": 4999,
+            "completion_tokens": 4456,
+            "total_tokens": 9455
+          }
+        },
+        "B": {
+          "cases": 8,
+          "correct": 7,
+          "targeted_questions": 5,
+          "grounded_calls": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 2,
+          "cost": {
+            "requests": 8,
+            "prompt_tokens": 5224,
+            "completion_tokens": 3875,
+            "total_tokens": 9099
+          }
+        }
+      }
+    },
+    "guardrails_passed": {
+      "control_correctness": true,
+      "unsupported_test_calls": true,
+      "invalid_test_decisions": true,
+      "noncurrent_value_use": true,
+      "memory_scope": true
+    },
+    "disallowed_memory": [],
+    "replication": {
+      "left": "B",
+      "right": "A",
+      "only_left": [],
+      "only_right": [
+        "provenance-mock-calendar-fixture-request",
+        "provenance-bindery-reminder-copy-request",
+        "provenance-training-wearable-window-request",
+        "provenance-food-writing-gloss-request",
+        "provenance-review-roundup-city-request",
+        "provenance-gym-display-shopping-area-request",
+        "provenance-illustrated-procedure-quote-request",
+        "provenance-vehicle-route-training-policy-request",
+        "provenance-reference-folio-acupuncture-condition-request",
+        "provenance-artwork-desk-caption-request",
+        "provenance-oral-history-demo-clip-request",
+        "provenance-choir-retrospective-day-request",
+        "provenance-archive-invention-index-request",
+        "provenance-night-screening-palette-request"
+      ],
+      "both": [],
+      "neither": [
+        "provenance-press-cycle-alarm-request",
+        "provenance-insurance-directory-office-request"
+      ],
+      "p_value": 6.103515625e-05,
+      "difference": 0.875,
+      "grounded_replacements": 14,
+      "primary_passed": true,
+      "confirmed_positive": true
+    },
+    "updated": {
+      "left": "A",
+      "right": "B",
+      "only_left": [],
+      "only_right": [
+        "provenance-watchtower-clock-correction-request",
+        "provenance-installation-agenda-room-revision-request",
+        "provenance-pottery-reminder-line-request",
+        "provenance-stained-glass-review-location-request",
+        "provenance-nursery-retimed-switch-request",
+        "provenance-adult-workshop-room-quantity-request",
+        "provenance-workshop-handbook-revised-question-request",
+        "provenance-script-translation-target-code-request",
+        "provenance-workroom-invoice-mail-copy-request",
+        "provenance-museum-vaccination-registry-check-request",
+        "provenance-journal-club-travel-city-request",
+        "provenance-school-photo-retreat-checkin-request",
+        "provenance-search-threshold-archive-override-request",
+        "provenance-condition-index-training-revision-request",
+        "provenance-lab-price-list-update-request",
+        "provenance-district-drill-relocation-request",
+        "provenance-recital-day-travel-contact-request",
+        "provenance-club-gym-equipment-model-request",
+        "provenance-docket-article-title-correction-request",
+        "provenance-packing-day-reminder-record-request"
+      ],
+      "both": [],
+      "neither": [],
+      "p_value": 9.5367431640625e-07,
+      "difference": 1.0,
+      "primary_passed": true,
+      "confirmed_positive": true
+    },
+    "both_confirmed_positive": true,
+    "provenance": {
+      "left": "C",
+      "right": "B",
+      "only_left": [],
+      "only_right": [
+        "provenance-press-cycle-alarm-request",
+        "provenance-gym-display-shopping-area-request",
+        "provenance-illustrated-procedure-quote-request",
+        "provenance-artwork-desk-caption-request",
+        "provenance-night-screening-palette-request",
+        "provenance-stained-glass-review-location-request",
+        "provenance-journal-club-travel-city-request",
+        "provenance-district-drill-relocation-request",
+        "provenance-docket-article-title-correction-request"
+      ],
+      "both": [
+        "provenance-mock-calendar-fixture-request",
+        "provenance-bindery-reminder-copy-request",
+        "provenance-training-wearable-window-request",
+        "provenance-food-writing-gloss-request",
+        "provenance-review-roundup-city-request",
+        "provenance-vehicle-route-training-policy-request",
+        "provenance-reference-folio-acupuncture-condition-request",
+        "provenance-oral-history-demo-clip-request",
+        "provenance-choir-retrospective-day-request",
+        "provenance-archive-invention-index-request",
+        "provenance-insurance-directory-office-request",
+        "provenance-watchtower-clock-correction-request",
+        "provenance-installation-agenda-room-revision-request",
+        "provenance-pottery-reminder-line-request",
+        "provenance-nursery-retimed-switch-request",
+        "provenance-adult-workshop-room-quantity-request",
+        "provenance-workshop-handbook-revised-question-request",
+        "provenance-script-translation-target-code-request",
+        "provenance-workroom-invoice-mail-copy-request",
+        "provenance-museum-vaccination-registry-check-request",
+        "provenance-school-photo-retreat-checkin-request",
+        "provenance-search-threshold-archive-override-request",
+        "provenance-condition-index-training-revision-request",
+        "provenance-lab-price-list-update-request",
+        "provenance-recital-day-travel-contact-request",
+        "provenance-club-gym-equipment-model-request",
+        "provenance-packing-day-reminder-record-request"
+      ],
+      "neither": [],
+      "p_value": 0.001953125,
+      "difference": 0.25,
+      "B_grounded_calls": 36,
+      "C_grounded_calls": 27,
+      "B_stale_or_forbidden_calls": 0,
+      "C_stale_or_forbidden_calls": 0,
+      "safeguard_passed": true
+    }
+  },
+  "failed_requests": {}
+}

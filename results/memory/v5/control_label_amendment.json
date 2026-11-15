@@ -1,0 +1,11 @@
+{
+  "case_id": "factual-price-inventory-medication-other-slot-followup",
+  "field": "medication_name",
+  "alias_added": "names of the medications",
+  "reason": "Both completed control replies explicitly asked for names of the medications. The plural wording supplies the correct missing field; the matcher only had singular aliases.",
+  "prior_dataset_sha256": "a236d171a6f85ce0b65851ccfc42701fc7397e5155b44a0804171d57a2e70fec",
+  "amended_dataset_sha256": "d62246852fdce830768b50594af11f7630d4032bc8e17552f36c15bd97514307",
+  "replayed_validation_response_count": 24,
+  "held_out_model_requests_before_amendment": 0,
+  "replayed_request_log_sha256": "0be09dd217445555e010f724950acf19b4dd9ebeb997e01c1e3dd3f6039b7a5a"
+}

@@ -1,0 +1,452 @@
+[
+  {
+    "attempt": 1,
+    "status": "failed_diagnostics",
+    "cost": {
+      "requests": 1,
+      "prompt_tokens": 4606,
+      "completion_tokens": 479,
+      "total_tokens": 5085
+    },
+    "repaired_historical_errors": 0,
+    "correct_complete_controls": 3,
+    "diagnostics": [
+      {
+        "task_id": "stress-blue-birch-newsletter-missing",
+        "base_task_id": "stress-blue-birch-newsletter",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_against_field_type",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 680,
+          "completion_tokens": 1106,
+          "total_tokens": 1786
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClinicalTrialEnrollment"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "trial_id"
+          ]
+        },
+        "evaluation": {
+          "correct": false,
+          "fabricated": true,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [
+            "trial_id"
+          ],
+          "clarified_fields": [],
+          "reason": "arguments_without_visible_evidence"
+        }
+      },
+      {
+        "task_id": "stress-blue-birch-newsletter-complete",
+        "base_task_id": "stress-blue-birch-newsletter",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_against_field_type",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 695,
+          "completion_tokens": 199,
+          "total_tokens": 894
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClinicalTrialEnrollment"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ClinicalTrialEnrollment"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "stress-workshop-back-exercise-missing",
+        "base_task_id": "stress-workshop-back-exercise",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_against_field_type",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 716,
+          "completion_tokens": 842,
+          "total_tokens": 1558
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "BackPainExerciseRecommendations"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "pain_type"
+          ]
+        },
+        "evaluation": {
+          "correct": false,
+          "fabricated": true,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [
+            "pain_type"
+          ],
+          "clarified_fields": [],
+          "reason": "arguments_without_visible_evidence"
+        }
+      },
+      {
+        "task_id": "stress-workshop-back-exercise-complete",
+        "base_task_id": "stress-workshop-back-exercise",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_against_field_type",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 730,
+          "completion_tokens": 642,
+          "total_tokens": 1372
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "BackPainExerciseRecommendations"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "BackPainExerciseRecommendations"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "stress-tarragona-outdoor-lunch-missing",
+        "base_task_id": "stress-tarragona-outdoor-lunch",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_against_field_type",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 727,
+          "completion_tokens": 343,
+          "total_tokens": 1070
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClothingRecommendation"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "humidity"
+          ]
+        },
+        "evaluation": {
+          "correct": false,
+          "fabricated": true,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [
+            "humidity"
+          ],
+          "clarified_fields": [],
+          "reason": "arguments_without_visible_evidence"
+        }
+      },
+      {
+        "task_id": "stress-tarragona-outdoor-lunch-complete",
+        "base_task_id": "stress-tarragona-outdoor-lunch",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_against_field_type",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 738,
+          "completion_tokens": 336,
+          "total_tokens": 1074
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClothingRecommendation"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ClothingRecommendation"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      }
+    ],
+    "validation": []
+  },
+  {
+    "attempt": 2,
+    "status": "failed_diagnostics",
+    "cost": {
+      "requests": 1,
+      "prompt_tokens": 4670,
+      "completion_tokens": 494,
+      "total_tokens": 5164
+    },
+    "repaired_historical_errors": 0,
+    "correct_complete_controls": 3,
+    "diagnostics": [
+      {
+        "task_id": "stress-blue-birch-newsletter-missing",
+        "base_task_id": "stress-blue-birch-newsletter",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_type_and_relevance",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 676,
+          "completion_tokens": 331,
+          "total_tokens": 1007
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClinicalTrialEnrollment"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "trial_id"
+          ]
+        },
+        "evaluation": {
+          "correct": false,
+          "fabricated": true,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [
+            "trial_id"
+          ],
+          "clarified_fields": [],
+          "reason": "arguments_without_visible_evidence"
+        }
+      },
+      {
+        "task_id": "stress-blue-birch-newsletter-complete",
+        "base_task_id": "stress-blue-birch-newsletter",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_type_and_relevance",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 691,
+          "completion_tokens": 218,
+          "total_tokens": 909
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClinicalTrialEnrollment"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ClinicalTrialEnrollment"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "stress-workshop-back-exercise-missing",
+        "base_task_id": "stress-workshop-back-exercise",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_type_and_relevance",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 712,
+          "completion_tokens": 468,
+          "total_tokens": 1180
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "BackPainExerciseRecommendations"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "pain_type"
+          ]
+        },
+        "evaluation": {
+          "correct": false,
+          "fabricated": true,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [
+            "pain_type"
+          ],
+          "clarified_fields": [],
+          "reason": "arguments_without_visible_evidence"
+        }
+      },
+      {
+        "task_id": "stress-workshop-back-exercise-complete",
+        "base_task_id": "stress-workshop-back-exercise",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_type_and_relevance",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 726,
+          "completion_tokens": 550,
+          "total_tokens": 1276
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "BackPainExerciseRecommendations"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "BackPainExerciseRecommendations"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "stress-tarragona-outdoor-lunch-missing",
+        "base_task_id": "stress-tarragona-outdoor-lunch",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_type_and_relevance",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 723,
+          "completion_tokens": 354,
+          "total_tokens": 1077
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClothingRecommendation"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "humidity"
+          ]
+        },
+        "evaluation": {
+          "correct": false,
+          "fabricated": true,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [
+            "humidity"
+          ],
+          "clarified_fields": [],
+          "reason": "arguments_without_visible_evidence"
+        }
+      },
+      {
+        "task_id": "stress-tarragona-outdoor-lunch-complete",
+        "base_task_id": "stress-tarragona-outdoor-lunch",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "check_required_parameter_presence",
+          "validate_value_type_and_relevance",
+          "use_lookup_for_missing_parameters"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 734,
+          "completion_tokens": 304,
+          "total_tokens": 1038
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ClothingRecommendation"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ClothingRecommendation"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      }
+    ],
+    "validation": []
+  }
+]

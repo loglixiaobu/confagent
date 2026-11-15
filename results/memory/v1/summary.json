@@ -1,0 +1,35 @@
+{
+  "status": "memory_build_failed",
+  "memory_rules_sha256": null,
+  "build_cost": {
+    "development_decisions": {
+      "requests": 10,
+      "prompt_tokens": 5747,
+      "completion_tokens": 3493,
+      "total_tokens": 9240
+    },
+    "development_self_report": {
+      "requests": 3,
+      "prompt_tokens": 1723,
+      "completion_tokens": 14,
+      "total_tokens": 1737
+    },
+    "synthesis": {
+      "requests": 2,
+      "prompt_tokens": 6418,
+      "completion_tokens": 913,
+      "total_tokens": 7331
+    },
+    "validation": {
+      "requests": 8,
+      "prompt_tokens": 4320,
+      "completion_tokens": 1338,
+      "total_tokens": 5658
+    }
+  },
+  "groups": {},
+  "paired": {},
+  "failed_request_attempts": {
+    "synthesis": 1
+  }
+}

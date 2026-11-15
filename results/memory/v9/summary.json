@@ -1,0 +1,375 @@
+{
+  "status": "completed",
+  "experiment": "jointly-recalled-authorized-profile-memory-v9",
+  "criteria": {
+    "test_cases": 24,
+    "control_cases": 8,
+    "minimum_correct_controls": 7,
+    "primary": "exact tool calls grounding both required case values on eligible held-out requests",
+    "test": "exact one-sided paired binomial (McNemar)",
+    "alpha": 0.0015625,
+    "minimum_absolute_increase": 0.5,
+    "minimum_joint_grounded_call_rate": 0.9,
+    "guardrails": {
+      "unsupported_calls": "B <= A on the held-out requests",
+      "invalid_decisions": "B <= A on the held-out requests, including any truncation",
+      "noncurrent_value_use": "B never uses a stale, revoked, or otherwise ineligible value",
+      "scoped_memory": "actual memory IDs equal the eligible record IDs in each arm on all cases",
+      "control_correctness": "B >= A and B >= 7/8 using each arm's visible evidence"
+    },
+    "secondary": "descriptive questions asking one or both saved fields and exact-call replacements"
+  },
+  "analysis": {
+    "groups": {
+      "test": {
+        "A": {
+          "cases": 24,
+          "correct": 16,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 19,
+          "questions_for_both_fields": 17,
+          "memory_fields_asked": 36,
+          "unsupported_calls": 4,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 24,
+            "prompt_tokens": 16122,
+            "completion_tokens": 12095,
+            "total_tokens": 28217
+          }
+        },
+        "B": {
+          "cases": 24,
+          "correct": 24,
+          "jointly_grounded_calls": 24,
+          "questions_for_either_field": 0,
+          "questions_for_both_fields": 0,
+          "memory_fields_asked": 0,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 24,
+            "prompt_tokens": 21798,
+            "completion_tokens": 7127,
+            "total_tokens": 28925
+          }
+        }
+      },
+      "controls": {
+        "A": {
+          "cases": 8,
+          "correct": 6,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 6,
+          "questions_for_both_fields": 5,
+          "memory_fields_asked": 11,
+          "unsupported_calls": 1,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 8,
+            "prompt_tokens": 5239,
+            "completion_tokens": 4340,
+            "total_tokens": 9579
+          }
+        },
+        "B": {
+          "cases": 8,
+          "correct": 8,
+          "jointly_grounded_calls": 2,
+          "questions_for_either_field": 6,
+          "questions_for_both_fields": 0,
+          "memory_fields_asked": 6,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 8,
+            "prompt_tokens": 6447,
+            "completion_tokens": 2497,
+            "total_tokens": 8944
+          }
+        }
+      }
+    },
+    "primary": {
+      "left": "A",
+      "right": "B",
+      "only_left": [],
+      "only_right": [
+        "multislot-print-festival-flight-next",
+        "multislot-weaving-club-bookings-next",
+        "multislot-curator-document-query-next",
+        "multislot-closing-price-practice-next",
+        "multislot-drill-conference-message-next",
+        "multislot-chamber-power-after-hours-next",
+        "multislot-stage-rehearsal-agenda-next",
+        "multislot-volunteer-stew-price-next",
+        "multislot-demo-transfer-registration-next",
+        "multislot-clinic-change-simulator-next",
+        "multislot-demo-provider-time-next",
+        "multislot-center-search-folio-next",
+        "multislot-case-study-trial-finder-next",
+        "multislot-voice-lesson-consultation-next",
+        "multislot-household-coaching-plan-next",
+        "multislot-directory-check-city-role-next",
+        "multislot-dinner-map-point-next",
+        "multislot-market-lunch-weather-next",
+        "multislot-training-diary-upload-next",
+        "multislot-rowing-simulator-registration-next",
+        "multislot-repair-shop-appointment-next",
+        "multislot-manual-bmi-benchmark-next",
+        "multislot-practice-heart-rate-record-next",
+        "multislot-sample-pain-workshop-next"
+      ],
+      "both": [],
+      "neither": [],
+      "p_value": 5.960464477539063e-08,
+      "difference": 1.0
+    },
+    "guardrails_passed": {
+      "unsupported_calls": true,
+      "invalid_decisions": true,
+      "noncurrent_value_use": true,
+      "scoped_memory": true,
+      "control_correctness": true
+    },
+    "question_comparison": {
+      "left": "B",
+      "right": "A",
+      "only_left": [],
+      "only_right": [
+        "multislot-print-festival-flight-next",
+        "multislot-weaving-club-bookings-next",
+        "multislot-curator-document-query-next",
+        "multislot-closing-price-practice-next",
+        "multislot-drill-conference-message-next",
+        "multislot-stage-rehearsal-agenda-next",
+        "multislot-volunteer-stew-price-next",
+        "multislot-demo-transfer-registration-next",
+        "multislot-clinic-change-simulator-next",
+        "multislot-demo-provider-time-next",
+        "multislot-voice-lesson-consultation-next",
+        "multislot-directory-check-city-role-next",
+        "multislot-dinner-map-point-next",
+        "multislot-market-lunch-weather-next",
+        "multislot-training-diary-upload-next",
+        "multislot-rowing-simulator-registration-next",
+        "multislot-manual-bmi-benchmark-next",
+        "multislot-practice-heart-rate-record-next",
+        "multislot-sample-pain-workshop-next"
+      ],
+      "both": [],
+      "neither": [
+        "multislot-chamber-power-after-hours-next",
+        "multislot-center-search-folio-next",
+        "multislot-case-study-trial-finder-next",
+        "multislot-household-coaching-plan-next",
+        "multislot-repair-shop-appointment-next"
+      ],
+      "difference": 0.7916666666666666,
+      "exact_call_replacements": 19
+    },
+    "controls_by_condition": {
+      "revoked": {
+        "A": {
+          "cases": 2,
+          "correct": 1,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 1,
+          "questions_for_both_fields": 1,
+          "memory_fields_asked": 2,
+          "unsupported_calls": 1,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 2,
+            "prompt_tokens": 1331,
+            "completion_tokens": 1397,
+            "total_tokens": 2728
+          }
+        },
+        "B": {
+          "cases": 2,
+          "correct": 2,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 2,
+          "questions_for_both_fields": 0,
+          "memory_fields_asked": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 2,
+            "prompt_tokens": 1598,
+            "completion_tokens": 654,
+            "total_tokens": 2252
+          }
+        }
+      },
+      "missing": {
+        "A": {
+          "cases": 2,
+          "correct": 2,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 2,
+          "questions_for_both_fields": 2,
+          "memory_fields_asked": 4,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 2,
+            "prompt_tokens": 1278,
+            "completion_tokens": 1020,
+            "total_tokens": 2298
+          }
+        },
+        "B": {
+          "cases": 2,
+          "correct": 2,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 2,
+          "questions_for_both_fields": 0,
+          "memory_fields_asked": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 2,
+            "prompt_tokens": 1508,
+            "completion_tokens": 558,
+            "total_tokens": 2066
+          }
+        }
+      },
+      "wrong_profile": {
+        "A": {
+          "cases": 1,
+          "correct": 1,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 1,
+          "questions_for_both_fields": 1,
+          "memory_fields_asked": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 1,
+            "prompt_tokens": 667,
+            "completion_tokens": 261,
+            "total_tokens": 928
+          }
+        },
+        "B": {
+          "cases": 1,
+          "correct": 1,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 1,
+          "questions_for_both_fields": 0,
+          "memory_fields_asked": 1,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 1,
+            "prompt_tokens": 781,
+            "completion_tokens": 301,
+            "total_tokens": 1082
+          }
+        }
+      },
+      "wrong_slot": {
+        "A": {
+          "cases": 1,
+          "correct": 1,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 1,
+          "questions_for_both_fields": 1,
+          "memory_fields_asked": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 1,
+            "prompt_tokens": 645,
+            "completion_tokens": 471,
+            "total_tokens": 1116
+          }
+        },
+        "B": {
+          "cases": 1,
+          "correct": 1,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 1,
+          "questions_for_both_fields": 0,
+          "memory_fields_asked": 1,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 1,
+            "prompt_tokens": 759,
+            "completion_tokens": 326,
+            "total_tokens": 1085
+          }
+        }
+      },
+      "current_update": {
+        "A": {
+          "cases": 2,
+          "correct": 1,
+          "jointly_grounded_calls": 0,
+          "questions_for_either_field": 1,
+          "questions_for_both_fields": 0,
+          "memory_fields_asked": 1,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 2,
+            "prompt_tokens": 1318,
+            "completion_tokens": 1191,
+            "total_tokens": 2509
+          }
+        },
+        "B": {
+          "cases": 2,
+          "correct": 2,
+          "jointly_grounded_calls": 2,
+          "questions_for_either_field": 0,
+          "questions_for_both_fields": 0,
+          "memory_fields_asked": 0,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "cost": {
+            "requests": 2,
+            "prompt_tokens": 1801,
+            "completion_tokens": 658,
+            "total_tokens": 2459
+          }
+        }
+      }
+    },
+    "memory_mismatches": [],
+    "confirmed_positive": true
+  },
+  "failed_requests": {}
+}

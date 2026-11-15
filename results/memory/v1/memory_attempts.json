@@ -1,0 +1,274 @@
+[
+  {
+    "attempt": 1,
+    "status": "failed_validation",
+    "rule_coverage": {
+      "rule_001": [],
+      "rule_002": [],
+      "rule_003": []
+    },
+    "cost": {
+      "requests": 1,
+      "prompt_tokens": 3199,
+      "completion_tokens": 456,
+      "total_tokens": 3655
+    },
+    "validation": [
+      {
+        "task_id": "validation-nyc-rental-length",
+        "base_task_id": "nyc-rental-length",
+        "finish_reason": "stop",
+        "memory_rule_ids": [],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 537,
+          "completion_tokens": 199,
+          "total_tokens": 736
+        },
+        "action": {
+          "kind": "clarify"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "duration"
+          ]
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": true,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [
+            "duration"
+          ],
+          "reason": "required_fields_requested"
+        }
+      },
+      {
+        "task_id": "validation-harborlight-availability",
+        "base_task_id": "harborlight-availability",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 529,
+          "completion_tokens": 123,
+          "total_tokens": 652
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ServiceAvailabilityChecker"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ServiceAvailabilityChecker"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "validation-travel-reminder-id",
+        "base_task_id": "travel-reminder-id",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 524,
+          "completion_tokens": 171,
+          "total_tokens": 695
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ReminderDetails"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ReminderDetails"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "validation-weather-current-position",
+        "base_task_id": "weather-current-position",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 570,
+          "completion_tokens": 183,
+          "total_tokens": 753
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "GetUserLocation"
+        },
+        "expected": {
+          "kind": "lookup",
+          "api_name": "GetUserLocation"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_lookup"
+        }
+      }
+    ]
+  },
+  {
+    "attempt": 2,
+    "status": "failed_validation",
+    "rule_coverage": {
+      "rule_001": [],
+      "rule_002": [],
+      "rule_003": []
+    },
+    "cost": {
+      "requests": 1,
+      "prompt_tokens": 3219,
+      "completion_tokens": 457,
+      "total_tokens": 3676
+    },
+    "validation": [
+      {
+        "task_id": "validation-nyc-rental-length",
+        "base_task_id": "nyc-rental-length",
+        "finish_reason": "stop",
+        "memory_rule_ids": [],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 537,
+          "completion_tokens": 199,
+          "total_tokens": 736
+        },
+        "action": {
+          "kind": "clarify"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "duration"
+          ]
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": true,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [
+            "duration"
+          ],
+          "reason": "required_fields_requested"
+        }
+      },
+      {
+        "task_id": "validation-harborlight-availability",
+        "base_task_id": "harborlight-availability",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 529,
+          "completion_tokens": 123,
+          "total_tokens": 652
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ServiceAvailabilityChecker"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ServiceAvailabilityChecker"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "validation-travel-reminder-id",
+        "base_task_id": "travel-reminder-id",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 524,
+          "completion_tokens": 168,
+          "total_tokens": 692
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ReminderDetails"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ReminderDetails"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "validation-weather-current-position",
+        "base_task_id": "weather-current-position",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 570,
+          "completion_tokens": 172,
+          "total_tokens": 742
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "GetUserLocation"
+        },
+        "expected": {
+          "kind": "lookup",
+          "api_name": "GetUserLocation"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_lookup"
+        }
+      }
+    ]
+  }
+]

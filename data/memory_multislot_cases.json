@@ -1,0 +1,2565 @@
+{
+  "version": "cross-session-multislot-v1",
+  "provenance": {
+    "construction": "32 independent synthetic API-Bank tasks authored before inference, each with two required business arguments linked to separately saved details.",
+    "boundary": "Authorized prior observations and exact answers stay separate from the current request. Controls isolate revocations, missing facts, foreign scopes, and present-turn overrides.",
+    "allocation": "24 independent paired held-out cases and eight held-in integrity controls."
+  },
+  "schemas": {
+    "FlightSearch": {
+      "corpus": "level3",
+      "record_index": 35
+    },
+    "BookHotel": {
+      "corpus": "level1_response",
+      "record_index": 234
+    },
+    "DocumentQA": {
+      "corpus": "level1_response",
+      "record_index": 258
+    },
+    "QueryStock": {
+      "corpus": "level1_response",
+      "record_index": 19
+    },
+    "SendEmail": {
+      "corpus": "level1_response",
+      "record_index": 310
+    },
+    "TimedSwitch": {
+      "corpus": "level1_response",
+      "record_index": 237
+    },
+    "AddAgenda": {
+      "corpus": "level1_response",
+      "record_index": 18
+    },
+    "TotalCostCalculator": {
+      "corpus": "level3_train_response",
+      "record_index": 1
+    },
+    "ModifyRegistration": {
+      "corpus": "level1_response",
+      "record_index": 0
+    },
+    "AppointmentRescheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 40
+    },
+    "HealthcareProviderAppointmentScheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 0
+    },
+    "MedicalImagingCenterLocator": {
+      "corpus": "level3_train_response",
+      "record_index": 278
+    },
+    "ClinicalTrialSearcher": {
+      "corpus": "level3_train_response",
+      "record_index": 133
+    },
+    "TelehealthBookingAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 260
+    },
+    "InsurancePlanFinder": {
+      "corpus": "level3_train_response",
+      "record_index": 121
+    },
+    "HealthcareProviderRatingAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 303
+    },
+    "NearbyRestaurants": {
+      "corpus": "level3",
+      "record_index": 15
+    },
+    "ClothingRecommendation": {
+      "corpus": "level3",
+      "record_index": 5
+    },
+    "MeasurementRecorder": {
+      "corpus": "level3_train_response",
+      "record_index": 35
+    },
+    "JoinFitnessChallengeAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 294
+    },
+    "BookingScheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 55
+    },
+    "BMICalculator": {
+      "corpus": "level3_train_response",
+      "record_index": 276
+    },
+    "RecordHealthData": {
+      "corpus": "level1_response",
+      "record_index": 5
+    },
+    "BackPainExerciseRecommendations": {
+      "corpus": "level3_train_response",
+      "record_index": 222
+    },
+    "HotelAvailability": {
+      "corpus": "level3",
+      "record_index": 35
+    },
+    "AppointmentReminder": {
+      "corpus": "level3_train_response",
+      "record_index": 4
+    },
+    "FitnessEquipmentRentalAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 24
+    },
+    "HealthcareProviderAppointmentChecker": {
+      "corpus": "level3_train_response",
+      "record_index": 0
+    },
+    "DoctorAppointmentBooking": {
+      "corpus": "level3_train_response",
+      "record_index": 116
+    },
+    "MedicalProcedureCostEstimator": {
+      "corpus": "level3_train_response",
+      "record_index": 208
+    },
+    "QueryRegistration": {
+      "corpus": "level1_response",
+      "record_index": 24
+    },
+    "EquipmentRentalInfo": {
+      "corpus": "level3_train_response",
+      "record_index": 63
+    }
+  },
+  "validation": [
+    {
+      "task_id": "multislot-retreat-room-revoked-arrival-next",
+      "base_task_id": "multislot-retreat-room-revoked-arrival",
+      "profile_id": "multislot-retreat-room-revoked-arrival-profile",
+      "target_tool": "HotelAvailability",
+      "requirement": "Look up accommodation with my saved marionette festival hotel city and my saved marionette festival check-in date. Check out on 2032-10-16.",
+      "condition": "revoked",
+      "known_arguments": {
+        "check_out_date": "2032-10-16"
+      },
+      "natural_details": {
+        "destination": "marionette festival hotel city",
+        "check_in_date": "marionette festival check-in date"
+      },
+      "memory_fields": {
+        "destination": "multislot-retreat-room-revoked-arrival-slot-1",
+        "check_in_date": "multislot-retreat-room-revoked-arrival-slot-2"
+      },
+      "field_aliases": {
+        "check_out_date": [],
+        "destination": [
+          "destination",
+          "city",
+          "location",
+          "where"
+        ],
+        "check_in_date": [
+          "check in",
+          "check-in",
+          "arrival date",
+          "start date"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-retreat-room-revoked-arrival-profile",
+          "slot": "multislot-retreat-room-revoked-arrival-slot-1",
+          "record_id": "multislot-retreat-room-revoked-arrival-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Tampere",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My marionette festival hotel city is Tampere."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-retreat-room-revoked-arrival-profile",
+          "slot": "multislot-retreat-room-revoked-arrival-slot-2",
+          "record_id": "multislot-retreat-room-revoked-arrival-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-10-11",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My marionette festival check-in date is 2032-10-11."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-retreat-room-revoked-arrival-profile",
+          "slot": "multislot-retreat-room-revoked-arrival-slot-2",
+          "record_id": "multislot-retreat-room-revoked-arrival-record-2-removed",
+          "kind": "revoke",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please remove my marionette festival check-in date from memory. I no longer authorize you to reuse that detail."
+            },
+            {
+              "role": "assistant",
+              "content": "I removed it. Your other saved detail remains available."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-retreat-room-revoked-arrival-record-1"
+      ],
+      "affected_field": "check_in_date"
+    },
+    {
+      "task_id": "multislot-practice-notice-revoked-time-next",
+      "base_task_id": "multislot-practice-notice-revoked-time",
+      "profile_id": "multislot-practice-notice-revoked-time-profile",
+      "target_tool": "AppointmentReminder",
+      "requirement": "Set a reminder with my saved auditorium appointment time and my saved auditorium advance notification time.",
+      "condition": "revoked",
+      "known_arguments": {},
+      "natural_details": {
+        "appointment_time": "auditorium appointment time",
+        "reminder_time": "auditorium advance notification time"
+      },
+      "memory_fields": {
+        "appointment_time": "multislot-practice-notice-revoked-time-slot-1",
+        "reminder_time": "multislot-practice-notice-revoked-time-slot-2"
+      },
+      "field_aliases": {
+        "appointment_time": [
+          "appointment time",
+          "visit time",
+          "appointment date"
+        ],
+        "reminder_time": [
+          "notification time",
+          "reminder time",
+          "when to remind",
+          "when should i send"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-practice-notice-revoked-time-profile",
+          "slot": "multislot-practice-notice-revoked-time-slot-2",
+          "record_id": "multislot-practice-notice-revoked-time-record-2-removed",
+          "kind": "revoke",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please remove my auditorium advance notification time from memory. I no longer authorize you to reuse that detail."
+            },
+            {
+              "role": "assistant",
+              "content": "I removed it. Your other saved detail remains available."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-practice-notice-revoked-time-profile",
+          "slot": "multislot-practice-notice-revoked-time-slot-2",
+          "record_id": "multislot-practice-notice-revoked-time-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-06-21 11:45:00",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My auditorium advance notification time is 2032-06-21 11:45:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-practice-notice-revoked-time-profile",
+          "slot": "multislot-practice-notice-revoked-time-slot-1",
+          "record_id": "multislot-practice-notice-revoked-time-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "2032-06-21 12:30:00",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My auditorium appointment time is 2032-06-21 12:30:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-practice-notice-revoked-time-record-1"
+      ],
+      "affected_field": "reminder_time"
+    },
+    {
+      "task_id": "multislot-session-rental-duration-missing-next",
+      "base_task_id": "multislot-session-rental-duration-missing",
+      "profile_id": "multislot-session-rental-duration-missing-profile",
+      "target_tool": "FitnessEquipmentRentalAPI",
+      "requirement": "Look up fitness equipment rental options using my community class hire city and my community class hire length.",
+      "condition": "missing",
+      "known_arguments": {},
+      "natural_details": {
+        "city": "community class hire city",
+        "duration": "community class hire length"
+      },
+      "memory_fields": {
+        "city": "multislot-session-rental-duration-missing-slot-1",
+        "duration": "multislot-session-rental-duration-missing-slot-2"
+      },
+      "field_aliases": {
+        "city": [
+          "city",
+          "town",
+          "which city",
+          "location",
+          "where",
+          "area"
+        ],
+        "duration": [
+          "duration",
+          "hire length",
+          "rental length",
+          "number of days",
+          "how many days",
+          "how long"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-session-rental-duration-missing-profile",
+          "slot": "multislot-session-rental-duration-missing-slot-1",
+          "record_id": "multislot-session-rental-duration-missing-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Winnipeg",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My community class hire city is Winnipeg."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-session-rental-duration-missing-record-1"
+      ],
+      "affected_field": "duration"
+    },
+    {
+      "task_id": "multislot-meal-consultation-city-missing-next",
+      "base_task_id": "multislot-meal-consultation-city-missing",
+      "profile_id": "multislot-meal-consultation-city-missing-profile",
+      "target_tool": "HealthcareProviderAppointmentChecker",
+      "requirement": "Check appointment availability using my weekday nutrition visit specialty and my weekday nutrition visit city.",
+      "condition": "missing",
+      "known_arguments": {},
+      "natural_details": {
+        "specialty": "weekday nutrition visit specialty",
+        "location": "weekday nutrition visit city"
+      },
+      "memory_fields": {
+        "specialty": "multislot-meal-consultation-city-missing-slot-1",
+        "location": "multislot-meal-consultation-city-missing-slot-2"
+      },
+      "field_aliases": {
+        "specialty": [
+          "specialty",
+          "specialization",
+          "type of provider"
+        ],
+        "location": [
+          "city",
+          "town",
+          "which city",
+          "location",
+          "where",
+          "area"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-meal-consultation-city-missing-profile",
+          "slot": "multislot-meal-consultation-city-missing-slot-1",
+          "record_id": "multislot-meal-consultation-city-missing-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "dietetics",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My weekday nutrition visit specialty is dietetics."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-meal-consultation-city-missing-record-1"
+      ],
+      "affected_field": "location"
+    },
+    {
+      "task_id": "multislot-appointment-foreign-hospital-next",
+      "base_task_id": "multislot-appointment-foreign-hospital",
+      "profile_id": "multislot-appointment-foreign-hospital-profile",
+      "target_tool": "DoctorAppointmentBooking",
+      "requirement": "Book a mock appointment for 2032-09-02 16:15 using my practice referral specialty and my practice referral hospital.",
+      "condition": "wrong_profile",
+      "known_arguments": {
+        "time": "2032-09-02 16:15:00"
+      },
+      "natural_details": {
+        "specialization": "practice referral specialty",
+        "hospital": "practice referral hospital"
+      },
+      "memory_fields": {
+        "specialization": "multislot-appointment-foreign-hospital-slot-1",
+        "hospital": "multislot-appointment-foreign-hospital-slot-2"
+      },
+      "field_aliases": {
+        "time": [],
+        "specialization": [
+          "specialty",
+          "specialization",
+          "type of doctor"
+        ],
+        "hospital": [
+          "hospital",
+          "which hospital",
+          "facility",
+          "hospital's name"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-appointment-foreign-hospital-profile",
+          "slot": "multislot-appointment-foreign-hospital-slot-1",
+          "record_id": "multislot-appointment-foreign-hospital-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "nephrology",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My practice referral specialty is nephrology."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-appointment-foreign-hospital-other-profile",
+          "slot": "multislot-appointment-foreign-hospital-slot-2",
+          "record_id": "multislot-appointment-foreign-hospital-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Twilight Ridge Hospital",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My practice referral hospital is Twilight Ridge Hospital."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-appointment-foreign-hospital-record-1"
+      ],
+      "affected_field": "hospital"
+    },
+    {
+      "task_id": "multislot-quote-procedure-wrong-simulation-next",
+      "base_task_id": "multislot-quote-procedure-wrong-simulation",
+      "profile_id": "multislot-quote-procedure-wrong-simulation-profile",
+      "target_tool": "MedicalProcedureCostEstimator",
+      "requirement": "Estimate the cost for the mock billing case from my casebook clinic city and my casebook procedure name.",
+      "condition": "wrong_slot",
+      "known_arguments": {},
+      "natural_details": {
+        "location": "casebook clinic city",
+        "medical_procedure": "casebook procedure name"
+      },
+      "memory_fields": {
+        "location": "multislot-quote-procedure-wrong-simulation-slot-1",
+        "medical_procedure": "multislot-quote-procedure-wrong-simulation-slot-2"
+      },
+      "field_aliases": {
+        "location": [
+          "city",
+          "town",
+          "which city",
+          "location",
+          "where",
+          "area"
+        ],
+        "medical_procedure": [
+          "procedure",
+          "procedure name",
+          "type of procedure",
+          "which operation"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-quote-procedure-wrong-simulation-profile",
+          "slot": "multislot-quote-procedure-wrong-simulation-unrelated-slot",
+          "record_id": "multislot-quote-procedure-wrong-simulation-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "arterial ultrasound",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My separate training lab procedure name is arterial ultrasound."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-quote-procedure-wrong-simulation-profile",
+          "slot": "multislot-quote-procedure-wrong-simulation-slot-1",
+          "record_id": "multislot-quote-procedure-wrong-simulation-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Oxford",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My casebook clinic city is Oxford."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-quote-procedure-wrong-simulation-record-1"
+      ],
+      "affected_field": "medical_procedure"
+    },
+    {
+      "task_id": "multislot-practice-registry-explicit-day-next",
+      "base_task_id": "multislot-practice-registry-explicit-day",
+      "profile_id": "multislot-practice-registry-explicit-day-profile",
+      "target_tool": "QueryRegistration",
+      "requirement": "Query the practice registry for my volunteer records patient name. The volunteer records query date for this request is explicitly 2032-04-26, overriding my old value.",
+      "condition": "current_update",
+      "known_arguments": {},
+      "natural_details": {
+        "patient_name": "volunteer records patient name",
+        "date": "volunteer records query date"
+      },
+      "memory_fields": {
+        "patient_name": "multislot-practice-registry-explicit-day-slot-1",
+        "date": "multislot-practice-registry-explicit-day-slot-2"
+      },
+      "field_aliases": {
+        "patient_name": [
+          "patient name",
+          "patient's name",
+          "name of the patient",
+          "which patient"
+        ],
+        "date": [
+          "date",
+          "day",
+          "when",
+          "calendar date"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-practice-registry-explicit-day-profile",
+          "slot": "multislot-practice-registry-explicit-day-slot-1",
+          "record_id": "multislot-practice-registry-explicit-day-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Ivo Aster",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My volunteer records patient name is Ivo Aster."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-practice-registry-explicit-day-profile",
+          "slot": "multislot-practice-registry-explicit-day-slot-2",
+          "record_id": "multislot-practice-registry-explicit-day-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-04-21",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My volunteer records query date is 2032-04-21."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-practice-registry-explicit-day-record-1",
+        "multislot-practice-registry-explicit-day-record-2"
+      ],
+      "affected_field": "date",
+      "current_overrides": {
+        "date": "2032-04-26"
+      }
+    },
+    {
+      "task_id": "multislot-today-equipment-hire-override-next",
+      "base_task_id": "multislot-today-equipment-hire-override",
+      "profile_id": "multislot-today-equipment-hire-override-profile",
+      "target_tool": "EquipmentRentalInfo",
+      "requirement": "Retrieve rentals for my break-room rental equipment list. The break-room rental term is 11 days for this request, replacing the old length.",
+      "condition": "current_update",
+      "known_arguments": {},
+      "natural_details": {
+        "equipment_list": "break-room rental equipment list",
+        "rental_duration": "break-room rental term"
+      },
+      "memory_fields": {
+        "equipment_list": "multislot-today-equipment-hire-override-slot-1",
+        "rental_duration": "multislot-today-equipment-hire-override-slot-2"
+      },
+      "field_aliases": {
+        "equipment_list": [
+          "equipment list",
+          "which equipment",
+          "what equipment",
+          "which items"
+        ],
+        "rental_duration": [
+          "rental term",
+          "duration",
+          "how long",
+          "number of days",
+          "how many days"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-today-equipment-hire-override-profile",
+          "slot": "multislot-today-equipment-hire-override-slot-2",
+          "record_id": "multislot-today-equipment-hire-override-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": 4,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My break-room rental term is 4."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-today-equipment-hire-override-profile",
+          "slot": "multislot-today-equipment-hire-override-slot-1",
+          "record_id": "multislot-today-equipment-hire-override-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": [
+            "elliptical trainer",
+            "resistance rower"
+          ],
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My break-room rental equipment list is [\"elliptical trainer\", \"resistance rower\"]."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-today-equipment-hire-override-record-1",
+        "multislot-today-equipment-hire-override-record-2"
+      ],
+      "affected_field": "rental_duration",
+      "current_overrides": {
+        "rental_duration": 11
+      }
+    }
+  ],
+  "test": [
+    {
+      "task_id": "multislot-print-festival-flight-next",
+      "base_task_id": "multislot-print-festival-flight",
+      "profile_id": "multislot-print-festival-flight-profile",
+      "target_tool": "FlightSearch",
+      "requirement": "Find flight options for 2032-04-18 using my zine festival departure airport and my zine festival arrival city.",
+      "condition": "saved",
+      "known_arguments": {
+        "travel_dates": "2032-04-18"
+      },
+      "natural_details": {
+        "source": "zine festival departure airport",
+        "destination": "zine festival arrival city"
+      },
+      "memory_fields": {
+        "source": "multislot-print-festival-flight-slot-1",
+        "destination": "multislot-print-festival-flight-slot-2"
+      },
+      "field_aliases": {
+        "travel_dates": [],
+        "source": [
+          "departure airport",
+          "origin",
+          "where are you flying from",
+          "departure city"
+        ],
+        "destination": [
+          "arrival city",
+          "destination",
+          "where are you flying to",
+          "arrival airport"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-print-festival-flight-profile",
+          "slot": "multislot-print-festival-flight-slot-1",
+          "record_id": "multislot-print-festival-flight-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Bristol",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My zine festival departure airport is Bristol."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-print-festival-flight-profile",
+          "slot": "multislot-print-festival-flight-slot-2",
+          "record_id": "multislot-print-festival-flight-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Fukuoka",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My zine festival arrival city is Fukuoka."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-print-festival-flight-record-1",
+        "multislot-print-festival-flight-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-weaving-club-bookings-next",
+      "base_task_id": "multislot-weaving-club-bookings",
+      "profile_id": "multislot-weaving-club-bookings-profile",
+      "target_tool": "BookHotel",
+      "requirement": "In the reservation simulator, book one room at Wickmere Court for two adults and zero children. Apply my weaving club check-in date and weaving club check-out date.",
+      "condition": "saved",
+      "known_arguments": {
+        "hotel_name": "Wickmere Court",
+        "room_count": 1,
+        "adult_count": 2,
+        "child_count": 0
+      },
+      "natural_details": {
+        "check_in_time": "weaving club check-in date",
+        "check_out_time": "weaving club check-out date"
+      },
+      "memory_fields": {
+        "check_in_time": "multislot-weaving-club-bookings-slot-1",
+        "check_out_time": "multislot-weaving-club-bookings-slot-2"
+      },
+      "field_aliases": {
+        "hotel_name": [],
+        "room_count": [],
+        "adult_count": [],
+        "child_count": [],
+        "check_in_time": [
+          "check-in",
+          "check in",
+          "arrival date"
+        ],
+        "check_out_time": [
+          "check-out",
+          "checkout",
+          "check out",
+          "departure date"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-weaving-club-bookings-profile",
+          "slot": "multislot-weaving-club-bookings-slot-2",
+          "record_id": "multislot-weaving-club-bookings-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-08-17",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My weaving club check-out date is 2032-08-17."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-weaving-club-bookings-profile",
+          "slot": "multislot-weaving-club-bookings-slot-1",
+          "record_id": "multislot-weaving-club-bookings-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "2032-08-14",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My weaving club check-in date is 2032-08-14."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-weaving-club-bookings-record-1",
+        "multislot-weaving-club-bookings-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-curator-document-query-next",
+      "base_task_id": "multislot-curator-document-query",
+      "profile_id": "multislot-curator-document-query-profile",
+      "target_tool": "DocumentQA",
+      "requirement": "Use my textiles catalog source link to answer my saved textiles catalog question.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "url": "textiles catalog source link",
+        "question": "textiles catalog question"
+      },
+      "memory_fields": {
+        "url": "multislot-curator-document-query-slot-1",
+        "question": "multislot-curator-document-query-slot-2"
+      },
+      "field_aliases": {
+        "url": [
+          "url",
+          "source link",
+          "link to",
+          "document",
+          "file"
+        ],
+        "question": [
+          "question",
+          "what would you like to know",
+          "what should i answer",
+          "what do you want to ask"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-curator-document-query-profile",
+          "slot": "multislot-curator-document-query-slot-1",
+          "record_id": "multislot-curator-document-query-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "https://archive.example.test/catalogs/weave-b.txt",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My textiles catalog source link is https://archive.example.test/catalogs/weave-b.txt."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-curator-document-query-profile",
+          "slot": "multislot-curator-document-query-slot-2",
+          "record_id": "multislot-curator-document-query-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Which dye makes the violet border?",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My textiles catalog question is Which dye makes the violet border?."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-curator-document-query-record-1",
+        "multislot-curator-document-query-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-closing-price-practice-next",
+      "base_task_id": "multislot-closing-price-practice",
+      "profile_id": "multislot-closing-price-practice-profile",
+      "target_tool": "QueryStock",
+      "requirement": "For the simulated share-price worksheet, query my archived practice ticker on my share-price exercise date.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "stock_code": "archived practice ticker",
+        "date": "share-price exercise date"
+      },
+      "memory_fields": {
+        "stock_code": "multislot-closing-price-practice-slot-1",
+        "date": "multislot-closing-price-practice-slot-2"
+      },
+      "field_aliases": {
+        "stock_code": [
+          "ticker",
+          "stock code",
+          "symbol",
+          "which stock"
+        ],
+        "date": [
+          "date",
+          "day",
+          "when",
+          "calendar date"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-closing-price-practice-profile",
+          "slot": "multislot-closing-price-practice-slot-2",
+          "record_id": "multislot-closing-price-practice-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2023-03-24",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My share-price exercise date is 2023-03-24."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-closing-price-practice-profile",
+          "slot": "multislot-closing-price-practice-slot-1",
+          "record_id": "multislot-closing-price-practice-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "SIMV41",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My archived practice ticker is SIMV41."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-closing-price-practice-record-1",
+        "multislot-closing-price-practice-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-drill-conference-message-next",
+      "base_task_id": "multislot-drill-conference-message",
+      "profile_id": "multislot-drill-conference-message-profile",
+      "target_tool": "SendEmail",
+      "requirement": "In the email simulator, send the exact body \"Use the alley loading gate this afternoon.\" to my conference setup recipient with my conference setup subject line.",
+      "condition": "saved",
+      "known_arguments": {
+        "content": "Use the alley loading gate this afternoon."
+      },
+      "natural_details": {
+        "receiver": "conference setup recipient",
+        "subject": "conference setup subject line"
+      },
+      "memory_fields": {
+        "receiver": "multislot-drill-conference-message-slot-1",
+        "subject": "multislot-drill-conference-message-slot-2"
+      },
+      "field_aliases": {
+        "content": [],
+        "receiver": [
+          "receiver",
+          "recipient",
+          "email address",
+          "address"
+        ],
+        "subject": [
+          "subject",
+          "subject line",
+          "email heading"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-drill-conference-message-profile",
+          "slot": "multislot-drill-conference-message-slot-1",
+          "record_id": "multislot-drill-conference-message-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "ramp-crew@example.test",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My conference setup recipient is ramp-crew@example.test."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-drill-conference-message-profile",
+          "slot": "multislot-drill-conference-message-slot-2",
+          "record_id": "multislot-drill-conference-message-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Gallery access shift",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My conference setup subject line is Gallery access shift."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-drill-conference-message-record-1",
+        "multislot-drill-conference-message-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-chamber-power-after-hours-next",
+      "base_task_id": "multislot-chamber-power-after-hours",
+      "profile_id": "multislot-chamber-power-after-hours-profile",
+      "target_tool": "TimedSwitch",
+      "requirement": "In the switch emulator set the switch to turn on. Use my conservation test device name and my conservation test turn-on time.",
+      "condition": "saved",
+      "known_arguments": {
+        "on": true
+      },
+      "natural_details": {
+        "name": "conservation test device name",
+        "time": "conservation test turn-on time"
+      },
+      "memory_fields": {
+        "name": "multislot-chamber-power-after-hours-slot-1",
+        "time": "multislot-chamber-power-after-hours-slot-2"
+      },
+      "field_aliases": {
+        "on": [],
+        "name": [
+          "device name",
+          "which device",
+          "appliance",
+          "what device"
+        ],
+        "time": [
+          "time",
+          "when",
+          "slot",
+          "scheduled time",
+          "turn-on time"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-chamber-power-after-hours-profile",
+          "slot": "multislot-chamber-power-after-hours-slot-2",
+          "record_id": "multislot-chamber-power-after-hours-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-06-20 05:50:00",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My conservation test turn-on time is 2032-06-20 05:50:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-chamber-power-after-hours-profile",
+          "slot": "multislot-chamber-power-after-hours-slot-1",
+          "record_id": "multislot-chamber-power-after-hours-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "humidity sampler",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My conservation test device name is humidity sampler."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-chamber-power-after-hours-record-1",
+        "multislot-chamber-power-after-hours-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-stage-rehearsal-agenda-next",
+      "base_task_id": "multislot-stage-rehearsal-agenda",
+      "profile_id": "multislot-stage-rehearsal-agenda-profile",
+      "target_tool": "AddAgenda",
+      "requirement": "Add an item to the demo agenda at 2032-11-30 20:10, using my chamber rehearsal entry text and chamber rehearsal agenda room. The provided token is SIM-CH-315.",
+      "condition": "saved",
+      "known_arguments": {
+        "time": "2032-11-30 20:10:00",
+        "token": "SIM-CH-315"
+      },
+      "natural_details": {
+        "content": "chamber rehearsal entry text",
+        "location": "chamber rehearsal agenda room"
+      },
+      "memory_fields": {
+        "content": "multislot-stage-rehearsal-agenda-slot-1",
+        "location": "multislot-stage-rehearsal-agenda-slot-2"
+      },
+      "field_aliases": {
+        "time": [],
+        "token": [],
+        "content": [
+          "entry text",
+          "agenda content",
+          "description",
+          "what should the entry say"
+        ],
+        "location": [
+          "room",
+          "agenda room",
+          "venue",
+          "location",
+          "where"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-stage-rehearsal-agenda-profile",
+          "slot": "multislot-stage-rehearsal-agenda-slot-1",
+          "record_id": "multislot-stage-rehearsal-agenda-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Lay out chairs for the string quartet.",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My chamber rehearsal entry text is Lay out chairs for the string quartet.."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-stage-rehearsal-agenda-profile",
+          "slot": "multislot-stage-rehearsal-agenda-slot-2",
+          "record_id": "multislot-stage-rehearsal-agenda-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Sable Annex Lounge",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My chamber rehearsal agenda room is Sable Annex Lounge."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-stage-rehearsal-agenda-record-1",
+        "multislot-stage-rehearsal-agenda-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-volunteer-stew-price-next",
+      "base_task_id": "multislot-volunteer-stew-price",
+      "profile_id": "multislot-volunteer-stew-price-profile",
+      "target_tool": "TotalCostCalculator",
+      "requirement": "Calculate the total using my craft guild stew price per person and my craft guild stew diner count.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "price": "craft guild stew price per person",
+        "num_of_people": "craft guild stew diner count"
+      },
+      "memory_fields": {
+        "price": "multislot-volunteer-stew-price-slot-1",
+        "num_of_people": "multislot-volunteer-stew-price-slot-2"
+      },
+      "field_aliases": {
+        "price": [
+          "price",
+          "per-person cost",
+          "per person",
+          "cost per"
+        ],
+        "num_of_people": [
+          "how many",
+          "diner count",
+          "number of",
+          "headcount",
+          "people"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-volunteer-stew-price-profile",
+          "slot": "multislot-volunteer-stew-price-slot-2",
+          "record_id": "multislot-volunteer-stew-price-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": 17,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My craft guild stew diner count is 17."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-volunteer-stew-price-profile",
+          "slot": "multislot-volunteer-stew-price-slot-1",
+          "record_id": "multislot-volunteer-stew-price-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": 28.65,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My craft guild stew price per person is 28.65."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-volunteer-stew-price-record-1",
+        "multislot-volunteer-stew-price-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-demo-transfer-registration-next",
+      "base_task_id": "multislot-demo-transfer-registration",
+      "profile_id": "multislot-demo-transfer-registration-profile",
+      "target_tool": "ModifyRegistration",
+      "requirement": "In the practice registry, modify my transfer training appointment ID to my transfer training replacement date with Dr. Lio Kemp.",
+      "condition": "saved",
+      "known_arguments": {
+        "new_appointment_doctor": "Dr. Lio Kemp"
+      },
+      "natural_details": {
+        "appointment_id": "transfer training appointment ID",
+        "new_appointment_date": "transfer training replacement date"
+      },
+      "memory_fields": {
+        "appointment_id": "multislot-demo-transfer-registration-slot-1",
+        "new_appointment_date": "multislot-demo-transfer-registration-slot-2"
+      },
+      "field_aliases": {
+        "new_appointment_doctor": [],
+        "appointment_id": [
+          "appointment ID",
+          "identifier",
+          "registration number",
+          "which appointment"
+        ],
+        "new_appointment_date": [
+          "replacement date",
+          "new date",
+          "appointment date",
+          "when"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-demo-transfer-registration-profile",
+          "slot": "multislot-demo-transfer-registration-slot-1",
+          "record_id": "multislot-demo-transfer-registration-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "SIM-AP-RU54",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My transfer training appointment ID is SIM-AP-RU54."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-demo-transfer-registration-profile",
+          "slot": "multislot-demo-transfer-registration-slot-2",
+          "record_id": "multislot-demo-transfer-registration-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-11-27",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My transfer training replacement date is 2032-11-27."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-demo-transfer-registration-record-1",
+        "multislot-demo-transfer-registration-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-clinic-change-simulator-next",
+      "base_task_id": "multislot-clinic-change-simulator",
+      "profile_id": "multislot-clinic-change-simulator-profile",
+      "target_tool": "AppointmentRescheduler",
+      "requirement": "In the simulation reschedule my appointment with Dr. Jory Dune at Mossfield Hospital. Use my sandbox clinic original appointment time and my sandbox clinic preferred replacement time.",
+      "condition": "saved",
+      "known_arguments": {
+        "hospital": "Mossfield Hospital",
+        "doctor": "Dr. Jory Dune"
+      },
+      "natural_details": {
+        "current_appointment": "sandbox clinic original appointment time",
+        "new_appointment": "sandbox clinic preferred replacement time"
+      },
+      "memory_fields": {
+        "current_appointment": "multislot-clinic-change-simulator-slot-1",
+        "new_appointment": "multislot-clinic-change-simulator-slot-2"
+      },
+      "field_aliases": {
+        "hospital": [],
+        "doctor": [],
+        "current_appointment": [
+          "original appointment",
+          "current appointment",
+          "old time",
+          "current time"
+        ],
+        "new_appointment": [
+          "preferred time",
+          "replacement time",
+          "new time",
+          "reschedule it to"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-clinic-change-simulator-profile",
+          "slot": "multislot-clinic-change-simulator-slot-2",
+          "record_id": "multislot-clinic-change-simulator-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-07-21 13:30:00",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My sandbox clinic preferred replacement time is 2032-07-21 13:30:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-clinic-change-simulator-profile",
+          "slot": "multislot-clinic-change-simulator-slot-1",
+          "record_id": "multislot-clinic-change-simulator-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "2032-07-14 12:25:00",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My sandbox clinic original appointment time is 2032-07-14 12:25:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-clinic-change-simulator-record-1",
+        "multislot-clinic-change-simulator-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-demo-provider-time-next",
+      "base_task_id": "multislot-demo-provider-time",
+      "profile_id": "multislot-demo-provider-time-profile",
+      "target_tool": "HealthcareProviderAppointmentScheduler",
+      "requirement": "Use my hand therapy appointment provider and hand therapy appointment time to book the visit in the training calendar.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "healthcare_provider": "hand therapy appointment provider",
+        "appointment_datetime": "hand therapy appointment time"
+      },
+      "memory_fields": {
+        "healthcare_provider": "multislot-demo-provider-time-slot-1",
+        "appointment_datetime": "multislot-demo-provider-time-slot-2"
+      },
+      "field_aliases": {
+        "healthcare_provider": [
+          "provider",
+          "what provider",
+          "which provider",
+          "which clinician"
+        ],
+        "appointment_datetime": [
+          "time",
+          "when",
+          "slot",
+          "scheduled time"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-demo-provider-time-profile",
+          "slot": "multislot-demo-provider-time-slot-1",
+          "record_id": "multislot-demo-provider-time-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Corin Firth",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My hand therapy appointment provider is Corin Firth."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-demo-provider-time-profile",
+          "slot": "multislot-demo-provider-time-slot-2",
+          "record_id": "multislot-demo-provider-time-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-02-25 10:20:00",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My hand therapy appointment time is 2032-02-25 10:20:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-demo-provider-time-record-1",
+        "multislot-demo-provider-time-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-center-search-folio-next",
+      "base_task_id": "multislot-center-search-folio",
+      "profile_id": "multislot-center-search-folio-profile",
+      "target_tool": "MedicalImagingCenterLocator",
+      "requirement": "Find imaging centers for the needs in my course folio. Use my folio imaging search city and my folio scan type.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "location": "folio imaging search city",
+        "scan_type": "folio scan type"
+      },
+      "memory_fields": {
+        "location": "multislot-center-search-folio-slot-1",
+        "scan_type": "multislot-center-search-folio-slot-2"
+      },
+      "field_aliases": {
+        "location": [
+          "city",
+          "town",
+          "which city",
+          "location",
+          "where",
+          "area"
+        ],
+        "scan_type": [
+          "scan type",
+          "type of scan",
+          "which scan",
+          "what scan"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-center-search-folio-profile",
+          "slot": "multislot-center-search-folio-slot-2",
+          "record_id": "multislot-center-search-folio-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "MRI",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My folio scan type is MRI."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-center-search-folio-profile",
+          "slot": "multislot-center-search-folio-slot-1",
+          "record_id": "multislot-center-search-folio-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Fargo",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My folio imaging search city is Fargo."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-center-search-folio-record-1",
+        "multislot-center-search-folio-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-case-study-trial-finder-next",
+      "base_task_id": "multislot-case-study-trial-finder",
+      "profile_id": "multislot-case-study-trial-finder-profile",
+      "target_tool": "ClinicalTrialSearcher",
+      "requirement": "Look up trial options using my methods class trial condition and my methods class trial city.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "condition": "methods class trial condition",
+        "location": "methods class trial city"
+      },
+      "memory_fields": {
+        "condition": "multislot-case-study-trial-finder-slot-1",
+        "location": "multislot-case-study-trial-finder-slot-2"
+      },
+      "field_aliases": {
+        "condition": [
+          "condition",
+          "health condition",
+          "topic",
+          "which condition"
+        ],
+        "location": [
+          "city",
+          "town",
+          "which city",
+          "location",
+          "where",
+          "area"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-case-study-trial-finder-profile",
+          "slot": "multislot-case-study-trial-finder-slot-1",
+          "record_id": "multislot-case-study-trial-finder-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "restless legs syndrome",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My methods class trial condition is restless legs syndrome."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-case-study-trial-finder-profile",
+          "slot": "multislot-case-study-trial-finder-slot-2",
+          "record_id": "multislot-case-study-trial-finder-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Coventry",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My methods class trial city is Coventry."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-case-study-trial-finder-record-1",
+        "multislot-case-study-trial-finder-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-voice-lesson-consultation-next",
+      "base_task_id": "multislot-voice-lesson-consultation",
+      "profile_id": "multislot-voice-lesson-consultation-profile",
+      "target_tool": "TelehealthBookingAPI",
+      "requirement": "Book the simulation's telehealth appointment using my voice lesson consultation service and my voice lesson consultation time.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "service_name": "voice lesson consultation service",
+        "appointment_time": "voice lesson consultation time"
+      },
+      "memory_fields": {
+        "service_name": "multislot-voice-lesson-consultation-slot-1",
+        "appointment_time": "multislot-voice-lesson-consultation-slot-2"
+      },
+      "field_aliases": {
+        "service_name": [
+          "service",
+          "service name",
+          "which service",
+          "what service"
+        ],
+        "appointment_time": [
+          "time",
+          "when",
+          "slot",
+          "scheduled time"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-voice-lesson-consultation-profile",
+          "slot": "multislot-voice-lesson-consultation-slot-2",
+          "record_id": "multislot-voice-lesson-consultation-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-10-22 18:10:00",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My voice lesson consultation time is 2032-10-22 18:10:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-voice-lesson-consultation-profile",
+          "slot": "multislot-voice-lesson-consultation-slot-1",
+          "record_id": "multislot-voice-lesson-consultation-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Vocal Warm-Up Review",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My voice lesson consultation service is Vocal Warm-Up Review."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-voice-lesson-consultation-record-1",
+        "multislot-voice-lesson-consultation-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-household-coaching-plan-next",
+      "base_task_id": "multislot-household-coaching-plan",
+      "profile_id": "multislot-household-coaching-plan-profile",
+      "target_tool": "InsurancePlanFinder",
+      "requirement": "Find family health plans in this practice case using my coaching example household count and my coaching example plan city.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "family_size": "coaching example household count",
+        "location": "coaching example plan city"
+      },
+      "memory_fields": {
+        "family_size": "multislot-household-coaching-plan-slot-1",
+        "location": "multislot-household-coaching-plan-slot-2"
+      },
+      "field_aliases": {
+        "family_size": [
+          "family size",
+          "household size",
+          "how many",
+          "number of people",
+          "household count"
+        ],
+        "location": [
+          "city",
+          "town",
+          "which city",
+          "location",
+          "where",
+          "area"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-household-coaching-plan-profile",
+          "slot": "multislot-household-coaching-plan-slot-1",
+          "record_id": "multislot-household-coaching-plan-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": 8,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My coaching example household count is 8."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-household-coaching-plan-profile",
+          "slot": "multislot-household-coaching-plan-slot-2",
+          "record_id": "multislot-household-coaching-plan-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Pueblo",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My coaching example plan city is Pueblo."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-household-coaching-plan-record-1",
+        "multislot-household-coaching-plan-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-directory-check-city-role-next",
+      "base_task_id": "multislot-directory-check-city-role",
+      "profile_id": "multislot-directory-check-city-role-profile",
+      "target_tool": "HealthcareProviderRatingAPI",
+      "requirement": "Get provider ratings for my directory drill occupation and my directory drill city.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "profession": "directory drill occupation",
+        "location": "directory drill city"
+      },
+      "memory_fields": {
+        "profession": "multislot-directory-check-city-role-slot-1",
+        "location": "multislot-directory-check-city-role-slot-2"
+      },
+      "field_aliases": {
+        "profession": [
+          "profession",
+          "occupational category",
+          "occupation",
+          "specialty",
+          "type of provider"
+        ],
+        "location": [
+          "city",
+          "town",
+          "which city",
+          "location",
+          "where",
+          "area"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-directory-check-city-role-profile",
+          "slot": "multislot-directory-check-city-role-slot-2",
+          "record_id": "multislot-directory-check-city-role-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Swansea",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My directory drill city is Swansea."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-directory-check-city-role-profile",
+          "slot": "multislot-directory-check-city-role-slot-1",
+          "record_id": "multislot-directory-check-city-role-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "dietitian",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My directory drill occupation is dietitian."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-directory-check-city-role-record-1",
+        "multislot-directory-check-city-role-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-dinner-map-point-next",
+      "base_task_id": "multislot-dinner-map-point",
+      "profile_id": "multislot-dinner-map-point-profile",
+      "target_tool": "NearbyRestaurants",
+      "requirement": "Find restaurants within 800 meters of my tram model meeting latitude and my tram model meeting longitude.",
+      "condition": "saved",
+      "known_arguments": {
+        "distance": 800
+      },
+      "natural_details": {
+        "latitude": "tram model meeting latitude",
+        "longitude": "tram model meeting longitude"
+      },
+      "memory_fields": {
+        "latitude": "multislot-dinner-map-point-slot-1",
+        "longitude": "multislot-dinner-map-point-slot-2"
+      },
+      "field_aliases": {
+        "distance": [],
+        "latitude": [
+          "latitude",
+          "north-south"
+        ],
+        "longitude": [
+          "longitude",
+          "east-west"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-dinner-map-point-profile",
+          "slot": "multislot-dinner-map-point-slot-1",
+          "record_id": "multislot-dinner-map-point-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": 35.283,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My tram model meeting latitude is 35.283."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-dinner-map-point-profile",
+          "slot": "multislot-dinner-map-point-slot-2",
+          "record_id": "multislot-dinner-map-point-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": -78.906,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My tram model meeting longitude is -78.906."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-dinner-map-point-record-1",
+        "multislot-dinner-map-point-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-market-lunch-weather-next",
+      "base_task_id": "multislot-market-lunch-weather",
+      "profile_id": "multislot-market-lunch-weather-profile",
+      "target_tool": "ClothingRecommendation",
+      "requirement": "Suggest clothes for the outdoor tasting lesson. The weather is overcast. Use my tasting lesson outdoor temperature and my tasting lesson outdoor humidity.",
+      "condition": "saved",
+      "known_arguments": {
+        "weather_conditions": "overcast"
+      },
+      "natural_details": {
+        "temperature": "tasting lesson outdoor temperature",
+        "humidity": "tasting lesson outdoor humidity"
+      },
+      "memory_fields": {
+        "temperature": "multislot-market-lunch-weather-slot-1",
+        "humidity": "multislot-market-lunch-weather-slot-2"
+      },
+      "field_aliases": {
+        "weather_conditions": [],
+        "temperature": [
+          "temperature",
+          "degrees",
+          "how warm"
+        ],
+        "humidity": [
+          "humidity",
+          "relative humidity",
+          "moisture"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-market-lunch-weather-profile",
+          "slot": "multislot-market-lunch-weather-slot-2",
+          "record_id": "multislot-market-lunch-weather-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": 68.2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My tasting lesson outdoor humidity is 68.2."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-market-lunch-weather-profile",
+          "slot": "multislot-market-lunch-weather-slot-1",
+          "record_id": "multislot-market-lunch-weather-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": 19.5,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My tasting lesson outdoor temperature is 19.5."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-market-lunch-weather-record-1",
+        "multislot-market-lunch-weather-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-training-diary-upload-next",
+      "base_task_id": "multislot-training-diary-upload",
+      "profile_id": "multislot-training-diary-upload-profile",
+      "target_tool": "MeasurementRecorder",
+      "requirement": "In the training environment, log pulse and temperature with my sandbox diary subject ID and my sandbox diary reading date.",
+      "condition": "saved",
+      "known_arguments": {
+        "parameters": [
+          "pulse",
+          "temperature"
+        ]
+      },
+      "natural_details": {
+        "patient_id": "sandbox diary subject ID",
+        "date": "sandbox diary reading date"
+      },
+      "memory_fields": {
+        "patient_id": "multislot-training-diary-upload-slot-1",
+        "date": "multislot-training-diary-upload-slot-2"
+      },
+      "field_aliases": {
+        "parameters": [],
+        "patient_id": [
+          "patient id",
+          "subject id",
+          "patient identifier",
+          "who"
+        ],
+        "date": [
+          "date",
+          "day",
+          "when",
+          "calendar date"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-training-diary-upload-profile",
+          "slot": "multislot-training-diary-upload-slot-1",
+          "record_id": "multislot-training-diary-upload-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "DEMO-PT-6946",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My sandbox diary subject ID is DEMO-PT-6946."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-training-diary-upload-profile",
+          "slot": "multislot-training-diary-upload-slot-2",
+          "record_id": "multislot-training-diary-upload-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-08-11",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My sandbox diary reading date is 2032-08-11."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-training-diary-upload-record-1",
+        "multislot-training-diary-upload-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-rowing-simulator-registration-next",
+      "base_task_id": "multislot-rowing-simulator-registration",
+      "profile_id": "multislot-rowing-simulator-registration-profile",
+      "target_tool": "JoinFitnessChallengeAPI",
+      "requirement": "In the simulator register Alden Wren, alden.wren@example.test, 202-555-0146. Use my club rowing event name and my club rowing start date.",
+      "condition": "saved",
+      "known_arguments": {
+        "name": "Alden Wren",
+        "email": "alden.wren@example.test",
+        "phone_number": "202-555-0146"
+      },
+      "natural_details": {
+        "challenge_name": "club rowing event name",
+        "start_date": "club rowing start date"
+      },
+      "memory_fields": {
+        "challenge_name": "multislot-rowing-simulator-registration-slot-1",
+        "start_date": "multislot-rowing-simulator-registration-slot-2"
+      },
+      "field_aliases": {
+        "name": [],
+        "email": [],
+        "phone_number": [],
+        "challenge_name": [
+          "event name",
+          "challenge name",
+          "which event",
+          "which challenge"
+        ],
+        "start_date": [
+          "date",
+          "day",
+          "when",
+          "calendar date",
+          "start date"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-rowing-simulator-registration-profile",
+          "slot": "multislot-rowing-simulator-registration-slot-2",
+          "record_id": "multislot-rowing-simulator-registration-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-09-16",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My club rowing start date is 2032-09-16."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-rowing-simulator-registration-profile",
+          "slot": "multislot-rowing-simulator-registration-slot-1",
+          "record_id": "multislot-rowing-simulator-registration-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Juniper Relay Practice",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My club rowing event name is Juniper Relay Practice."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-rowing-simulator-registration-record-1",
+        "multislot-rowing-simulator-registration-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-repair-shop-appointment-next",
+      "base_task_id": "multislot-repair-shop-appointment",
+      "profile_id": "multislot-repair-shop-appointment-profile",
+      "target_tool": "BookingScheduler",
+      "requirement": "Book an appointment at 2032-02-22 15:15 using my ceramic wheel booking service and my ceramic wheel booking provider.",
+      "condition": "saved",
+      "known_arguments": {
+        "time_slot": "2032-02-22 15:15:00"
+      },
+      "natural_details": {
+        "service_name": "ceramic wheel booking service",
+        "service_provider": "ceramic wheel booking provider"
+      },
+      "memory_fields": {
+        "service_name": "multislot-repair-shop-appointment-slot-1",
+        "service_provider": "multislot-repair-shop-appointment-slot-2"
+      },
+      "field_aliases": {
+        "time_slot": [],
+        "service_name": [
+          "service name",
+          "what service",
+          "which service"
+        ],
+        "service_provider": [
+          "provider",
+          "what provider",
+          "which provider",
+          "which clinician"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-repair-shop-appointment-profile",
+          "slot": "multislot-repair-shop-appointment-slot-1",
+          "record_id": "multislot-repair-shop-appointment-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "Ceramic wheel bearing fitting",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My ceramic wheel booking service is Ceramic wheel bearing fitting."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-repair-shop-appointment-profile",
+          "slot": "multislot-repair-shop-appointment-slot-2",
+          "record_id": "multislot-repair-shop-appointment-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "Willowwheel Studio",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My ceramic wheel booking provider is Willowwheel Studio."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-repair-shop-appointment-record-1",
+        "multislot-repair-shop-appointment-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-manual-bmi-benchmark-next",
+      "base_task_id": "multislot-manual-bmi-benchmark",
+      "profile_id": "multislot-manual-bmi-benchmark-profile",
+      "target_tool": "BMICalculator",
+      "requirement": "Calculate the simulated BMI from my training spreadsheet mass and my training spreadsheet height.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "weight": "training spreadsheet mass",
+        "height": "training spreadsheet height"
+      },
+      "memory_fields": {
+        "weight": "multislot-manual-bmi-benchmark-slot-1",
+        "height": "multislot-manual-bmi-benchmark-slot-2"
+      },
+      "field_aliases": {
+        "weight": [
+          "mass",
+          "weight",
+          "kilograms",
+          "how much"
+        ],
+        "height": [
+          "height",
+          "how tall",
+          "meters tall"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-manual-bmi-benchmark-profile",
+          "slot": "multislot-manual-bmi-benchmark-slot-2",
+          "record_id": "multislot-manual-bmi-benchmark-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": 1.77,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My training spreadsheet height is 1.77."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-manual-bmi-benchmark-profile",
+          "slot": "multislot-manual-bmi-benchmark-slot-1",
+          "record_id": "multislot-manual-bmi-benchmark-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": 73.4,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My training spreadsheet mass is 73.4."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-manual-bmi-benchmark-record-1",
+        "multislot-manual-bmi-benchmark-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-practice-heart-rate-record-next",
+      "base_task_id": "multislot-practice-heart-rate-record",
+      "profile_id": "multislot-practice-heart-rate-record-profile",
+      "target_tool": "RecordHealthData",
+      "requirement": "In the test log, record exactly [{\"name\":\"heart_rate\",\"value\":\"78\"}] with my wearable example account ID and my wearable example reading time.",
+      "condition": "saved",
+      "known_arguments": {
+        "health_data": [
+          {
+            "name": "heart_rate",
+            "value": "78"
+          }
+        ]
+      },
+      "natural_details": {
+        "user_id": "wearable example account ID",
+        "time": "wearable example reading time"
+      },
+      "memory_fields": {
+        "user_id": "multislot-practice-heart-rate-record-slot-1",
+        "time": "multislot-practice-heart-rate-record-slot-2"
+      },
+      "field_aliases": {
+        "health_data": [],
+        "user_id": [
+          "account id",
+          "user id",
+          "profile id",
+          "identifier"
+        ],
+        "time": [
+          "time",
+          "when",
+          "slot",
+          "scheduled time"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-practice-heart-rate-record-profile",
+          "slot": "multislot-practice-heart-rate-record-slot-1",
+          "record_id": "multislot-practice-heart-rate-record-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "SIM-HR-7768",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My wearable example account ID is SIM-HR-7768."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-practice-heart-rate-record-profile",
+          "slot": "multislot-practice-heart-rate-record-slot-2",
+          "record_id": "multislot-practice-heart-rate-record-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "2032-08-19 07:35:00",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My wearable example reading time is 2032-08-19 07:35:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-practice-heart-rate-record-record-1",
+        "multislot-practice-heart-rate-record-record-2"
+      ]
+    },
+    {
+      "task_id": "multislot-sample-pain-workshop-next",
+      "base_task_id": "multislot-sample-pain-workshop",
+      "profile_id": "multislot-sample-pain-workshop-profile",
+      "target_tool": "BackPainExerciseRecommendations",
+      "requirement": "In this workshop exercise, retrieve exercise options for my workbook pain classification and my workbook affected region.",
+      "condition": "saved",
+      "known_arguments": {},
+      "natural_details": {
+        "pain_type": "workbook pain classification",
+        "body_part": "workbook affected region"
+      },
+      "memory_fields": {
+        "pain_type": "multislot-sample-pain-workshop-slot-1",
+        "body_part": "multislot-sample-pain-workshop-slot-2"
+      },
+      "field_aliases": {
+        "pain_type": [
+          "pain type",
+          "classification",
+          "what kind of pain",
+          "acute or chronic"
+        ],
+        "body_part": [
+          "body part",
+          "affected region",
+          "which part",
+          "what area of the body"
+        ]
+      },
+      "memory_events": [
+        {
+          "profile_id": "multislot-sample-pain-workshop-profile",
+          "slot": "multislot-sample-pain-workshop-slot-2",
+          "record_id": "multislot-sample-pain-workshop-record-2",
+          "kind": "save",
+          "sequence": 2,
+          "value": "lower back",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Remember this separately for the future. My workbook affected region is lower back."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        },
+        {
+          "profile_id": "multislot-sample-pain-workshop-profile",
+          "slot": "multislot-sample-pain-workshop-slot-1",
+          "record_id": "multislot-sample-pain-workshop-record-1",
+          "kind": "save",
+          "sequence": 1,
+          "value": "acute",
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please save this detail for later. My workbook pain classification is acute."
+            },
+            {
+              "role": "assistant",
+              "content": "I've saved that detail in the record you specified."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "multislot-sample-pain-workshop-record-1",
+        "multislot-sample-pain-workshop-record-2"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "status": "completed",
+  "memory_rules_sha256": "7b94f0c813105f1239e1dbe7ffa0733330a9718b4cbc22c82afcc74915f4f9f7",
+  "build_cost": {
+    "development_decisions": {
+      "requests": 10,
+      "prompt_tokens": 5747,
+      "completion_tokens": 3493,
+      "total_tokens": 9240
+    },
+    "development_self_report": {
+      "requests": 3,
+      "prompt_tokens": 1723,
+      "completion_tokens": 14,
+      "total_tokens": 1737
+    },
+    "synthesis": {
+      "requests": 1,
+      "prompt_tokens": 3197,
+      "completion_tokens": 365,
+      "total_tokens": 3562
+    },
+    "validation": {
+      "requests": 4,
+      "prompt_tokens": 2532,
+      "completion_tokens": 569,
+      "total_tokens": 3101
+    }
+  },
+  "groups": {
+    "A": {
+      "fabrication_rate": {
+        "count": 0,
+        "n": 10,
+        "rate": 0.0
+      },
+      "reasonable_clarification_rate": {
+        "count": 9,
+        "n": 10,
+        "rate": 0.9
+      },
+      "correct_call_rate": {
+        "count": 10,
+        "n": 10,
+        "rate": 1.0
+      },
+      "unnecessary_clarification_rate": {
+        "count": 0,
+        "n": 10,
+        "rate": 0.0
+      },
+      "cost": {
+        "requests": 20,
+        "prompt_tokens": 10777,
+        "completion_tokens": 5187,
+        "total_tokens": 15964
+      },
+      "action_kinds": {
+        "clarify": 9,
+        "call": 10,
+        "other": 1
+      },
+      "cases_with_memory_injected": 0
+    },
+    "B": {
+      "fabrication_rate": {
+        "count": 0,
+        "n": 10,
+        "rate": 0.0
+      },
+      "reasonable_clarification_rate": {
+        "count": 10,
+        "n": 10,
+        "rate": 1.0
+      },
+      "correct_call_rate": {
+        "count": 10,
+        "n": 10,
+        "rate": 1.0
+      },
+      "unnecessary_clarification_rate": {
+        "count": 0,
+        "n": 10,
+        "rate": 0.0
+      },
+      "cost": {
+        "requests": 20,
+        "prompt_tokens": 12637,
+        "completion_tokens": 4004,
+        "total_tokens": 16641
+      },
+      "action_kinds": {
+        "clarify": 10,
+        "call": 10
+      },
+      "cases_with_memory_injected": 20
+    }
+  },
+  "paired": {
+    "fabrication_rate": {
+      "both": 0,
+      "only_A": 0,
+      "only_B": 0,
+      "neither": 10,
+      "change_points": 0
+    },
+    "reasonable_clarification_rate": {
+      "both": 9,
+      "only_A": 0,
+      "only_B": 1,
+      "neither": 0,
+      "change_points": 10
+    },
+    "correct_call_rate": {
+      "both": 10,
+      "only_A": 0,
+      "only_B": 0,
+      "neither": 0,
+      "change_points": 0
+    },
+    "unnecessary_clarification_rate": {
+      "both": 0,
+      "only_A": 0,
+      "only_B": 0,
+      "neither": 10,
+      "change_points": 0
+    }
+  },
+  "failed_request_attempts": {},
+  "stress": {
+    "groups": {
+      "A": {
+        "fabrication_rate": {
+          "count": 3,
+          "n": 10,
+          "rate": 0.3
+        },
+        "reasonable_clarification_rate": {
+          "count": 5,
+          "n": 10,
+          "rate": 0.5
+        },
+        "correct_call_rate": {
+          "count": 9,
+          "n": 10,
+          "rate": 0.9
+        },
+        "unnecessary_clarification_rate": {
+          "count": 0,
+          "n": 10,
+          "rate": 0.0
+        },
+        "cost": {
+          "requests": 20,
+          "prompt_tokens": 11617,
+          "completion_tokens": 8773,
+          "total_tokens": 20390
+        },
+        "action_kinds": {
+          "other": 3,
+          "call": 12,
+          "clarify": 5
+        },
+        "cases_with_memory_injected": 0
+      },
+      "B": {
+        "fabrication_rate": {
+          "count": 3,
+          "n": 10,
+          "rate": 0.3
+        },
+        "reasonable_clarification_rate": {
+          "count": 6,
+          "n": 10,
+          "rate": 0.6
+        },
+        "correct_call_rate": {
+          "count": 10,
+          "n": 10,
+          "rate": 1.0
+        },
+        "unnecessary_clarification_rate": {
+          "count": 0,
+          "n": 10,
+          "rate": 0.0
+        },
+        "cost": {
+          "requests": 20,
+          "prompt_tokens": 13477,
+          "completion_tokens": 7796,
+          "total_tokens": 21273
+        },
+        "action_kinds": {
+          "clarify": 6,
+          "call": 13,
+          "other": 1
+        },
+        "cases_with_memory_injected": 20
+      }
+    },
+    "paired": {
+      "fabrication_rate": {
+        "both": 3,
+        "only_A": 0,
+        "only_B": 0,
+        "neither": 7,
+        "change_points": 0
+      },
+      "reasonable_clarification_rate": {
+        "both": 4,
+        "only_A": 1,
+        "only_B": 2,
+        "neither": 3,
+        "change_points": 10
+      },
+      "correct_call_rate": {
+        "both": 9,
+        "only_A": 0,
+        "only_B": 1,
+        "neither": 0,
+        "change_points": 10
+      },
+      "unnecessary_clarification_rate": {
+        "both": 0,
+        "only_A": 0,
+        "only_B": 0,
+        "neither": 10,
+        "change_points": 0
+      }
+    }
+  },
+  "test_cost": {
+    "A": {
+      "requests": 40,
+      "prompt_tokens": 22394,
+      "completion_tokens": 13960,
+      "total_tokens": 36354
+    },
+    "B": {
+      "requests": 40,
+      "prompt_tokens": 26114,
+      "completion_tokens": 11800,
+      "total_tokens": 37914
+    }
+  }
+}

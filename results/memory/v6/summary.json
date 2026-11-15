@@ -1,0 +1,282 @@
+{
+  "status": "completed",
+  "experiment": "versioned-profile-fact-memory-v6",
+  "criteria": {
+    "replication_cases": [
+      12,
+      16
+    ],
+    "updated_cases": 20,
+    "control_cases": 8,
+    "minimum_correct_controls": 7,
+    "test": "exact one-sided paired binomial (McNemar)",
+    "replication": {
+      "alpha": 0.0125,
+      "minimum_absolute_reduction": 0.25,
+      "minimum_grounded_call_replacement": 0.9
+    },
+    "updated": {
+      "alpha": 0.00625,
+      "minimum_absolute_increase": 0.5,
+      "minimum_correct_latest_calls": 18
+    },
+    "safeguards": {
+      "control_correctness": "B >= A and B >= 7/8",
+      "unsupported_test_calls": "B <= A within each A/B held-out cohort",
+      "invalid_test_decisions": "B <= A within each A/B held-out cohort",
+      "noncurrent_value_use": "B never uses a stale, revoked, or otherwise ineligible value",
+      "memory_scope": "no group injects an ineligible observation"
+    },
+    "chronological_replay": {
+      "status": "secondary",
+      "alpha": 0.00625,
+      "minimum_relative_total_token_saving": 0.05,
+      "cost_test": "paired one-sided exact sign test on total tokens and lower aggregate total tokens",
+      "latest_call_safeguard": "B >= C"
+    }
+  },
+  "analysis": {
+    "groups": {
+      "replication": {
+        "A": {
+          "cases": 12,
+          "correct": 10,
+          "targeted_questions": 10,
+          "grounded_calls": 0,
+          "unsupported_calls": 1,
+          "invalid_decisions": 1,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 12,
+            "prompt_tokens": 6452,
+            "completion_tokens": 4524,
+            "total_tokens": 10976
+          }
+        },
+        "B": {
+          "cases": 12,
+          "correct": 10,
+          "targeted_questions": 0,
+          "grounded_calls": 10,
+          "unsupported_calls": 0,
+          "invalid_decisions": 2,
+          "truncated": 1,
+          "noncurrent_value_calls": 0,
+          "memory_used": 12,
+          "cost": {
+            "requests": 12,
+            "prompt_tokens": 7223,
+            "completion_tokens": 5442,
+            "total_tokens": 12665
+          }
+        }
+      },
+      "updated": {
+        "A": {
+          "cases": 20,
+          "correct": 15,
+          "targeted_questions": 16,
+          "grounded_calls": 0,
+          "unsupported_calls": 0,
+          "invalid_decisions": 1,
+          "truncated": 1,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 10702,
+            "completion_tokens": 8812,
+            "total_tokens": 19514
+          }
+        },
+        "B": {
+          "cases": 20,
+          "correct": 19,
+          "targeted_questions": 1,
+          "grounded_calls": 19,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 20,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 11976,
+            "completion_tokens": 8932,
+            "total_tokens": 20908
+          }
+        },
+        "C": {
+          "cases": 20,
+          "correct": 19,
+          "targeted_questions": 1,
+          "grounded_calls": 19,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 20,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 12608,
+            "completion_tokens": 7258,
+            "total_tokens": 19866
+          }
+        }
+      },
+      "controls": {
+        "A": {
+          "cases": 8,
+          "correct": 6,
+          "targeted_questions": 4,
+          "grounded_calls": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 8,
+            "prompt_tokens": 4215,
+            "completion_tokens": 2764,
+            "total_tokens": 6979
+          }
+        },
+        "B": {
+          "cases": 8,
+          "correct": 8,
+          "targeted_questions": 6,
+          "grounded_calls": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 2,
+          "cost": {
+            "requests": 8,
+            "prompt_tokens": 4340,
+            "completion_tokens": 2659,
+            "total_tokens": 6999
+          }
+        }
+      }
+    },
+    "guardrails_passed": {
+      "control_correctness": true,
+      "unsupported_test_calls": true,
+      "invalid_test_decisions": false,
+      "noncurrent_value_use": true,
+      "memory_scope": true
+    },
+    "disallowed_memory": [],
+    "replication": {
+      "left": "B",
+      "right": "A",
+      "only_left": [],
+      "only_right": [
+        "versioned-treadmill-price-monitor-followup",
+        "versioned-care-campus-doctor-list-followup",
+        "versioned-archive-mental-health-resource-followup",
+        "versioned-library-treatment-brief-followup",
+        "versioned-workspace-equipment-research-followup",
+        "versioned-reminder-signal-time-followup",
+        "versioned-departure-hub-ferry-trip-followup",
+        "versioned-provider-rating-role-audit-followup",
+        "versioned-imaging-explainer-file-followup",
+        "versioned-screening-two-plan-evaluation-followup"
+      ],
+      "both": [],
+      "neither": [
+        "versioned-lantern-meetup-room-followup",
+        "versioned-reference-index-medicine-followup"
+      ],
+      "p_value": 0.0009765625,
+      "difference": 0.8333333333333334,
+      "grounded_replacements": 9,
+      "primary_passed": true,
+      "confirmed_positive": false
+    },
+    "updated": {
+      "left": "A",
+      "right": "B",
+      "only_left": [],
+      "only_right": [
+        "versioned-coverage-state-record-followup",
+        "versioned-new-bike-fit-booking-slot-followup",
+        "versioned-rechecked-standing-height-followup",
+        "versioned-revised-eye-exam-date-followup",
+        "versioned-revised-health-plan-household-followup",
+        "versioned-revised-exhibit-recipient-followup",
+        "versioned-equipment-market-location-revision-followup",
+        "versioned-bali-retreat-area-revision-followup",
+        "versioned-alternative-treatment-literature-followup",
+        "versioned-reassigned-provider-appointment-followup",
+        "versioned-harbor-outdoor-humidity-revision-followup",
+        "versioned-weather-pin-corrected-longitude-followup",
+        "versioned-revised-trial-search-condition-followup",
+        "versioned-participant-study-rename-followup",
+        "versioned-cost-estimator-procedure-change-followup",
+        "versioned-restaurant-radius-adjustment-followup",
+        "versioned-updated-hospital-directory-followup",
+        "versioned-hospital-search-relocation-followup",
+        "versioned-revised-treatment-list-simulation-followup"
+      ],
+      "both": [],
+      "neither": [
+        "versioned-clinic-rating-floor-revision-followup"
+      ],
+      "p_value": 1.9073486328125e-06,
+      "difference": 0.95,
+      "primary_passed": true,
+      "confirmed_positive": false
+    },
+    "chronological_replay": {
+      "grounded_latest_calls": {
+        "left": "C",
+        "right": "B",
+        "only_left": [
+          "versioned-clinic-rating-floor-revision-followup"
+        ],
+        "only_right": [
+          "versioned-reassigned-provider-appointment-followup"
+        ],
+        "both": [
+          "versioned-coverage-state-record-followup",
+          "versioned-new-bike-fit-booking-slot-followup",
+          "versioned-rechecked-standing-height-followup",
+          "versioned-revised-eye-exam-date-followup",
+          "versioned-revised-health-plan-household-followup",
+          "versioned-revised-exhibit-recipient-followup",
+          "versioned-equipment-market-location-revision-followup",
+          "versioned-bali-retreat-area-revision-followup",
+          "versioned-alternative-treatment-literature-followup",
+          "versioned-harbor-outdoor-humidity-revision-followup",
+          "versioned-weather-pin-corrected-longitude-followup",
+          "versioned-revised-trial-search-condition-followup",
+          "versioned-participant-study-rename-followup",
+          "versioned-cost-estimator-procedure-change-followup",
+          "versioned-restaurant-radius-adjustment-followup",
+          "versioned-updated-hospital-directory-followup",
+          "versioned-hospital-search-relocation-followup",
+          "versioned-revised-treatment-list-simulation-followup"
+        ],
+        "neither": [],
+        "p_value": 0.75,
+        "difference": 0.0
+      },
+      "B_minus_C_prompt_tokens": -632,
+      "B_minus_C_total_tokens": 1042,
+      "median_paired_B_minus_C_total_tokens": -53.0,
+      "paired_total_token_sign_p_value": 0.41190147399902344,
+      "relative_total_token_saving": -0.0524514245444478,
+      "B_lower_cost_cases": 11,
+      "C_lower_cost_cases": 9,
+      "equal_cost_cases": 0,
+      "efficiency_with_correctness": false
+    },
+    "both_confirmed_positive": false
+  },
+  "failed_requests": {}
+}

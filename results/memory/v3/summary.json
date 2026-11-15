@@ -1,0 +1,13 @@
+{
+  "status": "memory_build_failed",
+  "experiment": "source-binding-memory-v3",
+  "memory_sha256": null,
+  "analysis": {},
+  "failed_requests": {},
+  "build_cost": {
+    "requests": 20,
+    "prompt_tokens": 21162,
+    "completion_tokens": 8944,
+    "total_tokens": 30106
+  }
+}

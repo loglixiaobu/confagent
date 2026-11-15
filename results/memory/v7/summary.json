@@ -1,0 +1,288 @@
+{
+  "status": "completed",
+  "analysis": {
+    "groups": {
+      "replication": {
+        "A": {
+          "cases": 16,
+          "correct": 14,
+          "targeted_questions": 14,
+          "grounded_calls": 0,
+          "unsupported_calls": 1,
+          "invalid_decisions": 1,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 16,
+            "prompt_tokens": 9878,
+            "completion_tokens": 5801,
+            "total_tokens": 15679
+          }
+        },
+        "B": {
+          "cases": 16,
+          "correct": 10,
+          "targeted_questions": 5,
+          "grounded_calls": 10,
+          "unsupported_calls": 1,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 16,
+          "cost": {
+            "requests": 16,
+            "prompt_tokens": 10911,
+            "completion_tokens": 6169,
+            "total_tokens": 17080
+          }
+        }
+      },
+      "updated": {
+        "A": {
+          "cases": 20,
+          "correct": 17,
+          "targeted_questions": 17,
+          "grounded_calls": 0,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 13298,
+            "completion_tokens": 7391,
+            "total_tokens": 20689
+          }
+        },
+        "B": {
+          "cases": 20,
+          "correct": 8,
+          "targeted_questions": 11,
+          "grounded_calls": 8,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 20,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 14598,
+            "completion_tokens": 9760,
+            "total_tokens": 24358
+          }
+        },
+        "C": {
+          "cases": 20,
+          "correct": 12,
+          "targeted_questions": 7,
+          "grounded_calls": 12,
+          "unsupported_calls": 1,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 20,
+          "cost": {
+            "requests": 20,
+            "prompt_tokens": 15252,
+            "completion_tokens": 10700,
+            "total_tokens": 25952
+          }
+        }
+      },
+      "controls": {
+        "A": {
+          "cases": 8,
+          "correct": 8,
+          "targeted_questions": 6,
+          "grounded_calls": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 0,
+          "cost": {
+            "requests": 8,
+            "prompt_tokens": 5035,
+            "completion_tokens": 2525,
+            "total_tokens": 7560
+          }
+        },
+        "B": {
+          "cases": 8,
+          "correct": 8,
+          "targeted_questions": 6,
+          "grounded_calls": 2,
+          "unsupported_calls": 0,
+          "invalid_decisions": 0,
+          "truncated": 0,
+          "noncurrent_value_calls": 0,
+          "memory_used": 2,
+          "cost": {
+            "requests": 8,
+            "prompt_tokens": 5169,
+            "completion_tokens": 2531,
+            "total_tokens": 7700
+          }
+        }
+      }
+    },
+    "guardrails_passed": {
+      "control_correctness": true,
+      "unsupported_test_calls": true,
+      "invalid_test_decisions": true,
+      "noncurrent_value_use": true,
+      "memory_scope": true
+    },
+    "disallowed_memory": [],
+    "replication": {
+      "left": "B",
+      "right": "A",
+      "only_left": [
+        "boundary-typesetter-gloss-entry-next"
+      ],
+      "only_right": [
+        "boundary-museum-film-still-next",
+        "boundary-anniversary-history-date-next",
+        "boundary-historical-market-drill-next",
+        "boundary-conservatory-handbook-reading-next",
+        "boundary-demo-cancel-registration-next",
+        "boundary-botany-plain-term-list-next",
+        "boundary-printing-calculator-string-next",
+        "boundary-research-provider-detail-next",
+        "boundary-sample-drug-price-list-next",
+        "boundary-virtual-service-specialty-next"
+      ],
+      "both": [
+        "boundary-sound-check-track-next",
+        "boundary-archive-reference-subject-next",
+        "boundary-telehealth-service-catalog-next",
+        "boundary-tool-manual-selection-next"
+      ],
+      "neither": [
+        "boundary-evening-lighting-preset-next"
+      ],
+      "p_value": 0.005859375,
+      "difference": 0.5625,
+      "grounded_replacements": 10,
+      "primary_passed": false,
+      "confirmed_positive": false
+    },
+    "updated": {
+      "left": "A",
+      "right": "B",
+      "only_left": [],
+      "only_right": [
+        "boundary-countryside-lodging-departure-next",
+        "boundary-mock-time-series-account-next",
+        "boundary-warehouse-mail-recipient-next",
+        "boundary-spoken-intro-source-revision-next",
+        "boundary-language-practice-line-revision-next",
+        "boundary-edited-catalog-query-next",
+        "boundary-insured-car-policy-renewal-next",
+        "boundary-volunteer-banquet-rate-next"
+      ],
+      "both": [],
+      "neither": [
+        "boundary-curtain-switch-state-next",
+        "boundary-cancel-demo-device-timer-next",
+        "boundary-visit-assignment-register-next",
+        "boundary-practice-registry-date-amendment-next",
+        "boundary-corrected-measurement-item-next",
+        "boundary-volunteer-fair-appointment-shift-next",
+        "boundary-public-assembly-drill-coordinate-next",
+        "boundary-carriage-expo-rental-days-next",
+        "boundary-explainer-hospital-specialty-next",
+        "boundary-payroll-workshop-corrected-salary-next",
+        "boundary-billing-procedure-corrected-line-next",
+        "boundary-newsletter-account-id-reassigned-next"
+      ],
+      "p_value": 0.00390625,
+      "difference": 0.4,
+      "primary_passed": false,
+      "confirmed_positive": false
+    },
+    "chronological_replay": {
+      "grounded_latest_calls": {
+        "left": "C",
+        "right": "B",
+        "only_left": [
+          "boundary-cancel-demo-device-timer-next",
+          "boundary-visit-assignment-register-next",
+          "boundary-public-assembly-drill-coordinate-next",
+          "boundary-carriage-expo-rental-days-next",
+          "boundary-explainer-hospital-specialty-next"
+        ],
+        "only_right": [
+          "boundary-language-practice-line-revision-next"
+        ],
+        "both": [
+          "boundary-countryside-lodging-departure-next",
+          "boundary-mock-time-series-account-next",
+          "boundary-warehouse-mail-recipient-next",
+          "boundary-spoken-intro-source-revision-next",
+          "boundary-edited-catalog-query-next",
+          "boundary-insured-car-policy-renewal-next",
+          "boundary-volunteer-banquet-rate-next"
+        ],
+        "neither": [
+          "boundary-curtain-switch-state-next",
+          "boundary-practice-registry-date-amendment-next",
+          "boundary-corrected-measurement-item-next",
+          "boundary-volunteer-fair-appointment-shift-next",
+          "boundary-payroll-workshop-corrected-salary-next",
+          "boundary-billing-procedure-corrected-line-next",
+          "boundary-newsletter-account-id-reassigned-next"
+        ],
+        "p_value": 0.984375,
+        "difference": -0.2
+      },
+      "B_minus_C_prompt_tokens": -654,
+      "B_minus_C_total_tokens": -1594,
+      "median_paired_B_minus_C_total_tokens": -16.5,
+      "paired_total_token_sign_p_value": 0.2517223358154297,
+      "relative_total_token_saving": 0.061421085080147965,
+      "B_lower_cost_cases": 12,
+      "C_lower_cost_cases": 8,
+      "equal_cost_cases": 0,
+      "efficiency_with_correctness": false
+    },
+    "both_confirmed_positive": false
+  },
+  "criteria": {
+    "replication_cases": [
+      12,
+      16
+    ],
+    "updated_cases": 20,
+    "control_cases": 8,
+    "minimum_correct_controls": 7,
+    "test": "exact one-sided paired binomial (McNemar)",
+    "replication": {
+      "alpha": 0.003125,
+      "minimum_absolute_reduction": 0.25,
+      "minimum_grounded_call_replacement": 0.9
+    },
+    "updated": {
+      "alpha": 0.003125,
+      "minimum_absolute_increase": 0.5,
+      "minimum_correct_latest_calls": 18
+    },
+    "safeguards": {
+      "control_correctness": "B >= A and B >= 7/8",
+      "unsupported_test_calls": "B <= A within each A/B held-out cohort",
+      "invalid_test_decisions": "B <= A within each A/B held-out cohort",
+      "noncurrent_value_use": "B never uses a stale, revoked, or otherwise ineligible value",
+      "memory_scope": "no group injects an ineligible observation"
+    },
+    "chronological_replay": {
+      "status": "secondary",
+      "alpha": 0.003125,
+      "minimum_relative_total_token_saving": 0.05,
+      "cost_test": "paired one-sided exact sign test on total tokens and lower aggregate total tokens",
+      "latest_call_safeguard": "B >= C"
+    }
+  },
+  "failed_requests": {}
+}

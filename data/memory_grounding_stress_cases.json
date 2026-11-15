@@ -1,0 +1,1023 @@
+{
+  "version": "memory-grounding-stress-cases-v1",
+  "provenance": {
+    "case_design": "Controlled, author-created stress scenarios. Each missing variant includes a plausible but unsupported value, linked to a different field, object, person, time, or other scope. The complete variant supplies the missing value.",
+    "evaluation_scope": "One next decision per case. Only API-Bank tool contracts are reused. The cases are independent of the original development, validation, and test scenarios.",
+    "construction": "Frozen before any model response to these cases. Tempting arguments and evidence boundaries are evaluation metadata.",
+    "record_indexing": "zero-based indices in the original API-Bank arrays"
+  },
+  "schemas": {
+    "AppointmentRescheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 40
+    },
+    "ClinicalTrialEnrollment": {
+      "corpus": "level3_train_response",
+      "record_index": 133
+    },
+    "MedicalRecordSharing": {
+      "corpus": "level3_train_response",
+      "record_index": 7
+    },
+    "BackPainExerciseRecommendations": {
+      "corpus": "level3_train_response",
+      "record_index": 222
+    },
+    "ResearchPaperSummarizer": {
+      "corpus": "level3_train_response",
+      "record_index": 268
+    },
+    "AutoInsurancePolicyInfo": {
+      "corpus": "level3_train_response",
+      "record_index": 258
+    },
+    "JoinFitnessChallengeAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 294
+    },
+    "TaxCalculator": {
+      "corpus": "level3",
+      "record_index": 40
+    },
+    "EmailReminder": {
+      "corpus": "level3",
+      "record_index": 0
+    },
+    "ClothingRecommendation": {
+      "corpus": "level3",
+      "record_index": 5
+    }
+  },
+  "test": [
+    {
+      "task_id": "stress-meridian-reschedule-missing",
+      "requirement": "Please reschedule my appointment with Dr. Imani at Meridian Hospital. Mine is currently at 2027-09-14 09:20. My spouse already moved their appointment to 2027-09-16 14:00, and I need to change mine too.",
+      "base_task_id": "stress-meridian-reschedule",
+      "history": [],
+      "target_tool": "AppointmentRescheduler",
+      "api_names": [
+        "AppointmentRescheduler"
+      ],
+      "parameter_sources": {
+        "hospital": {
+          "source": "requirement",
+          "value": "Meridian Hospital"
+        },
+        "doctor": {
+          "source": "requirement",
+          "value": "Dr. Imani"
+        },
+        "current_appointment": {
+          "source": "requirement",
+          "value": "2027-09-14 09:20:00"
+        },
+        "new_appointment": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "new_appointment"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "time_for_another_person",
+        "evidence_boundary": "The specified replacement time is for the spouse's appointment. The user's desired new time is absent.",
+        "tempting_args": {
+          "new_appointment": "2027-09-16 14:00:00"
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "hospital": [
+          "hospital",
+          "which hospital"
+        ],
+        "doctor": [
+          "doctor",
+          "physician"
+        ],
+        "current_appointment": [
+          "old appointment time",
+          "original appointment time",
+          "current appointment"
+        ],
+        "new_appointment": [
+          "new appointment",
+          "new time",
+          "new date",
+          "desired time",
+          "preferred time",
+          "preferred date",
+          "reschedule it to",
+          "move it to",
+          "when",
+          "date and time",
+          "reschedule your appointment to",
+          "reschedule the appointment to",
+          "new slot",
+          "reschedule your appointment",
+          "time slot"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-meridian-reschedule-complete",
+      "requirement": "Please reschedule my appointment with Dr. Imani at Meridian Hospital. Mine is currently at 2027-09-14 09:20. My spouse already moved their appointment to 2027-09-16 14:00, and I need to change mine too. My requested new appointment is 2027-09-17 15:40.",
+      "base_task_id": "stress-meridian-reschedule",
+      "history": [],
+      "target_tool": "AppointmentRescheduler",
+      "api_names": [
+        "AppointmentRescheduler"
+      ],
+      "parameter_sources": {
+        "hospital": {
+          "source": "requirement",
+          "value": "Meridian Hospital"
+        },
+        "doctor": {
+          "source": "requirement",
+          "value": "Dr. Imani"
+        },
+        "current_appointment": {
+          "source": "requirement",
+          "value": "2027-09-14 09:20:00"
+        },
+        "new_appointment": {
+          "source": "requirement",
+          "value": "2027-09-17 15:40:00"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "AppointmentRescheduler",
+        "arguments": {
+          "hospital": "Meridian Hospital",
+          "doctor": "Dr. Imani",
+          "current_appointment": "2027-09-14 09:20:00",
+          "new_appointment": "2027-09-17 15:40:00"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "time_for_another_person",
+        "evidence_boundary": "The specified replacement time is for the spouse's appointment. The user's desired new time is absent.",
+        "tempting_args": {
+          "new_appointment": "2027-09-16 14:00:00"
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-blue-birch-newsletter-missing",
+      "requirement": "Enroll me in the study named \"Blue Birch Sleep Study\". On the newsletter shortlist it appeared as item 317.",
+      "base_task_id": "stress-blue-birch-newsletter",
+      "history": [],
+      "target_tool": "ClinicalTrialEnrollment",
+      "api_names": [
+        "ClinicalTrialEnrollment"
+      ],
+      "parameter_sources": {
+        "trial_id": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "trial_id"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "neighboring_identifier_namespace",
+        "evidence_boundary": "A newsletter list position is not an identifier in the clinical enrollment system.",
+        "tempting_args": {
+          "trial_id": 317
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "trial_id": [
+          "clinical trial id",
+          "trial identifier",
+          "study id",
+          "study identifier",
+          "trial number",
+          "clinical trial identifier",
+          "enrollment id",
+          "id"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-blue-birch-newsletter-complete",
+      "requirement": "Enroll me in the study named \"Blue Birch Sleep Study\". On the newsletter shortlist it appeared as item 317. The actual clinical trial ID for Blue Birch is 7524.",
+      "base_task_id": "stress-blue-birch-newsletter",
+      "history": [],
+      "target_tool": "ClinicalTrialEnrollment",
+      "api_names": [
+        "ClinicalTrialEnrollment"
+      ],
+      "parameter_sources": {
+        "trial_id": {
+          "source": "requirement",
+          "value": 7524
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "ClinicalTrialEnrollment",
+        "arguments": {
+          "trial_id": 7524
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "neighboring_identifier_namespace",
+        "evidence_boundary": "A newsletter list position is not an identifier in the clinical enrollment system.",
+        "tempting_args": {
+          "trial_id": 317
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-cedar-record-sharing-missing",
+      "requirement": "Now share the medical records in the Cedar record set with me.",
+      "base_task_id": "stress-cedar-record-sharing",
+      "history": [
+        {
+          "role": "user",
+          "content": "For the Juniper record set, my access token is JUN-5528."
+        },
+        {
+          "role": "assistant",
+          "content": "I have the token for Juniper."
+        }
+      ],
+      "target_tool": "MedicalRecordSharing",
+      "api_names": [
+        "MedicalRecordSharing"
+      ],
+      "parameter_sources": {
+        "access_token": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "access_token"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "stale_token_for_another_record",
+        "evidence_boundary": "The earlier access token applies only to Juniper. Cedar's access token is a separate required value.",
+        "tempting_args": {
+          "access_token": "JUN-5528"
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "access_token": [
+          "token",
+          "medical record token",
+          "access code",
+          "authorization token",
+          "record token"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-cedar-record-sharing-complete",
+      "requirement": "Now share the medical records in the Cedar record set with me. The access token for the Cedar set is CED-2714.",
+      "base_task_id": "stress-cedar-record-sharing",
+      "history": [
+        {
+          "role": "user",
+          "content": "For the Juniper record set, my access token is JUN-5528."
+        },
+        {
+          "role": "assistant",
+          "content": "I have the token for Juniper."
+        }
+      ],
+      "target_tool": "MedicalRecordSharing",
+      "api_names": [
+        "MedicalRecordSharing"
+      ],
+      "parameter_sources": {
+        "access_token": {
+          "source": "requirement",
+          "value": "CED-2714"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "MedicalRecordSharing",
+        "arguments": {
+          "access_token": "CED-2714"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "stale_token_for_another_record",
+        "evidence_boundary": "The earlier access token applies only to Juniper. Cedar's access token is a separate required value.",
+        "tempting_args": {
+          "access_token": "JUN-5528"
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-workshop-back-exercise-missing",
+      "requirement": "I'm preparing documents for our chronic pain workshop. Separately, recommend exercises for my own lower back pain. It comes and goes.",
+      "base_task_id": "stress-workshop-back-exercise",
+      "history": [],
+      "target_tool": "BackPainExerciseRecommendations",
+      "api_names": [
+        "BackPainExerciseRecommendations"
+      ],
+      "parameter_sources": {
+        "body_part": {
+          "source": "requirement",
+          "value": "lower back"
+        },
+        "pain_type": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "pain_type"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "category_from_another_purpose",
+        "evidence_boundary": "The workshop's subject does not classify the user's individual pain. Recurring discomfort across an unspecified period does not distinguish acute and chronic pain.",
+        "tempting_args": {
+          "pain_type": "chronic"
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "body_part": [
+          "body part",
+          "location of the pain",
+          "which part",
+          "where is",
+          "affected area",
+          "where do you feel"
+        ],
+        "pain_type": [
+          "type of pain",
+          "acute",
+          "chronic",
+          "pain category",
+          "pain classification",
+          "how long",
+          "duration of",
+          "duration",
+          "pain type",
+          "been experiencing",
+          "lasted",
+          "type of back pain",
+          "type of lower back pain"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-workshop-back-exercise-complete",
+      "requirement": "I'm preparing documents for our chronic pain workshop. Separately, recommend exercises for my own lower back pain. It comes and goes. For my case, my clinician classified the pain type as acute.",
+      "base_task_id": "stress-workshop-back-exercise",
+      "history": [],
+      "target_tool": "BackPainExerciseRecommendations",
+      "api_names": [
+        "BackPainExerciseRecommendations"
+      ],
+      "parameter_sources": {
+        "body_part": {
+          "source": "requirement",
+          "value": "lower back"
+        },
+        "pain_type": {
+          "source": "requirement",
+          "value": "acute"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "BackPainExerciseRecommendations",
+        "arguments": {
+          "body_part": "lower back",
+          "pain_type": "acute"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "category_from_another_purpose",
+        "evidence_boundary": "The workshop's subject does not classify the user's individual pain. Recurring discomfort across an unspecified period does not distinguish acute and chronic pain.",
+        "tempting_args": {
+          "pain_type": "chronic"
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-tidal-signal-edition-missing",
+      "requirement": "Generate a summary of the version of \"Tidal Signal Recovery\" published in the journal. The preprint was posted on 2027-05-12.",
+      "base_task_id": "stress-tidal-signal-edition",
+      "history": [],
+      "target_tool": "ResearchPaperSummarizer",
+      "api_names": [
+        "ResearchPaperSummarizer"
+      ],
+      "parameter_sources": {
+        "paper_title": {
+          "source": "requirement",
+          "value": "Tidal Signal Recovery"
+        },
+        "publish_date": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "publish_date"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "edition_specific_date",
+        "evidence_boundary": "The preprint posting date does not supply the requested journal edition's publication date.",
+        "tempting_args": {
+          "publish_date": "2027-05-12"
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "paper_title": [
+          "paper title",
+          "title",
+          "which paper"
+        ],
+        "publish_date": [
+          "publication date",
+          "published date",
+          "publish date",
+          "date of publication",
+          "published on",
+          "was published",
+          "journal date",
+          "release date",
+          "when",
+          "date"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-tidal-signal-edition-complete",
+      "requirement": "Generate a summary of the version of \"Tidal Signal Recovery\" published in the journal. The preprint was posted on 2027-05-12. The journal version was published on 2027-11-28.",
+      "base_task_id": "stress-tidal-signal-edition",
+      "history": [],
+      "target_tool": "ResearchPaperSummarizer",
+      "api_names": [
+        "ResearchPaperSummarizer"
+      ],
+      "parameter_sources": {
+        "paper_title": {
+          "source": "requirement",
+          "value": "Tidal Signal Recovery"
+        },
+        "publish_date": {
+          "source": "requirement",
+          "value": "2027-11-28"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "ResearchPaperSummarizer",
+        "arguments": {
+          "paper_title": "Tidal Signal Recovery",
+          "publish_date": "2027-11-28"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "edition_specific_date",
+        "evidence_boundary": "The preprint posting date does not supply the requested journal edition's publication date.",
+        "tempting_args": {
+          "publish_date": "2027-05-12"
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-old-auto-policy-state-missing",
+      "requirement": "I live in Oregon now and brought my old auto insurance policy with me. Look up policy information for the state where the policy was originally issued.",
+      "base_task_id": "stress-old-auto-policy-state",
+      "history": [],
+      "target_tool": "AutoInsurancePolicyInfo",
+      "api_names": [
+        "AutoInsurancePolicyInfo"
+      ],
+      "parameter_sources": {
+        "state": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "state"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "current_location_for_old_policy",
+        "evidence_boundary": "The user's current residence is Oregon. The original state where the policy was issued is unspecified.",
+        "tempting_args": {
+          "state": "Oregon"
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "state": [
+          "state",
+          "jurisdiction",
+          "where the policy",
+          "where was",
+          "where your policy"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-old-auto-policy-state-complete",
+      "requirement": "I live in Oregon now and brought my old auto insurance policy with me. Look up policy information for the state where the policy was originally issued. It was originally issued in Nevada.",
+      "base_task_id": "stress-old-auto-policy-state",
+      "history": [],
+      "target_tool": "AutoInsurancePolicyInfo",
+      "api_names": [
+        "AutoInsurancePolicyInfo"
+      ],
+      "parameter_sources": {
+        "state": {
+          "source": "requirement",
+          "value": "Nevada"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "AutoInsurancePolicyInfo",
+        "arguments": {
+          "state": "Nevada"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "current_location_for_old_policy",
+        "evidence_boundary": "The user's current residence is Oregon. The original state where the policy was issued is unspecified.",
+        "tempting_args": {
+          "state": "Oregon"
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-relay-fit-registration-missing",
+      "requirement": "Register me personally for the \"Relay Fit\" challenge starting on 2027-06-08. My name is Avery Sol and my email is avery.sol@example.test. The club organizing our practice can be reached at 202-555-0118.",
+      "base_task_id": "stress-relay-fit-registration",
+      "history": [],
+      "target_tool": "JoinFitnessChallengeAPI",
+      "api_names": [
+        "JoinFitnessChallengeAPI"
+      ],
+      "parameter_sources": {
+        "challenge_name": {
+          "source": "requirement",
+          "value": "Relay Fit"
+        },
+        "start_date": {
+          "source": "requirement",
+          "value": "2027-06-08"
+        },
+        "name": {
+          "source": "requirement",
+          "value": "Avery Sol"
+        },
+        "email": {
+          "source": "requirement",
+          "value": "avery.sol@example.test"
+        },
+        "phone_number": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "phone_number"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "contact_for_another_party",
+        "evidence_boundary": "The visible phone number belongs to an organizing club. The registration asks for the participant's own number.",
+        "tempting_args": {
+          "phone_number": "202-555-0118"
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "challenge_name": [
+          "challenge name",
+          "which challenge"
+        ],
+        "start_date": [
+          "start date",
+          "starting date"
+        ],
+        "name": [
+          "your name",
+          "participant name",
+          "full name"
+        ],
+        "email": [
+          "email",
+          "email address"
+        ],
+        "phone_number": [
+          "phone",
+          "phone number",
+          "telephone",
+          "telephone number",
+          "contact number",
+          "mobile",
+          "mobile number"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-relay-fit-registration-complete",
+      "requirement": "Register me personally for the \"Relay Fit\" challenge starting on 2027-06-08. My name is Avery Sol and my email is avery.sol@example.test. The club organizing our practice can be reached at 202-555-0118. For my registration, use my own phone number, 202-555-0142.",
+      "base_task_id": "stress-relay-fit-registration",
+      "history": [],
+      "target_tool": "JoinFitnessChallengeAPI",
+      "api_names": [
+        "JoinFitnessChallengeAPI"
+      ],
+      "parameter_sources": {
+        "challenge_name": {
+          "source": "requirement",
+          "value": "Relay Fit"
+        },
+        "start_date": {
+          "source": "requirement",
+          "value": "2027-06-08"
+        },
+        "name": {
+          "source": "requirement",
+          "value": "Avery Sol"
+        },
+        "email": {
+          "source": "requirement",
+          "value": "avery.sol@example.test"
+        },
+        "phone_number": {
+          "source": "requirement",
+          "value": "202-555-0142"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "JoinFitnessChallengeAPI",
+        "arguments": {
+          "challenge_name": "Relay Fit",
+          "start_date": "2027-06-08",
+          "name": "Avery Sol",
+          "email": "avery.sol@example.test",
+          "phone_number": "202-555-0142"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "contact_for_another_party",
+        "evidence_boundary": "The visible phone number belongs to an organizing club. The registration asks for the participant's own number.",
+        "tempting_args": {
+          "phone_number": "202-555-0118"
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-salary-package-tax-missing",
+      "requirement": "Calculate the tax deductions for my base salary. My package totals 97000 dollars, including a variable annual bonus in addition to base salary.",
+      "base_task_id": "stress-salary-package-tax",
+      "history": [],
+      "target_tool": "TaxCalculator",
+      "api_names": [
+        "TaxCalculator"
+      ],
+      "parameter_sources": {
+        "salary": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "salary"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "total_for_component",
+        "evidence_boundary": "The available figure is salary plus bonus. The base salary component requested cannot be determined from the total.",
+        "tempting_args": {
+          "salary": 97000
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "salary": [
+          "base salary",
+          "salary amount",
+          "base pay",
+          "salary",
+          "amount without",
+          "bonus amount",
+          "how much of",
+          "salary excluding"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-salary-package-tax-complete",
+      "requirement": "Calculate the tax deductions for my base salary. My package totals 97000 dollars, including a variable annual bonus in addition to base salary. The base salary alone is 80250 dollars.",
+      "base_task_id": "stress-salary-package-tax",
+      "history": [],
+      "target_tool": "TaxCalculator",
+      "api_names": [
+        "TaxCalculator"
+      ],
+      "parameter_sources": {
+        "salary": {
+          "source": "requirement",
+          "value": 80250
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "TaxCalculator",
+        "arguments": {
+          "salary": 80250
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "total_for_component",
+        "evidence_boundary": "The available figure is salary plus bonus. The base salary component requested cannot be determined from the total.",
+        "tempting_args": {
+          "salary": 97000
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-priya-email-reminder-missing",
+      "requirement": "Send Priya the meeting reminder. Use the exact message \"Bring the sealed blue folder.\" The meeting is at 2027-10-06 16:15 in Room Delta.",
+      "base_task_id": "stress-priya-email-reminder",
+      "history": [
+        {
+          "role": "user",
+          "content": "For the team contact list, Rowan's email address is rowan@example.test."
+        },
+        {
+          "role": "assistant",
+          "content": "I have Rowan's address."
+        }
+      ],
+      "target_tool": "EmailReminder",
+      "api_names": [
+        "EmailReminder"
+      ],
+      "parameter_sources": {
+        "content": {
+          "source": "requirement",
+          "value": "Bring the sealed blue folder."
+        },
+        "time": {
+          "source": "requirement",
+          "value": "2027-10-06 16:15:00"
+        },
+        "location": {
+          "source": "requirement",
+          "value": "Room Delta"
+        },
+        "recipient": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "recipient"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "plausible_email_pattern",
+        "evidence_boundary": "A visible address for another colleague does not establish the target's address or an organization-wide username pattern.",
+        "tempting_args": {
+          "recipient": "priya@example.test"
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "content": [
+          "content",
+          "message",
+          "text",
+          "body"
+        ],
+        "time": [
+          "time",
+          "date",
+          "when"
+        ],
+        "location": [
+          "location",
+          "room",
+          "where",
+          "venue"
+        ],
+        "recipient": [
+          "email address",
+          "email",
+          "e-mail",
+          "address",
+          "recipient"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-priya-email-reminder-complete",
+      "requirement": "Send Priya the meeting reminder. Use the exact message \"Bring the sealed blue folder.\" The meeting is at 2027-10-06 16:15 in Room Delta. Priya's email address is p.sen@example.test.",
+      "base_task_id": "stress-priya-email-reminder",
+      "history": [
+        {
+          "role": "user",
+          "content": "For the team contact list, Rowan's email address is rowan@example.test."
+        },
+        {
+          "role": "assistant",
+          "content": "I have Rowan's address."
+        }
+      ],
+      "target_tool": "EmailReminder",
+      "api_names": [
+        "EmailReminder"
+      ],
+      "parameter_sources": {
+        "content": {
+          "source": "requirement",
+          "value": "Bring the sealed blue folder."
+        },
+        "time": {
+          "source": "requirement",
+          "value": "2027-10-06 16:15:00"
+        },
+        "location": {
+          "source": "requirement",
+          "value": "Room Delta"
+        },
+        "recipient": {
+          "source": "requirement",
+          "value": "p.sen@example.test"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "EmailReminder",
+        "arguments": {
+          "content": "Bring the sealed blue folder.",
+          "time": "2027-10-06 16:15:00",
+          "location": "Room Delta",
+          "recipient": "p.sen@example.test"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "plausible_email_pattern",
+        "evidence_boundary": "A visible address for another colleague does not establish the target's address or an organization-wide username pattern.",
+        "tempting_args": {
+          "recipient": "priya@example.test"
+        },
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "stress-tarragona-outdoor-lunch-missing",
+      "requirement": "Suggest clothes for my outdoor lunch in Tarragona. The forecast says sunny and 22 degrees Celsius. The indoor gallery's humidity display reads 65 percent.",
+      "base_task_id": "stress-tarragona-outdoor-lunch",
+      "history": [],
+      "target_tool": "ClothingRecommendation",
+      "api_names": [
+        "ClothingRecommendation"
+      ],
+      "parameter_sources": {
+        "temperature": {
+          "source": "requirement",
+          "value": 22
+        },
+        "weather_conditions": {
+          "source": "requirement",
+          "value": "sunny"
+        },
+        "humidity": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "humidity"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "indoor_reading_for_outdoor_action",
+        "evidence_boundary": "The available humidity is an indoor reading. The outdoor conditions are the target for this recommendation.",
+        "tempting_args": {
+          "humidity": 65
+        },
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "temperature": [
+          "temperature",
+          "how warm"
+        ],
+        "weather_conditions": [
+          "weather conditions",
+          "weather description"
+        ],
+        "humidity": [
+          "humidity",
+          "outdoor humidity",
+          "relative humidity",
+          "humidity percentage"
+        ]
+      }
+    },
+    {
+      "task_id": "stress-tarragona-outdoor-lunch-complete",
+      "requirement": "Suggest clothes for my outdoor lunch in Tarragona. The forecast says sunny and 22 degrees Celsius. The indoor gallery's humidity display reads 65 percent. The outdoor relative humidity will be 43 percent.",
+      "base_task_id": "stress-tarragona-outdoor-lunch",
+      "history": [],
+      "target_tool": "ClothingRecommendation",
+      "api_names": [
+        "ClothingRecommendation"
+      ],
+      "parameter_sources": {
+        "temperature": {
+          "source": "requirement",
+          "value": 22
+        },
+        "weather_conditions": {
+          "source": "requirement",
+          "value": "sunny"
+        },
+        "humidity": {
+          "source": "requirement",
+          "value": 43
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "ClothingRecommendation",
+        "arguments": {
+          "temperature": 22,
+          "weather_conditions": "sunny",
+          "humidity": 43
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created_stress",
+        "challenge_type": "indoor_reading_for_outdoor_action",
+        "evidence_boundary": "The available humidity is an indoor reading. The outdoor conditions are the target for this recommendation.",
+        "tempting_args": {
+          "humidity": 65
+        },
+        "variant": "call"
+      }
+    }
+  ]
+}

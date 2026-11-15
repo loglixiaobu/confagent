@@ -1,0 +1,169 @@
+[
+  {
+    "attempt": 1,
+    "status": "passed",
+    "rule_coverage": {
+      "rule_001": [
+        "validation-nyc-rental-length",
+        "validation-harborlight-availability",
+        "validation-travel-reminder-id",
+        "validation-weather-current-position"
+      ],
+      "rule_002": [
+        "validation-nyc-rental-length",
+        "validation-harborlight-availability",
+        "validation-travel-reminder-id",
+        "validation-weather-current-position"
+      ],
+      "rule_003": [
+        "validation-nyc-rental-length",
+        "validation-harborlight-availability",
+        "validation-travel-reminder-id",
+        "validation-weather-current-position"
+      ]
+    },
+    "cost": {
+      "requests": 1,
+      "prompt_tokens": 3197,
+      "completion_tokens": 365,
+      "total_tokens": 3562
+    },
+    "validation": [
+      {
+        "task_id": "validation-nyc-rental-length",
+        "base_task_id": "nyc-rental-length",
+        "finish_reason": "stop",
+        "memory_rule_ids": [
+          "rule_001",
+          "rule_002",
+          "rule_003"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 630,
+          "completion_tokens": 140,
+          "total_tokens": 770
+        },
+        "action": {
+          "kind": "clarify"
+        },
+        "expected": {
+          "kind": "clarify",
+          "fields": [
+            "duration"
+          ]
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": true,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [
+            "duration"
+          ],
+          "reason": "required_fields_requested"
+        }
+      },
+      {
+        "task_id": "validation-harborlight-availability",
+        "base_task_id": "harborlight-availability",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "rule_001",
+          "rule_002",
+          "rule_003"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 622,
+          "completion_tokens": 121,
+          "total_tokens": 743
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ServiceAvailabilityChecker"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ServiceAvailabilityChecker"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "validation-travel-reminder-id",
+        "base_task_id": "travel-reminder-id",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "rule_001",
+          "rule_002",
+          "rule_003"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 617,
+          "completion_tokens": 131,
+          "total_tokens": 748
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "ReminderDetails"
+        },
+        "expected": {
+          "kind": "call",
+          "api_name": "ReminderDetails"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_call"
+        }
+      },
+      {
+        "task_id": "validation-weather-current-position",
+        "base_task_id": "weather-current-position",
+        "finish_reason": "tool_calls",
+        "memory_rule_ids": [
+          "rule_001",
+          "rule_002",
+          "rule_003"
+        ],
+        "cost": {
+          "requests": 1,
+          "prompt_tokens": 663,
+          "completion_tokens": 177,
+          "total_tokens": 840
+        },
+        "action": {
+          "kind": "call",
+          "api_name": "GetUserLocation"
+        },
+        "expected": {
+          "kind": "lookup",
+          "api_name": "GetUserLocation"
+        },
+        "evaluation": {
+          "correct": true,
+          "fabricated": false,
+          "reasonable_clarification": false,
+          "unnecessary_clarification": false,
+          "unsupported_fields": [],
+          "clarified_fields": [],
+          "reason": "grounded_lookup"
+        }
+      }
+    ]
+  }
+]

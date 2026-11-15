@@ -1,0 +1,723 @@
+{
+  "version": "memory-grounding-confirmation-cases-v1",
+  "provenance": {
+    "construction": "24 independently authored synthetic family pairs with typed distractors. All tool contracts are original API-Bank schemas.",
+    "complete_variants": "Each complete variant appends one explicit value for the otherwise unsupported required argument and retains the distractor.",
+    "fixation": "Authored and frozen before any model inference on these tasks. No prompt content from the V3 confirmation set is supplied to memory formation."
+  },
+  "schemas": {
+    "UserPosts": {
+      "corpus": "level3",
+      "record_index": 25
+    },
+    "MeasurementRecorder": {
+      "corpus": "level3_train_response",
+      "record_index": 35
+    },
+    "PersonalInfoUpdate": {
+      "corpus": "level3",
+      "record_index": 45
+    },
+    "MedicalRecordAccess": {
+      "corpus": "level3_train_response",
+      "record_index": 7
+    },
+    "ResearchParticipantFetcher": {
+      "corpus": "level3_train_response",
+      "record_index": 69
+    },
+    "HospitalDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 107
+    },
+    "AppointmentScheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 313
+    },
+    "HealthcareProviderAppointmentScheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 0
+    },
+    "TelehealthBookingAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 260
+    },
+    "DoctorAppointmentBooking": {
+      "corpus": "level3_train_response",
+      "record_index": 116
+    },
+    "AvailabilityChecker": {
+      "corpus": "level3_train_response",
+      "record_index": 313
+    },
+    "PregnancyTipsAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 43
+    },
+    "HospitalSearch": {
+      "corpus": "level3_train_response",
+      "record_index": 107
+    },
+    "MedicalImagingCenterLocator": {
+      "corpus": "level3_train_response",
+      "record_index": 278
+    },
+    "FitnessStoreLocator": {
+      "corpus": "level3_train_response",
+      "record_index": 95
+    },
+    "HealthcareServiceSearch": {
+      "corpus": "level3_train_response",
+      "record_index": 55
+    },
+    "TherapistSearch": {
+      "corpus": "level3_train_response",
+      "record_index": 226
+    },
+    "FitnessEquipmentSearch": {
+      "corpus": "level3_train_response",
+      "record_index": 232
+    },
+    "AdditionalProcedureCosts": {
+      "corpus": "level3_train_response",
+      "record_index": 247
+    },
+    "InsuranceCoverageCalculator": {
+      "corpus": "level3_train_response",
+      "record_index": 84
+    },
+    "HealthRecommendation": {
+      "corpus": "level3_train_response",
+      "record_index": 276
+    },
+    "InsurancePlanFinder": {
+      "corpus": "level3_train_response",
+      "record_index": 121
+    },
+    "CenterAddressProvider": {
+      "corpus": "level3_train_response",
+      "record_index": 278
+    },
+    "MedicalExpertConsultation": {
+      "corpus": "level3_train_response",
+      "record_index": 30
+    }
+  },
+  "base_cases": [
+    {
+      "base_task_id": "confirmation-article-author-archive",
+      "target_tool": "UserPosts",
+      "category": "identifier_or_entity",
+      "requirement": "List every post by the author of my bookmarked article. The bookmark export labels the article Post #7416.",
+      "missing_field": "user_id",
+      "known_arguments": {},
+      "completion": "The author has user ID 9273.",
+      "complete_value": 9273,
+      "lure": 7416,
+      "evidence_boundary": "7416 identifies a post. The author identifier comes from a separate namespace.",
+      "aliases": {
+        "user_id": [
+          "user id",
+          "author id",
+          "author's id",
+          "id of the author",
+          "account id",
+          "author's user identifier",
+          "profile id",
+          "user identifier"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-handover-accession-measurements",
+      "target_tool": "MeasurementRecorder",
+      "category": "identifier_or_entity",
+      "requirement": "Log the blood pressure and pulse measurements from the 2028-02-09 handover. The sample in the handover is accession MH-0419.",
+      "missing_field": "patient_id",
+      "known_arguments": {
+        "parameters": [
+          "blood pressure",
+          "pulse"
+        ],
+        "date": "2028-02-09"
+      },
+      "completion": "The patient ID for these measurements is PT-8712.",
+      "complete_value": "PT-8712",
+      "lure": "MH-0419",
+      "evidence_boundary": "An accession tracks the specimen. This request needs the identifier of the patient whose measurements are being recorded.",
+      "aliases": {
+        "patient_id": [
+          "patient's id",
+          "patient identifier",
+          "id of the patient",
+          "medical record number",
+          "patient number"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-mock-workspace-address",
+      "target_tool": "PersonalInfoUpdate",
+      "category": "identifier_or_entity",
+      "requirement": "For our mock account, update the address to 19 Flint Walk, Norham using the password demo-only-47. The workspace header reads atlas-demo.",
+      "missing_field": "username",
+      "known_arguments": {
+        "password": "demo-only-47",
+        "address": "19 Flint Walk, Norham"
+      },
+      "completion": "The username for this mock account is nara.stage.04.",
+      "complete_value": "nara.stage.04",
+      "lure": "atlas-demo",
+      "evidence_boundary": "The workspace slug identifies the workspace rather than a user's login. The exercise uses only fictional data.",
+      "aliases": {
+        "username": [
+          "user name",
+          "login name",
+          "login username",
+          "account name",
+          "account username",
+          "user account"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-referral-inbox-records",
+      "target_tool": "MedicalRecordAccess",
+      "category": "identifier_or_entity",
+      "requirement": "Retrieve the medical record for the patient in the Referral 88 dispatch.",
+      "missing_field": "patient_name",
+      "known_arguments": {},
+      "completion": "The patient named in Referral 88 is Dima Sorrel.",
+      "complete_value": "Dima Sorrel",
+      "lure": "Lena Holt",
+      "evidence_boundary": "The named person in the visible dispatch is the sender of the clinical referral. The API needs the patient name.",
+      "aliases": {
+        "patient_name": [
+          "patient's name",
+          "name of the patient",
+          "patient's full name",
+          "what is the patient's name",
+          "which patient",
+          "who the patient is"
+        ]
+      },
+      "history": [
+        {
+          "role": "user",
+          "content": "I am using a mock referral inbox. Referral 88 was sent by the referring clinician, Lena Holt."
+        },
+        {
+          "role": "assistant",
+          "content": "I have the referral number and the name of the referring clinician."
+        }
+      ]
+    },
+    {
+      "base_task_id": "confirmation-sponsor-study-roster",
+      "target_tool": "ResearchParticipantFetcher",
+      "category": "identifier_or_entity",
+      "requirement": "Get the participant roster for the current blinded study. The notice is on letterhead from Tern End Cohort Lab, the group running it.",
+      "missing_field": "study",
+      "known_arguments": {},
+      "completion": "The study is titled \"Project Marbled River\".",
+      "complete_value": "Project Marbled River",
+      "lure": "Tern End Cohort Lab",
+      "evidence_boundary": "The letterhead gives the sponsor name. The roster request requires the trial's own study name.",
+      "aliases": {
+        "study": [
+          "study name",
+          "study title",
+          "title of the study",
+          "which study",
+          "name of the study",
+          "project name",
+          "trial name",
+          "trial title"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-network-transfer-hospital",
+      "target_tool": "HospitalDetails",
+      "category": "identifier_or_entity",
+      "requirement": "Pull the details of the receiving hospital for my upcoming transfer. The referral card is headed Pinebank Health, the provider network.",
+      "missing_field": "hospital_name",
+      "known_arguments": {},
+      "completion": "The receiving hospital is Heron Crossing Hospital.",
+      "complete_value": "Heron Crossing Hospital",
+      "lure": "Pinebank Health",
+      "evidence_boundary": "The card names the organization operating several hospitals rather than the receiving campus.",
+      "aliases": {
+        "hospital_name": [
+          "name of the hospital",
+          "which hospital",
+          "receiving hospital",
+          "destination hospital",
+          "which facility",
+          "name of the facility",
+          "hospital's name"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-induction-visit-end",
+      "target_tool": "AppointmentScheduler",
+      "category": "time_or_sequence_role",
+      "requirement": "Schedule a visit with Nia Rowan starting at 2028-04-17 10:00. The clinic induction listed on the itinerary ends at 2028-04-17 10:25.",
+      "missing_field": "end_time",
+      "known_arguments": {
+        "specialist": "Nia Rowan",
+        "start_time": "2028-04-17 10:00:00"
+      },
+      "completion": "The visit itself should end at 2028-04-17 10:50.",
+      "complete_value": "2028-04-17 10:50:00",
+      "lure": "2028-04-17 10:25:00",
+      "evidence_boundary": "The itinerary time is the end of a clinic induction. The request needs an end time for the specialist visit.",
+      "aliases": {
+        "end_time": [
+          "appointment end",
+          "end of the visit",
+          "end of the appointment",
+          "ends",
+          "end date",
+          "finish",
+          "how long",
+          "duration",
+          "end the appointment"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-portal-release-clinic-booking",
+      "target_tool": "HealthcareProviderAppointmentScheduler",
+      "category": "time_or_sequence_role",
+      "requirement": "Schedule an appointment with Evelyn Birch. The booking portal's new batch goes live at 2028-11-05 08:30.",
+      "missing_field": "appointment_datetime",
+      "known_arguments": {
+        "healthcare_provider": "Evelyn Birch"
+      },
+      "completion": "I want the appointment to be at 2028-11-08 15:30.",
+      "complete_value": "2028-11-08 15:30:00",
+      "lure": "2028-11-05 08:30:00",
+      "evidence_boundary": "The provided datetime is the moment the slots become visible. It is not the desired appointment slot.",
+      "aliases": {
+        "appointment_datetime": [
+          "appointment date",
+          "appointment time",
+          "date and time",
+          "preferred date",
+          "preferred time",
+          "when",
+          "desired date",
+          "desired time",
+          "time slot"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-video-pass-telehealth-time",
+      "target_tool": "TelehealthBookingAPI",
+      "category": "time_or_sequence_role",
+      "requirement": "Book the telehealth service Evening Nutrition Review for me. The videoconference pass in my inbox was issued at 2028-06-08 18:45.",
+      "missing_field": "appointment_time",
+      "known_arguments": {
+        "service_name": "Evening Nutrition Review"
+      },
+      "completion": "Book the consultation for 2028-06-14 17:15.",
+      "complete_value": "2028-06-14 17:15:00",
+      "lure": "2028-06-08 18:45:00",
+      "evidence_boundary": "The datetime belongs to issuance of an access pass; it does not schedule the visit.",
+      "aliases": {
+        "appointment_time": [
+          "appointment date",
+          "date and time",
+          "preferred date",
+          "preferred time",
+          "when",
+          "desired date",
+          "desired time",
+          "time slot",
+          "book it for"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-wrist-xray-booking-time",
+      "target_tool": "DoctorAppointmentBooking",
+      "category": "time_or_sequence_role",
+      "requirement": "Book an orthopedics appointment at Flintwater Hospital to discuss my wrist. My wrist X-ray is scheduled at 2028-08-02 13:40.",
+      "missing_field": "time",
+      "known_arguments": {
+        "hospital": "Flintwater Hospital",
+        "specialization": "orthopedics"
+      },
+      "completion": "I'd like the orthopedics appointment at 2028-08-02 16:15.",
+      "complete_value": "2028-08-02 16:15:00",
+      "lure": "2028-08-02 13:40:00",
+      "evidence_boundary": "The X-ray and specialist visit are separate appointments. One booking time supplies no appointment time for the other.",
+      "aliases": {
+        "time": [
+          "appointment date",
+          "appointment time",
+          "date and time",
+          "preferred date",
+          "preferred time",
+          "when",
+          "desired date",
+          "desired time",
+          "time slot"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-office-open-availability-window",
+      "target_tool": "AvailabilityChecker",
+      "category": "time_or_sequence_role",
+      "requirement": "Check Iris Montero's availability for my consultation window on 2028-03-08. The window should end at 2028-03-08 12:45. The office hours page shows doors open at 2028-03-08 08:30.",
+      "missing_field": "start_time",
+      "known_arguments": {
+        "specialist": "Iris Montero",
+        "end_time": "2028-03-08 12:45:00"
+      },
+      "completion": "My consultation window should start at 2028-03-08 10:10.",
+      "complete_value": "2028-03-08 10:10:00",
+      "lure": "2028-03-08 08:30:00",
+      "evidence_boundary": "The supplied morning time opens the building. It does not set the beginning of the user's consultation window.",
+      "aliases": {
+        "start_time": [
+          "starting time",
+          "window start",
+          "beginning",
+          "starts",
+          "start of the window",
+          "when should the window begin",
+          "start the window"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-prenatal-course-week",
+      "target_tool": "PregnancyTipsAPI",
+      "category": "time_or_sequence_role",
+      "requirement": "Find pregnancy tips for my current gestational week. My self-paced prenatal course portal is on Module Week 18 today.",
+      "missing_field": "week",
+      "known_arguments": {},
+      "completion": "I am at gestational week 23.",
+      "complete_value": 23,
+      "lure": 18,
+      "evidence_boundary": "The course is self-paced and its module number is independent of gestational age.",
+      "aliases": {
+        "week": [
+          "pregnancy week",
+          "gestational age",
+          "gestational week",
+          "weeks pregnant",
+          "how far along",
+          "which week",
+          "how many weeks"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-clinic-destination-hospital",
+      "target_tool": "HospitalSearch",
+      "category": "person_or_location_scope",
+      "requirement": "Find audiology hospitals near the town where I will be staying next month. My train will leave from Preston.",
+      "missing_field": "location",
+      "known_arguments": {
+        "specialty": "audiology"
+      },
+      "completion": "The town where I will be staying is Lancaster.",
+      "complete_value": "Lancaster",
+      "lure": "Preston",
+      "evidence_boundary": "Preston is the departure city. The requested search area is where the user will stay.",
+      "aliases": {
+        "location": [
+          "destination",
+          "city",
+          "town",
+          "where",
+          "area",
+          "staying",
+          "location to search",
+          "where you will be"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-reading-center-imaging-site",
+      "target_tool": "MedicalImagingCenterLocator",
+      "category": "person_or_location_scope",
+      "requirement": "Find a site that can perform a CT scan near my new clinic. Their letter names the remote reading center in Bristol.",
+      "missing_field": "location",
+      "known_arguments": {
+        "scan_type": "CT"
+      },
+      "completion": "My clinic is in Bath.",
+      "complete_value": "Bath",
+      "lure": "Bristol",
+      "evidence_boundary": "The named city is where a remote reader works. It is not the location near the patient clinic where the scan should be performed.",
+      "aliases": {
+        "location": [
+          "clinic location",
+          "city",
+          "town",
+          "where",
+          "area",
+          "your new clinic",
+          "new clinic located"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-event-route-fitness-store",
+      "target_tool": "FitnessStoreLocator",
+      "category": "person_or_location_scope",
+      "requirement": "Find a fitness store near where I am now. My itinerary shows tomorrow's overnight stop in Limerick.",
+      "missing_field": "user_location",
+      "known_arguments": {},
+      "completion": "I am currently in Cork.",
+      "complete_value": "Cork",
+      "lure": "Limerick",
+      "evidence_boundary": "The only named city belongs to a future leg of travel. A nearby-store search is scoped to current location.",
+      "aliases": {
+        "user_location": [
+          "current location",
+          "where are you",
+          "location",
+          "city",
+          "town",
+          "where you are",
+          "present location"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-aunt-home-rehab-search",
+      "target_tool": "HealthcareServiceSearch",
+      "category": "person_or_location_scope",
+      "requirement": "Find occupational therapy services near my aunt's home. Her occupational therapist's administrative office lists York.",
+      "missing_field": "location",
+      "known_arguments": {
+        "service_type": "occupational therapy"
+      },
+      "completion": "My aunt's home is in Selby.",
+      "complete_value": "Selby",
+      "lure": "York",
+      "evidence_boundary": "The office address belongs to the provider, while the search is for services near the aunt's home.",
+      "aliases": {
+        "location": [
+          "aunt's location",
+          "city",
+          "town",
+          "area",
+          "where your aunt",
+          "where does your aunt",
+          "where she lives",
+          "where your aunt's home"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-therapy-referral-desk-specialty",
+      "target_tool": "TherapistSearch",
+      "category": "person_or_location_scope",
+      "requirement": "Find a therapist in Utrecht for my referral. The referral was entered by the pediatric intake desk.",
+      "missing_field": "specialty",
+      "known_arguments": {
+        "location": "Utrecht"
+      },
+      "completion": "My referral asks for grief counseling.",
+      "complete_value": "grief counseling",
+      "lure": "pediatric",
+      "evidence_boundary": "The intake desk routing label does not describe the requested clinician specialty.",
+      "aliases": {
+        "specialty": [
+          "specialization",
+          "type of therapy",
+          "kind of therapy",
+          "type of therapist",
+          "kind of therapist",
+          "therapy specialty",
+          "what kind of therapy"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-comparison-list-gym-equipment",
+      "target_tool": "FitnessEquipmentSearch",
+      "category": "person_or_location_scope",
+      "requirement": "Look up the machine my gym wants to compare this quarter. The previous quarter's comparison was for elliptical trainers.",
+      "missing_field": "equipment_type",
+      "known_arguments": {},
+      "completion": "This quarter's machine type is stair climbers.",
+      "complete_value": "stair climbers",
+      "lure": "elliptical trainers",
+      "evidence_boundary": "The previous comparison category is a different planning period. It does not specify the requested equipment type.",
+      "aliases": {
+        "equipment_type": [
+          "equipment",
+          "machine",
+          "which machine",
+          "type of machine",
+          "which equipment",
+          "kind of equipment"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-booking-deposit-procedure-estimate",
+      "target_tool": "AdditionalProcedureCosts",
+      "category": "value_or_collection_role",
+      "requirement": "Estimate the additional charges based on the quote for my procedure. The clinic charged a booking deposit of 575 dollars.",
+      "missing_field": "estimated_cost",
+      "known_arguments": {},
+      "completion": "The quoted estimate for the procedure is 3160 dollars.",
+      "complete_value": 3160.0,
+      "lure": 575.0,
+      "evidence_boundary": "A booking deposit may be only a component of the procedure charge. The formula needs the procedure estimate.",
+      "aliases": {
+        "estimated_cost": [
+          "estimate",
+          "estimated procedure cost",
+          "procedure cost",
+          "quoted cost",
+          "quoted amount",
+          "procedure estimate",
+          "total cost"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-statement-bundle-coverage",
+      "target_tool": "InsuranceCoverageCalculator",
+      "category": "value_or_collection_role",
+      "requirement": "Calculate insurance coverage for my outpatient procedure. The statement total is 6800 dollars and includes the procedure, transport, and home equipment.",
+      "missing_field": "cost",
+      "known_arguments": {},
+      "completion": "The procedure charge itself is 4250 dollars.",
+      "complete_value": 4250.0,
+      "lure": 6800.0,
+      "evidence_boundary": "The billed total pools covered and unrelated expenses. The procedure amount is a distinct input.",
+      "aliases": {
+        "cost": [
+          "procedure charge",
+          "procedure cost",
+          "cost of the procedure",
+          "procedure amount",
+          "charge for the procedure",
+          "cost breakdown",
+          "charge amount"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-composition-report-bmi",
+      "target_tool": "HealthRecommendation",
+      "category": "value_or_collection_role",
+      "requirement": "Use the BMI from my latest wellness check to provide recommendations. The report line I have is 'body fat 24.8 percent'.",
+      "missing_field": "bmi",
+      "known_arguments": {},
+      "completion": "My BMI is 21.6.",
+      "complete_value": 21.6,
+      "lure": 24.8,
+      "evidence_boundary": "Body-fat percentage and BMI are distinct measurements even when their numerical ranges overlap.",
+      "aliases": {
+        "bmi": [
+          "body mass index",
+          "bmi value",
+          "what is your bmi",
+          "what bmi",
+          "which bmi"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-employer-dental-family-plan",
+      "target_tool": "InsurancePlanFinder",
+      "category": "value_or_collection_role",
+      "requirement": "Find a health insurance plan for my family in Asheville. The employer portal's group size for our dental plan is 4.",
+      "missing_field": "family_size",
+      "known_arguments": {
+        "location": "Asheville"
+      },
+      "completion": "Three family members need to be insured on the health plan.",
+      "complete_value": 3,
+      "lure": 4,
+      "evidence_boundary": "The portal count describes an existing dental policy. Eligibility and enrollment for the requested health policy can differ.",
+      "aliases": {
+        "family_size": [
+          "size of your family",
+          "how many family",
+          "how many people",
+          "family members",
+          "household size",
+          "number of people",
+          "number of family",
+          "how many to insure"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-imaging-coverage-current-facilities",
+      "target_tool": "CenterAddressProvider",
+      "category": "value_or_collection_role",
+      "requirement": "Get the addresses of the imaging centers authorized under my current insurer. My old insurer's directory listed North Sedge Imaging and Lark Square Radiology.",
+      "missing_field": "centers",
+      "known_arguments": {},
+      "completion": "The current insurer authorizes Orchid Vale Scan Center and Maple Quay Diagnostics.",
+      "complete_value": [
+        "Orchid Vale Scan Center",
+        "Maple Quay Diagnostics"
+      ],
+      "lure": [
+        "North Sedge Imaging",
+        "Lark Square Radiology"
+      ],
+      "evidence_boundary": "The listed centers belong to the old directory. The current insurer's authorized centers may differ.",
+      "aliases": {
+        "centers": [
+          "center names",
+          "names of the centers",
+          "which centers",
+          "imaging clinics",
+          "list of centers",
+          "authorized imaging",
+          "names of the imaging",
+          "which facilities",
+          "imaging centers"
+        ]
+      }
+    },
+    {
+      "base_task_id": "confirmation-archived-panel-treatment-options",
+      "target_tool": "MedicalExpertConsultation",
+      "category": "value_or_collection_role",
+      "requirement": "Request an expert consultation on my current treatment options. At a previous review the options recorded were watchful waiting and supervised physiotherapy.",
+      "missing_field": "treatment_options",
+      "known_arguments": {},
+      "completion": "The options on my current referral are occupational therapy and pain management consultation.",
+      "complete_value": [
+        "occupational therapy",
+        "pain management consultation"
+      ],
+      "lure": [
+        "watchful waiting",
+        "supervised physiotherapy"
+      ],
+      "evidence_boundary": "The previous panel's options are archived. The current referral is the requested scope.",
+      "aliases": {
+        "treatment_options": [
+          "current options",
+          "current treatment",
+          "available options",
+          "which treatment",
+          "list of options",
+          "what options",
+          "options on your referral",
+          "treatments"
+        ]
+      }
+    }
+  ]
+}

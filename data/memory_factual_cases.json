@@ -1,0 +1,1480 @@
+{
+  "version": "cross-session-factual-memory-v1",
+  "provenance": {
+    "construction": "36 independently authored synthetic tasks using original API-Bank tool schemas and disjoint factual task IDs.",
+    "separation": "Prior explicit remember requests and acknowledgments are stored in observations separate from current follow-up prompts.",
+    "controls": "Current explicit overrides, empty memory, and records from other profiles or semantic slots.",
+    "fixation": "Authored and frozen before any inference on these tasks. No network services or real user data are used."
+  },
+  "schemas": {
+    "UserMoviePreferences": {
+      "corpus": "level3",
+      "record_index": 20
+    },
+    "UserWatchedMovies": {
+      "corpus": "level3",
+      "record_index": 20
+    },
+    "OrganizationMembers": {
+      "corpus": "level3",
+      "record_index": 10
+    },
+    "TravelStatus": {
+      "corpus": "level3",
+      "record_index": 10
+    },
+    "GetOccupationSalary": {
+      "corpus": "level3",
+      "record_index": 40
+    },
+    "QueryMeeting": {
+      "corpus": "level3",
+      "record_index": 0
+    },
+    "FitnessEquipmentRentalAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 24
+    },
+    "EquipmentRentalInfo": {
+      "corpus": "level3_train_response",
+      "record_index": 63
+    },
+    "EquipmentRecommendation": {
+      "corpus": "level3_train_response",
+      "record_index": 63
+    },
+    "PhysicianRatingsAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 161
+    },
+    "HealthcareProviderRatingAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 303
+    },
+    "MovieRecommendations": {
+      "corpus": "level3",
+      "record_index": 20
+    },
+    "ReminderDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 231
+    },
+    "LikeCount": {
+      "corpus": "level3",
+      "record_index": 25
+    },
+    "ResearchPaperSummarizer": {
+      "corpus": "level3_train_response",
+      "record_index": 268
+    },
+    "ClinicalTrialEnrollment": {
+      "corpus": "level3_train_response",
+      "record_index": 133
+    },
+    "SurgeryWaitlistAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 330
+    },
+    "WheelchairRentalCost": {
+      "corpus": "level3_train_response",
+      "record_index": 175
+    },
+    "TreadmillPurchaseOptions": {
+      "corpus": "level3_train_response",
+      "record_index": 232
+    },
+    "TreatmentDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 117
+    },
+    "Geocoding": {
+      "corpus": "level3",
+      "record_index": 15
+    },
+    "MedicalResearchStudyFinder": {
+      "corpus": "level3_train_response",
+      "record_index": 307
+    },
+    "SupportGroupInformation": {
+      "corpus": "level3_train_response",
+      "record_index": 324
+    },
+    "CenterAddressProvider": {
+      "corpus": "level3_train_response",
+      "record_index": 278
+    },
+    "EyeExamAppointmentAvailability": {
+      "corpus": "level3_train_response",
+      "record_index": 193
+    },
+    "MedicalProcedureCostEstimator": {
+      "corpus": "level3_train_response",
+      "record_index": 208
+    },
+    "FamilyHealthcareCostEstimator": {
+      "corpus": "level3_train_response",
+      "record_index": 142
+    },
+    "HospitalFinder": {
+      "corpus": "level3_train_response",
+      "record_index": 179
+    },
+    "TherapistDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 226
+    },
+    "HealthcareProviderDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 75
+    },
+    "MedicalImagingCenterLocator": {
+      "corpus": "level3_train_response",
+      "record_index": 278
+    },
+    "MedicalInstituteSearcher": {
+      "corpus": "level3_train_response",
+      "record_index": 69
+    },
+    "EmergencyServicesSearchAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 246
+    },
+    "MedicationPriceComparator": {
+      "corpus": "level3_train_response",
+      "record_index": 281
+    },
+    "WheelchairRentalProvider": {
+      "corpus": "level3_train_response",
+      "record_index": 175
+    },
+    "HealthcareProviderReviewAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 250
+    }
+  },
+  "validation": [
+    {
+      "task_id": "factual-eye-exam-city-overwrite-followup",
+      "base_task_id": "factual-eye-exam-city-overwrite",
+      "target_tool": "EyeExamAppointmentAvailability",
+      "memory_field": "location",
+      "profile_id": "factual-eye-exam-city-overwrite:primary",
+      "requested_slot": "eye_exam_city",
+      "requirement": "Look up eye exam availability in Cambridge. Use Cambridge for this request instead of my saved city.",
+      "known_arguments": {},
+      "condition": "current_update",
+      "aliases": [
+        "city",
+        "town",
+        "location",
+        "area",
+        "where"
+      ],
+      "memory_record": {
+        "record_id": "factual-eye-exam-city-overwrite:confirmed",
+        "profile_id": "factual-eye-exam-city-overwrite:primary",
+        "slot": "eye_exam_city",
+        "value": "Norwich",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My usual city for eye exam searches is Norwich."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      },
+      "current_value": "Cambridge"
+    },
+    {
+      "task_id": "factual-procedure-estimate-city-overwrite-followup",
+      "base_task_id": "factual-procedure-estimate-city-overwrite",
+      "target_tool": "MedicalProcedureCostEstimator",
+      "memory_field": "location",
+      "profile_id": "factual-procedure-estimate-city-overwrite:primary",
+      "requested_slot": "estimate_city",
+      "requirement": "Estimate the cost of a knee MRI in Albany today. Use Albany even if you have a different estimate city saved.",
+      "known_arguments": {
+        "medical_procedure": "knee MRI"
+      },
+      "condition": "current_update",
+      "aliases": [
+        "city",
+        "town",
+        "location",
+        "area",
+        "where"
+      ],
+      "memory_record": {
+        "record_id": "factual-procedure-estimate-city-overwrite:confirmed",
+        "profile_id": "factual-procedure-estimate-city-overwrite:primary",
+        "slot": "estimate_city",
+        "value": "Utica",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The usual city for my procedure cost estimates is Utica."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      },
+      "current_value": "Albany"
+    },
+    {
+      "task_id": "factual-family-size-overwrite-followup",
+      "base_task_id": "factual-family-size-overwrite",
+      "target_tool": "FamilyHealthcareCostEstimator",
+      "memory_field": "family_size",
+      "profile_id": "factual-family-size-overwrite:primary",
+      "requested_slot": "household_members_for_estimates",
+      "requirement": "Estimate healthcare expenses for my family of 5 in Regina. The current family size for this estimate is 5.",
+      "known_arguments": {
+        "location": "Regina"
+      },
+      "condition": "current_update",
+      "aliases": [
+        "family size",
+        "how many people",
+        "family members",
+        "size of",
+        "number of",
+        "how many family"
+      ],
+      "memory_record": {
+        "record_id": "factual-family-size-overwrite:confirmed",
+        "profile_id": "factual-family-size-overwrite:primary",
+        "slot": "household_members_for_estimates",
+        "value": 3,
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My saved family size for healthcare estimates is 3."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      },
+      "current_value": 5
+    },
+    {
+      "task_id": "factual-field-office-hospital-absent-followup",
+      "base_task_id": "factual-field-office-hospital-absent",
+      "target_tool": "HospitalFinder",
+      "memory_field": "location",
+      "profile_id": "factual-field-office-hospital-absent:primary",
+      "requested_slot": "field_office_location",
+      "requirement": "Find a hospital around my saved field office location.",
+      "known_arguments": {},
+      "condition": "absent",
+      "aliases": [
+        "city",
+        "location",
+        "where",
+        "area",
+        "office address",
+        "town",
+        "field office"
+      ],
+      "memory_record": null
+    },
+    {
+      "task_id": "factual-therapist-name-absent-followup",
+      "base_task_id": "factual-therapist-name-absent",
+      "target_tool": "TherapistDetails",
+      "memory_field": "therapist",
+      "profile_id": "factual-therapist-name-absent:primary",
+      "requested_slot": "preferred_therapist",
+      "requirement": "Show details for my saved preferred therapist.",
+      "known_arguments": {},
+      "condition": "absent",
+      "aliases": [
+        "therapist name",
+        "name of your therapist",
+        "name of the therapist",
+        "who",
+        "which therapist",
+        "therapist's name",
+        "therapist"
+      ],
+      "memory_record": null
+    },
+    {
+      "task_id": "factual-travel-provider-name-absent-followup",
+      "base_task_id": "factual-travel-provider-name-absent",
+      "target_tool": "HealthcareProviderDetails",
+      "memory_field": "provider_name",
+      "profile_id": "factual-travel-provider-name-absent:primary",
+      "requested_slot": "travel_provider_name",
+      "requirement": "Look up details for the healthcare provider I saved under my travel records.",
+      "known_arguments": {},
+      "condition": "absent",
+      "aliases": [
+        "provider name",
+        "name of the provider",
+        "which provider",
+        "who",
+        "name of the healthcare provider",
+        "healthcare provider"
+      ],
+      "memory_record": null
+    },
+    {
+      "task_id": "factual-imaging-city-other-profile-followup",
+      "base_task_id": "factual-imaging-city-other-profile",
+      "target_tool": "MedicalImagingCenterLocator",
+      "memory_field": "location",
+      "profile_id": "factual-imaging-city-other-profile:primary",
+      "requested_slot": "imaging_city",
+      "requirement": "Find CT imaging centers near my saved imaging city.",
+      "known_arguments": {
+        "scan_type": "CT"
+      },
+      "condition": "wrong_profile",
+      "aliases": [
+        "city",
+        "location",
+        "where",
+        "area",
+        "town"
+      ],
+      "memory_record": {
+        "record_id": "factual-imaging-city-other-profile:confirmed",
+        "profile_id": "factual-imaging-city-other-profile:other",
+        "slot": "imaging_city",
+        "value": "Winchester",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My imaging city is Winchester."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-institute-search-other-profile-followup",
+      "base_task_id": "factual-institute-search-other-profile",
+      "target_tool": "MedicalInstituteSearcher",
+      "memory_field": "location",
+      "profile_id": "factual-institute-search-other-profile:primary",
+      "requested_slot": "institute_search_city",
+      "requirement": "Find medical institutes in my saved institute search city.",
+      "known_arguments": {},
+      "condition": "wrong_profile",
+      "aliases": [
+        "city",
+        "location",
+        "where",
+        "area",
+        "town"
+      ],
+      "memory_record": {
+        "record_id": "factual-institute-search-other-profile:confirmed",
+        "profile_id": "factual-institute-search-other-profile:other",
+        "slot": "institute_search_city",
+        "value": "Boise",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My institute search city is Boise."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-drill-location-other-profile-followup",
+      "base_task_id": "factual-drill-location-other-profile",
+      "target_tool": "EmergencyServicesSearchAPI",
+      "memory_field": "location",
+      "profile_id": "factual-drill-location-other-profile:primary",
+      "requested_slot": "emergency_drill_city",
+      "requirement": "For a training drill, find hospital emergency services in my saved drill city.",
+      "known_arguments": {},
+      "condition": "wrong_profile",
+      "aliases": [
+        "city",
+        "location",
+        "where",
+        "area",
+        "town"
+      ],
+      "memory_record": {
+        "record_id": "factual-drill-location-other-profile:confirmed",
+        "profile_id": "factual-drill-location-other-profile:other",
+        "slot": "emergency_drill_city",
+        "value": "Ely",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My saved emergency drill city is Ely."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-price-inventory-medication-other-slot-followup",
+      "base_task_id": "factual-price-inventory-medication-other-slot",
+      "target_tool": "MedicationPriceComparator",
+      "memory_field": "medication_name",
+      "profile_id": "factual-price-inventory-medication-other-slot:primary",
+      "requested_slot": "price_comparison_medication",
+      "requirement": "Compare prices for the medication saved under my price comparison list.",
+      "known_arguments": {},
+      "condition": "wrong_slot",
+      "aliases": [
+        "medication name",
+        "which medication",
+        "drug name",
+        "name of the medication",
+        "names of the medications",
+        "medicine name",
+        "medication",
+        "which drug"
+      ],
+      "memory_record": {
+        "record_id": "factual-price-inventory-medication-other-slot:confirmed",
+        "profile_id": "factual-price-inventory-medication-other-slot:primary",
+        "slot": "inventory_medication",
+        "value": "cetirizine",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The medication saved in my unrelated inventory list is cetirizine."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-rental-city-departure-other-slot-followup",
+      "base_task_id": "factual-rental-city-departure-other-slot",
+      "target_tool": "WheelchairRentalProvider",
+      "memory_field": "location",
+      "profile_id": "factual-rental-city-departure-other-slot:primary",
+      "requested_slot": "wheelchair_rental_destination",
+      "requirement": "Find wheelchair rental providers at the destination I saved for my trip.",
+      "known_arguments": {},
+      "condition": "wrong_slot",
+      "aliases": [
+        "city",
+        "location",
+        "destination",
+        "where",
+        "area",
+        "town"
+      ],
+      "memory_record": {
+        "record_id": "factual-rental-city-departure-other-slot:confirmed",
+        "profile_id": "factual-rental-city-departure-other-slot:primary",
+        "slot": "trip_departure_city",
+        "value": "Tacoma",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My departure city for the trip is Tacoma."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-provider-review-client-site-other-slot-followup",
+      "base_task_id": "factual-provider-review-client-site-other-slot",
+      "target_tool": "HealthcareProviderReviewAPI",
+      "memory_field": "location",
+      "profile_id": "factual-provider-review-client-site-other-slot:primary",
+      "requested_slot": "client_site_city",
+      "requirement": "Find reviews of healthcare providers in my saved client site city.",
+      "known_arguments": {},
+      "condition": "wrong_slot",
+      "aliases": [
+        "city",
+        "location",
+        "client site",
+        "where",
+        "area",
+        "town"
+      ],
+      "memory_record": {
+        "record_id": "factual-provider-review-client-site-other-slot:confirmed",
+        "profile_id": "factual-provider-review-client-site-other-slot:primary",
+        "slot": "home_city",
+        "value": "Santa Fe",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My home city is Santa Fe."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    }
+  ],
+  "test": [
+    {
+      "task_id": "factual-independent-cinema-profile-followup",
+      "base_task_id": "factual-independent-cinema-profile",
+      "target_tool": "UserMoviePreferences",
+      "memory_field": "user_name",
+      "profile_id": "factual-independent-cinema-profile:primary",
+      "requested_slot": "personal_movie_alias",
+      "requirement": "Retrieve the movie preferences for my saved personal cinema username.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "username",
+        "movie username",
+        "cinema username",
+        "profile name",
+        "profile username",
+        "username associated",
+        "account name",
+        "user alias",
+        "profile alias",
+        "username for"
+      ],
+      "memory_record": {
+        "record_id": "factual-independent-cinema-profile:confirmed",
+        "profile_id": "factual-independent-cinema-profile:primary",
+        "slot": "personal_movie_alias",
+        "value": "OrchidRail",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My personal cinema username is OrchidRail."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-festival-screening-history-followup",
+      "base_task_id": "factual-festival-screening-history",
+      "target_tool": "UserWatchedMovies",
+      "memory_field": "user_name",
+      "profile_id": "factual-festival-screening-history:primary",
+      "requested_slot": "festival_watching_alias",
+      "requirement": "Find the films already watched under my saved festival screening username.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "username",
+        "screening username",
+        "profile name",
+        "screening name",
+        "account name",
+        "watchlist username",
+        "username under"
+      ],
+      "memory_record": {
+        "record_id": "factual-festival-screening-history:confirmed",
+        "profile_id": "factual-festival-screening-history:primary",
+        "slot": "festival_watching_alias",
+        "value": "MintLedger",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My festival screening username is MintLedger."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-makerspace-volunteer-roster-followup",
+      "base_task_id": "factual-makerspace-volunteer-roster",
+      "target_tool": "OrganizationMembers",
+      "memory_field": "organization",
+      "profile_id": "factual-makerspace-volunteer-roster:primary",
+      "requested_slot": "makerspace_org",
+      "requirement": "Get the list of members of the makerspace organization I asked you to remember.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "organization name",
+        "which organization",
+        "organization's name",
+        "name of the organization",
+        "makerspace",
+        "which makerspace"
+      ],
+      "memory_record": {
+        "record_id": "factual-makerspace-volunteer-roster:confirmed",
+        "profile_id": "factual-makerspace-volunteer-roster:primary",
+        "slot": "makerspace_org",
+        "value": "Copper Lantern Makers",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The makerspace organization for my volunteer shift is Copper Lantern Makers."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-exhibit-contact-travel-followup",
+      "base_task_id": "factual-exhibit-contact-travel",
+      "target_tool": "TravelStatus",
+      "memory_field": "member_name",
+      "profile_id": "factual-exhibit-contact-travel:primary",
+      "requested_slot": "exhibit_travel_contact",
+      "requirement": "Check the travel status of the exhibition contact I saved.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "member's name",
+        "name of",
+        "which contact",
+        "contact name",
+        "contact's name",
+        "who is",
+        "person",
+        "contact"
+      ],
+      "memory_record": {
+        "record_id": "factual-exhibit-contact-travel:confirmed",
+        "profile_id": "factual-exhibit-contact-travel:primary",
+        "slot": "exhibit_travel_contact",
+        "value": "Vera Lark",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My exhibition travel contact is Vera Lark."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-portfolio-role-salary-followup",
+      "base_task_id": "factual-portfolio-role-salary",
+      "target_tool": "GetOccupationSalary",
+      "memory_field": "occupation",
+      "profile_id": "factual-portfolio-role-salary:primary",
+      "requested_slot": "portfolio_role",
+      "requirement": "Look up the typical salary for my saved target occupation.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "occupation",
+        "role",
+        "job",
+        "position",
+        "profession",
+        "career"
+      ],
+      "memory_record": {
+        "record_id": "factual-portfolio-role-salary:confirmed",
+        "profile_id": "factual-portfolio-role-salary:primary",
+        "slot": "portfolio_role",
+        "value": "set lighting technician",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My target occupation is set lighting technician."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-community-calendar-query-followup",
+      "base_task_id": "factual-community-calendar-query",
+      "target_tool": "QueryMeeting",
+      "memory_field": "user_name",
+      "profile_id": "factual-community-calendar-query:primary",
+      "requested_slot": "meeting_calendar_username",
+      "requirement": "Query upcoming meetings for my saved community calendar username.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "username",
+        "calendar username",
+        "calendar name",
+        "name of the user",
+        "user's name",
+        "calendar alias",
+        "account name",
+        "which calendar"
+      ],
+      "memory_record": {
+        "record_id": "factual-community-calendar-query:confirmed",
+        "profile_id": "factual-community-calendar-query:primary",
+        "slot": "meeting_calendar_username",
+        "value": "MarinSignal",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My community calendar username is MarinSignal."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-rental-window-glasgow-followup",
+      "base_task_id": "factual-rental-window-glasgow",
+      "target_tool": "FitnessEquipmentRentalAPI",
+      "memory_field": "duration",
+      "profile_id": "factual-rental-window-glasgow:primary",
+      "requested_slot": "preferred_fitness_rental_duration",
+      "requirement": "Look up fitness equipment rentals in Glasgow using the preferred rental length I saved.",
+      "known_arguments": {
+        "city": "Glasgow"
+      },
+      "condition": "saved",
+      "aliases": [
+        "rental length",
+        "how long",
+        "how many days",
+        "rental duration",
+        "rental time",
+        "number of days",
+        "quantity of days",
+        "rental period"
+      ],
+      "memory_record": {
+        "record_id": "factual-rental-window-glasgow:confirmed",
+        "profile_id": "factual-rental-window-glasgow:primary",
+        "slot": "preferred_fitness_rental_duration",
+        "value": 4,
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My preferred fitness equipment rental duration is 4 days."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-seminar-gear-kit-followup",
+      "base_task_id": "factual-seminar-gear-kit",
+      "target_tool": "EquipmentRentalInfo",
+      "memory_field": "equipment_list",
+      "profile_id": "factual-seminar-gear-kit:primary",
+      "requested_slot": "stored_seminar_rental_gear",
+      "requirement": "Give me the rental details for the seminar equipment list I saved, for a 3-day rental.",
+      "known_arguments": {
+        "rental_duration": 3
+      },
+      "condition": "saved",
+      "aliases": [
+        "equipment list",
+        "equipment items",
+        "items",
+        "which equipment",
+        "what equipment",
+        "list of equipment",
+        "equipment you",
+        "equipment types",
+        "equipment to"
+      ],
+      "memory_record": {
+        "record_id": "factual-seminar-gear-kit:confirmed",
+        "profile_id": "factual-seminar-gear-kit:primary",
+        "slot": "stored_seminar_rental_gear",
+        "value": [
+          "folding treadmill",
+          "stationary bicycle"
+        ],
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My seminar equipment list is a folding treadmill and a stationary bicycle."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-compact-training-preferences-followup",
+      "base_task_id": "factual-compact-training-preferences",
+      "target_tool": "EquipmentRecommendation",
+      "memory_field": "preferences",
+      "profile_id": "factual-compact-training-preferences:primary",
+      "requested_slot": "home_equipment_preferences",
+      "requirement": "Recommend fitness equipment for beginner balance training with my saved equipment preferences.",
+      "known_arguments": {
+        "goals": "beginner balance training"
+      },
+      "condition": "saved",
+      "aliases": [
+        "equipment preferences",
+        "preferences",
+        "prefer",
+        "what kind",
+        "type of equipment",
+        "preferred equipment",
+        "saved criteria",
+        "preferred features"
+      ],
+      "memory_record": {
+        "record_id": "factual-compact-training-preferences:confirmed",
+        "profile_id": "factual-compact-training-preferences:primary",
+        "slot": "home_equipment_preferences",
+        "value": "wall-mounted and foldable",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My home equipment preferences are wall-mounted and foldable."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-physician-rating-threshold-followup",
+      "base_task_id": "factual-physician-rating-threshold",
+      "target_tool": "PhysicianRatingsAPI",
+      "memory_field": "rating",
+      "profile_id": "factual-physician-rating-threshold:primary",
+      "requested_slot": "physician_minimum_rating",
+      "requirement": "Find physicians in Inverness who meet my saved minimum rating.",
+      "known_arguments": {
+        "location": "Inverness"
+      },
+      "condition": "saved",
+      "aliases": [
+        "minimum rating",
+        "rating threshold",
+        "rating",
+        "star threshold",
+        "star rating",
+        "what rating",
+        "number of stars",
+        "threshold"
+      ],
+      "memory_record": {
+        "record_id": "factual-physician-rating-threshold:confirmed",
+        "profile_id": "factual-physician-rating-threshold:primary",
+        "slot": "physician_minimum_rating",
+        "value": 4.7,
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My minimum physician rating is 4.7 stars."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-shortlist-provider-profession-followup",
+      "base_task_id": "factual-shortlist-provider-profession",
+      "target_tool": "HealthcareProviderRatingAPI",
+      "memory_field": "profession",
+      "profile_id": "factual-shortlist-provider-profession:primary",
+      "requested_slot": "rating_shortlist_profession",
+      "requirement": "Look up healthcare provider ratings in Sligo for the profession in my saved shortlist.",
+      "known_arguments": {
+        "location": "Sligo"
+      },
+      "condition": "saved",
+      "aliases": [
+        "healthcare profession",
+        "provider profession",
+        "type of provider",
+        "what profession",
+        "which profession",
+        "what type of healthcare",
+        "specialty",
+        "kind of healthcare"
+      ],
+      "memory_record": {
+        "record_id": "factual-shortlist-provider-profession:confirmed",
+        "profile_id": "factual-shortlist-provider-profession:primary",
+        "slot": "rating_shortlist_profession",
+        "value": "speech therapist",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The profession to use for my rating shortlist is speech therapist."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-festival-movie-genres-followup",
+      "base_task_id": "factual-festival-movie-genres",
+      "target_tool": "MovieRecommendations",
+      "memory_field": "preferences",
+      "profile_id": "factual-festival-movie-genres:primary",
+      "requested_slot": "festival_genres",
+      "requirement": "Recommend films based on the festival genres I saved.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "genres",
+        "movie preferences",
+        "kind of films",
+        "like to watch",
+        "what kind",
+        "preferences",
+        "types of movie",
+        "types of films",
+        "genres of"
+      ],
+      "memory_record": {
+        "record_id": "factual-festival-movie-genres:confirmed",
+        "profile_id": "factual-festival-movie-genres:primary",
+        "slot": "festival_genres",
+        "value": [
+          "historical drama",
+          "documentary"
+        ],
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My preferred festival genres are historical drama and documentary."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-garden-reminder-id-followup",
+      "base_task_id": "factual-garden-reminder-id",
+      "target_tool": "ReminderDetails",
+      "memory_field": "reminder_id",
+      "profile_id": "factual-garden-reminder-id:primary",
+      "requested_slot": "garden_opening_reminder_id",
+      "requirement": "Show the details for the saved garden opening reminder ID.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "reminder id",
+        "id of",
+        "reminder identifier",
+        "id for",
+        "reminder number",
+        "id associated",
+        "id you",
+        "which reminder"
+      ],
+      "memory_record": {
+        "record_id": "factual-garden-reminder-id:confirmed",
+        "profile_id": "factual-garden-reminder-id:primary",
+        "slot": "garden_opening_reminder_id",
+        "value": 63217,
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My garden opening reminder ID is 63217."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-ceramics-interview-post-followup",
+      "base_task_id": "factual-ceramics-interview-post",
+      "target_tool": "LikeCount",
+      "memory_field": "post_id",
+      "profile_id": "factual-ceramics-interview-post:primary",
+      "requested_slot": "ceramics_interview_post_id",
+      "requirement": "How many likes does my saved pottery interview post have?",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "post id",
+        "id of",
+        "post identifier",
+        "id for",
+        "post number",
+        "id associated",
+        "id you",
+        "which post"
+      ],
+      "memory_record": {
+        "record_id": "factual-ceramics-interview-post:confirmed",
+        "profile_id": "factual-ceramics-interview-post:primary",
+        "slot": "ceramics_interview_post_id",
+        "value": 51803,
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My pottery interview post ID is 51803."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-saffron-map-paper-edition-followup",
+      "base_task_id": "factual-saffron-map-paper-edition",
+      "target_tool": "ResearchPaperSummarizer",
+      "memory_field": "publish_date",
+      "profile_id": "factual-saffron-map-paper-edition:primary",
+      "requested_slot": "saffron_map_publication_date",
+      "requirement": "Summarize the paper 'Mapping Saffron Trails' using the publication date I saved for that paper.",
+      "known_arguments": {
+        "paper_title": "Mapping Saffron Trails"
+      },
+      "condition": "saved",
+      "aliases": [
+        "publication date",
+        "publish date",
+        "date of publication",
+        "published",
+        "date it was",
+        "date when",
+        "date for"
+      ],
+      "memory_record": {
+        "record_id": "factual-saffron-map-paper-edition:confirmed",
+        "profile_id": "factual-saffron-map-paper-edition:primary",
+        "slot": "saffron_map_publication_date",
+        "value": "2028-01-19",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The publication date for 'Mapping Saffron Trails' is 2028-01-19."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-registry-training-enrollment-followup",
+      "base_task_id": "factual-registry-training-enrollment",
+      "target_tool": "ClinicalTrialEnrollment",
+      "memory_field": "trial_id",
+      "profile_id": "factual-registry-training-enrollment:primary",
+      "requested_slot": "staging_registry_trial_id",
+      "requirement": "In this training sandbox, enroll me in the mock clinical trial using the registry ID I saved.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "trial id",
+        "registry id",
+        "id of",
+        "trial number",
+        "clinical trial id",
+        "trial identifier",
+        "registered id",
+        "id for"
+      ],
+      "memory_record": {
+        "record_id": "factual-registry-training-enrollment:confirmed",
+        "profile_id": "factual-registry-training-enrollment:primary",
+        "slot": "staging_registry_trial_id",
+        "value": 26391,
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My registry ID for the mock clinical trial is 26391."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-waitlist-campus-choice-followup",
+      "base_task_id": "factual-waitlist-campus-choice",
+      "target_tool": "SurgeryWaitlistAPI",
+      "memory_field": "hospital",
+      "profile_id": "factual-waitlist-campus-choice:primary",
+      "requested_slot": "saved_waitlist_hospital",
+      "requirement": "In the simulation, register my request on the surgery waitlist at my saved hospital.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "hospital name",
+        "name of the hospital",
+        "which hospital",
+        "facility",
+        "hospital are",
+        "hospital should"
+      ],
+      "memory_record": {
+        "record_id": "factual-waitlist-campus-choice:confirmed",
+        "profile_id": "factual-waitlist-campus-choice:primary",
+        "slot": "saved_waitlist_hospital",
+        "value": "Hazel Round Hospital",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The hospital for my simulated waitlist request is Hazel Round Hospital."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-field-wheelchair-rental-cost-followup",
+      "base_task_id": "factual-field-wheelchair-rental-cost",
+      "target_tool": "WheelchairRentalCost",
+      "memory_field": "provider",
+      "profile_id": "factual-field-wheelchair-rental-cost:primary",
+      "requested_slot": "wheelchair_vendor",
+      "requirement": "Find the cost of renting a wheelchair from my saved rental provider.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "name of the provider",
+        "rental provider",
+        "provider name",
+        "which provider",
+        "vendor",
+        "name of",
+        "which company",
+        "company name"
+      ],
+      "memory_record": {
+        "record_id": "factual-field-wheelchair-rental-cost:confirmed",
+        "profile_id": "factual-field-wheelchair-rental-cost:primary",
+        "slot": "wheelchair_vendor",
+        "value": "Goldfinch Mobility Hire",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My wheelchair rental provider is Goldfinch Mobility Hire."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-training-treadmill-model-followup",
+      "base_task_id": "factual-training-treadmill-model",
+      "target_tool": "TreadmillPurchaseOptions",
+      "memory_field": "equipment_name",
+      "profile_id": "factual-training-treadmill-model:primary",
+      "requested_slot": "saved_treadmill_model",
+      "requirement": "Show purchase options for the treadmill model I saved.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "treadmill model",
+        "model name",
+        "equipment name",
+        "model",
+        "which treadmill",
+        "equipment brand",
+        "name of the treadmill",
+        "which equipment"
+      ],
+      "memory_record": {
+        "record_id": "factual-training-treadmill-model:confirmed",
+        "profile_id": "factual-training-treadmill-model:primary",
+        "slot": "saved_treadmill_model",
+        "value": "Cinder Step 500",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My chosen treadmill model is Cinder Step 500."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-reference-treatment-topic-followup",
+      "base_task_id": "factual-reference-treatment-topic",
+      "target_tool": "TreatmentDetails",
+      "memory_field": "treatment",
+      "profile_id": "factual-reference-treatment-topic:primary",
+      "requested_slot": "saved_article_treatment_topic",
+      "requirement": "Get informational details for the treatment topic I saved for my article.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "treatment topic",
+        "treatment name",
+        "which treatment",
+        "treatment did",
+        "name of the treatment",
+        "name of",
+        "which topic"
+      ],
+      "memory_record": {
+        "record_id": "factual-reference-treatment-topic:confirmed",
+        "profile_id": "factual-reference-treatment-topic:primary",
+        "slot": "saved_article_treatment_topic",
+        "value": "tai chi",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The treatment topic saved for my article is tai chi."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-ceramic-fair-address-followup",
+      "base_task_id": "factual-ceramic-fair-address",
+      "target_tool": "Geocoding",
+      "memory_field": "address",
+      "profile_id": "factual-ceramic-fair-address:primary",
+      "requested_slot": "ceramic_fair_saved_address",
+      "requirement": "Get the coordinates for the saved ceramic fair venue address.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "street address",
+        "venue address",
+        "full address",
+        "what address",
+        "which address",
+        "venue's address",
+        "address of the venue",
+        "provide the address"
+      ],
+      "memory_record": {
+        "record_id": "factual-ceramic-fair-address:confirmed",
+        "profile_id": "factual-ceramic-fair-address:primary",
+        "slot": "ceramic_fair_saved_address",
+        "value": "52 Juniper Lane, Gullsby",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The ceramic fair address is 52 Juniper Lane, Gullsby."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-orchard-study-search-city-followup",
+      "base_task_id": "factual-orchard-study-search-city",
+      "target_tool": "MedicalResearchStudyFinder",
+      "memory_field": "location",
+      "profile_id": "factual-orchard-study-search-city:primary",
+      "requested_slot": "research_search_city",
+      "requirement": "Find studies on seasonal allergies in my saved research search city.",
+      "known_arguments": {
+        "health_condition": "seasonal allergies"
+      },
+      "condition": "saved",
+      "aliases": [
+        "research city",
+        "search city",
+        "location",
+        "city",
+        "which area",
+        "town",
+        "where",
+        "geographical area"
+      ],
+      "memory_record": {
+        "record_id": "factual-orchard-study-search-city:confirmed",
+        "profile_id": "factual-orchard-study-search-city:primary",
+        "slot": "research_search_city",
+        "value": "Bend",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My research search city is Bend."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-saved-support-circle-followup",
+      "base_task_id": "factual-saved-support-circle",
+      "target_tool": "SupportGroupInformation",
+      "memory_field": "group_name",
+      "profile_id": "factual-saved-support-circle:primary",
+      "requested_slot": "followup_group_name",
+      "requirement": "Get the details of the support group whose name I asked you to remember.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "group name",
+        "name of the support group",
+        "which group",
+        "name of the group",
+        "support group",
+        "group called",
+        "group's name"
+      ],
+      "memory_record": {
+        "record_id": "factual-saved-support-circle:confirmed",
+        "profile_id": "factual-saved-support-circle:primary",
+        "slot": "followup_group_name",
+        "value": "Silver Birch Circle",
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. My support group is named Silver Birch Circle."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "factual-union-imaging-addresses-followup",
+      "base_task_id": "factual-union-imaging-addresses",
+      "target_tool": "CenterAddressProvider",
+      "memory_field": "centers",
+      "profile_id": "factual-union-imaging-addresses:primary",
+      "requested_slot": "credited_imaging_center_list",
+      "requirement": "Look up addresses for the imaging center list I saved for my study.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "which centers",
+        "center names",
+        "names of the centers",
+        "imaging centers",
+        "list of centers",
+        "which facilities",
+        "centres",
+        "centers you"
+      ],
+      "memory_record": {
+        "record_id": "factual-union-imaging-addresses:confirmed",
+        "profile_id": "factual-union-imaging-addresses:primary",
+        "slot": "credited_imaging_center_list",
+        "value": [
+          "Sable Dune Imaging",
+          "Pine Frost Diagnostics"
+        ],
+        "confirmed": true,
+        "observation": [
+          {
+            "role": "user",
+            "content": "Please remember this for future requests. The imaging centers for my study are Sable Dune Imaging and Pine Frost Diagnostics."
+          },
+          {
+            "role": "assistant",
+            "content": "I have saved that for your future requests."
+          }
+        ]
+      }
+    }
+  ]
+}

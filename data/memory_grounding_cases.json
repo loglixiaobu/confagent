@@ -1,0 +1,1539 @@
+{
+  "version": "memory-grounding-cases-v1",
+  "provenance": {
+    "case_design": "Controlled author-created one-step scenarios with original API-Bank tool definitions. No model results or official benchmark scores.",
+    "split_unit": "base_task_id; the two variants of a test scenario remain together",
+    "record_indexing": "zero-based indices in the original API-Bank source arrays, referenced for tool schema provenance only",
+    "schema_corpora": {
+      "level3": "data/api-bank/test-data/level-3.json",
+      "level3_train_response": "data/api-bank/training-data/lv3-response-train.json"
+    }
+  },
+  "schemas": {
+    "HotelAvailability": {
+      "corpus": "level3",
+      "record_index": 35
+    },
+    "AddMeeting": {
+      "corpus": "level3",
+      "record_index": 10
+    },
+    "BMICalculator": {
+      "corpus": "level3_train_response",
+      "record_index": 276
+    },
+    "FlightSearch": {
+      "corpus": "level3",
+      "record_index": 35
+    },
+    "AccountInfo": {
+      "corpus": "level3",
+      "record_index": 45
+    },
+    "AppointmentReminder": {
+      "corpus": "level3_train_response",
+      "record_index": 4
+    },
+    "EquipmentRentalInfo": {
+      "corpus": "level3_train_response",
+      "record_index": 63
+    },
+    "NearbyRestaurants": {
+      "corpus": "level3",
+      "record_index": 15
+    },
+    "Geocoding": {
+      "corpus": "level3",
+      "record_index": 15
+    },
+    "ReminderSetter": {
+      "corpus": "level3_train_response",
+      "record_index": 231
+    },
+    "LikeCount": {
+      "corpus": "level3",
+      "record_index": 25
+    },
+    "FitnessEquipmentRentalAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 24
+    },
+    "ServiceAvailabilityChecker": {
+      "corpus": "level3_train_response",
+      "record_index": 101
+    },
+    "ReminderDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 231
+    },
+    "GetWeatherForCoordinates": {
+      "corpus": "level3",
+      "record_index": 5
+    },
+    "GetUserLocation": {
+      "corpus": "level3_train_response",
+      "record_index": 120
+    },
+    "ClinicalTrialSearcher": {
+      "corpus": "level3_train_response",
+      "record_index": 133
+    },
+    "HealthcareCostEstimator": {
+      "corpus": "level3_train_response",
+      "record_index": 84
+    },
+    "BookingScheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 55
+    },
+    "PhysicianRatingsAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 161
+    },
+    "MedicalResearchStudyRegistration": {
+      "corpus": "level3_train_response",
+      "record_index": 307
+    },
+    "EyeExamTimeSlots": {
+      "corpus": "level3_train_response",
+      "record_index": 193
+    },
+    "EvacuationRoutePlanner": {
+      "corpus": "level3_train_response",
+      "record_index": 120
+    },
+    "MedicationPriceComparer": {
+      "corpus": "level3_train_response",
+      "record_index": 281
+    },
+    "EquipmentRecommendation": {
+      "corpus": "level3_train_response",
+      "record_index": 63
+    },
+    "TotalCostCalculator": {
+      "corpus": "level3_train_response",
+      "record_index": 1
+    }
+  },
+  "development": [
+    {
+      "task_id": "development-reykjavik-stay",
+      "base_task_id": "reykjavik-stay",
+      "requirement": "Could you check hotel availability in Reykjavik? I can arrive on 2027-02-17.",
+      "history": [],
+      "target_tool": "HotelAvailability",
+      "api_names": [
+        "HotelAvailability"
+      ],
+      "parameter_sources": {
+        "destination": {
+          "source": "requirement",
+          "value": "Reykjavik"
+        },
+        "check_in_date": {
+          "source": "requirement",
+          "value": "2027-02-17"
+        },
+        "check_out_date": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "check_out_date"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "destination": [
+          "destination",
+          "destination city",
+          "where are you flying to",
+          "where would you like to fly"
+        ],
+        "check_in_date": [
+          "check-in date",
+          "check in date",
+          "check-in",
+          "arrival date"
+        ],
+        "check_out_date": [
+          "check-out date",
+          "check out date",
+          "check-out",
+          "check out",
+          "departure date",
+          "length of stay",
+          "how many nights",
+          "how long"
+        ]
+      }
+    },
+    {
+      "task_id": "development-atlas-kickoff",
+      "base_task_id": "atlas-kickoff",
+      "requirement": "Put a meeting titled \"Atlas kickoff\" on the calendar for Mira and Rowan on 2027-05-18, from 09:00 to 09:45.",
+      "history": [],
+      "target_tool": "AddMeeting",
+      "api_names": [
+        "AddMeeting"
+      ],
+      "parameter_sources": {
+        "meeting_topic": {
+          "source": "requirement",
+          "value": "Atlas kickoff"
+        },
+        "start_time": {
+          "source": "requirement",
+          "value": "2027-05-18 09:00:00"
+        },
+        "end_time": {
+          "source": "requirement",
+          "value": "2027-05-18 09:45:00"
+        },
+        "attendees": {
+          "source": "requirement",
+          "value": [
+            "Mira",
+            "Rowan"
+          ]
+        },
+        "location": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "location"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "meeting_topic": [
+          "meeting topic",
+          "title",
+          "topic"
+        ],
+        "start_time": [
+          "start time",
+          "start date",
+          "when should the meeting start",
+          "when do you want the meeting to start"
+        ],
+        "end_time": [
+          "end time",
+          "end date",
+          "when should the meeting end",
+          "when do you want the meeting to end",
+          "duration",
+          "how long"
+        ],
+        "attendees": [
+          "attendees",
+          "participants",
+          "who should attend",
+          "who will attend"
+        ],
+        "location": [
+          "location",
+          "city",
+          "where",
+          "town",
+          "region"
+        ]
+      }
+    },
+    {
+      "task_id": "development-bmi-height",
+      "base_task_id": "bmi-height",
+      "requirement": "Calculate my BMI. I weigh 68.4 kilograms.",
+      "history": [],
+      "target_tool": "BMICalculator",
+      "api_names": [
+        "BMICalculator"
+      ],
+      "parameter_sources": {
+        "weight": {
+          "source": "requirement",
+          "value": 68.4
+        },
+        "height": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "height"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "weight": [
+          "weight",
+          "weigh",
+          "kilograms",
+          "kg"
+        ],
+        "height": [
+          "height",
+          "how tall",
+          "meters",
+          "metres"
+        ]
+      }
+    },
+    {
+      "task_id": "development-perth-route",
+      "base_task_id": "perth-route",
+      "requirement": "I am flying to Perth on 2027-02-11. Find flights for that trip.",
+      "history": [],
+      "target_tool": "FlightSearch",
+      "api_names": [
+        "FlightSearch"
+      ],
+      "parameter_sources": {
+        "destination": {
+          "source": "requirement",
+          "value": "Perth"
+        },
+        "travel_dates": {
+          "source": "requirement",
+          "value": "2027-02-11"
+        },
+        "source": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "source"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "destination": [
+          "destination",
+          "destination city",
+          "where are you flying to",
+          "where would you like to fly"
+        ],
+        "travel_dates": [
+          "travel dates",
+          "flight dates",
+          "flight date",
+          "departure date",
+          "what date",
+          "which date",
+          "when"
+        ],
+        "source": [
+          "departure city",
+          "origin",
+          "departure airport",
+          "starting point",
+          "departing from",
+          "flying from",
+          "fly from",
+          "leaving from"
+        ]
+      }
+    },
+    {
+      "task_id": "development-mock-ledger-account",
+      "base_task_id": "mock-ledger-account",
+      "requirement": "In the test system, retrieve account information for username ledger-sim-07.",
+      "history": [],
+      "target_tool": "AccountInfo",
+      "api_names": [
+        "AccountInfo"
+      ],
+      "parameter_sources": {
+        "username": {
+          "source": "requirement",
+          "value": "ledger-sim-07"
+        },
+        "password": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "password"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "username": [
+          "username",
+          "user name",
+          "login name"
+        ],
+        "password": [
+          "password",
+          "passcode"
+        ]
+      }
+    },
+    {
+      "task_id": "development-visit-alert",
+      "base_task_id": "visit-alert",
+      "requirement": "Set a reminder for my appointment on 2027-08-11 at 10:30.",
+      "history": [],
+      "target_tool": "AppointmentReminder",
+      "api_names": [
+        "AppointmentReminder"
+      ],
+      "parameter_sources": {
+        "appointment_time": {
+          "source": "requirement",
+          "value": "2027-08-11 10:30:00"
+        },
+        "reminder_time": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "reminder_time"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "appointment_time": [
+          "appointment time",
+          "appointment date",
+          "time of the appointment",
+          "when is the appointment"
+        ],
+        "reminder_time": [
+          "reminder time",
+          "reminder date",
+          "when",
+          "what time",
+          "how long before",
+          "how far in advance",
+          "how early"
+        ]
+      }
+    },
+    {
+      "task_id": "development-trainer-rental",
+      "base_task_id": "trainer-rental",
+      "requirement": "Can you retrieve the rental information for a rowing machine and a spin bike?",
+      "history": [],
+      "target_tool": "EquipmentRentalInfo",
+      "api_names": [
+        "EquipmentRentalInfo"
+      ],
+      "parameter_sources": {
+        "equipment_list": {
+          "source": "requirement",
+          "value": [
+            "rowing machine",
+            "spin bike"
+          ]
+        },
+        "rental_duration": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "rental_duration"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "equipment_list": [
+          "the equipment",
+          "equipment list",
+          "which equipment",
+          "what equipment",
+          "equipment names",
+          "equipment items"
+        ],
+        "rental_duration": [
+          "rental duration",
+          "duration",
+          "how many days",
+          "number of days",
+          "how long",
+          "rental period"
+        ]
+      }
+    },
+    {
+      "task_id": "development-morrow-street-dining",
+      "base_task_id": "morrow-street-dining",
+      "requirement": "Show me restaurants within 2 km of 418 Morrow Street, Halifax.",
+      "history": [],
+      "target_tool": "NearbyRestaurants",
+      "api_names": [
+        "NearbyRestaurants",
+        "Geocoding"
+      ],
+      "parameter_sources": {
+        "distance": {
+          "source": "requirement",
+          "value": 2
+        },
+        "latitude": {
+          "source": "lookup",
+          "api_name": "Geocoding",
+          "output_field": "latitude"
+        },
+        "longitude": {
+          "source": "lookup",
+          "api_name": "Geocoding",
+          "output_field": "longitude"
+        }
+      },
+      "expected": {
+        "kind": "lookup",
+        "api_name": "Geocoding",
+        "arguments": {
+          "address": "418 Morrow Street, Halifax"
+        },
+        "mock_output": {
+          "latitude": 44.65,
+          "longitude": -63.57
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "lookup"
+      }
+    },
+    {
+      "task_id": "development-orchids-reminder",
+      "base_task_id": "orchids-reminder",
+      "requirement": "Go ahead and add the watering reminder at the time I gave you.",
+      "history": [
+        {
+          "role": "user",
+          "content": "I want to water the orchids at 19:15 on 2027-06-18."
+        },
+        {
+          "role": "assistant",
+          "content": "I have that date and time."
+        }
+      ],
+      "target_tool": "ReminderSetter",
+      "api_names": [
+        "ReminderSetter"
+      ],
+      "parameter_sources": {
+        "activity": {
+          "source": "history",
+          "value": "water the orchids"
+        },
+        "time": {
+          "source": "history",
+          "value": "2027-06-18 19:15:00"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "ReminderSetter",
+        "arguments": {
+          "activity": "water the orchids",
+          "time": "2027-06-18 19:15:00"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "development-post-14072",
+      "base_task_id": "post-14072",
+      "requirement": "How many likes has post 14072 received?",
+      "history": [],
+      "target_tool": "LikeCount",
+      "api_names": [
+        "LikeCount"
+      ],
+      "parameter_sources": {
+        "post_id": {
+          "source": "requirement",
+          "value": 14072
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "LikeCount",
+        "arguments": {
+          "post_id": 14072
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "call"
+      }
+    }
+  ],
+  "validation": [
+    {
+      "task_id": "validation-nyc-rental-length",
+      "base_task_id": "nyc-rental-length",
+      "requirement": "Can you check the fitness equipment rental options in New York City?",
+      "history": [],
+      "target_tool": "FitnessEquipmentRentalAPI",
+      "api_names": [
+        "FitnessEquipmentRentalAPI"
+      ],
+      "parameter_sources": {
+        "city": {
+          "source": "requirement",
+          "value": "New York City"
+        },
+        "duration": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "duration"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "clarify"
+      },
+      "clarification_aliases": {
+        "city": [
+          "city",
+          "location",
+          "where"
+        ],
+        "duration": [
+          "duration",
+          "how many months",
+          "number of months",
+          "how long",
+          "rental period",
+          "rental length"
+        ]
+      }
+    },
+    {
+      "task_id": "validation-harborlight-availability",
+      "base_task_id": "harborlight-availability",
+      "requirement": "Find out whether Harborlight Clinic provides the \"speech therapy\" service.",
+      "history": [],
+      "target_tool": "ServiceAvailabilityChecker",
+      "api_names": [
+        "ServiceAvailabilityChecker"
+      ],
+      "parameter_sources": {
+        "provider": {
+          "source": "requirement",
+          "value": "Harborlight Clinic"
+        },
+        "service": {
+          "source": "requirement",
+          "value": "speech therapy"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "ServiceAvailabilityChecker",
+        "arguments": {
+          "provider": "Harborlight Clinic",
+          "service": "speech therapy"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "validation-travel-reminder-id",
+      "base_task_id": "travel-reminder-id",
+      "requirement": "Now fetch the details for that reminder.",
+      "history": [
+        {
+          "role": "user",
+          "content": "The reminder I am interested in has ID 4082."
+        },
+        {
+          "role": "assistant",
+          "content": "Got it."
+        }
+      ],
+      "target_tool": "ReminderDetails",
+      "api_names": [
+        "ReminderDetails"
+      ],
+      "parameter_sources": {
+        "reminder_id": {
+          "source": "history",
+          "value": 4082
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "ReminderDetails",
+        "arguments": {
+          "reminder_id": 4082
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "call"
+      }
+    },
+    {
+      "task_id": "validation-weather-current-position",
+      "base_task_id": "weather-current-position",
+      "requirement": "What is the weather at my current location?",
+      "history": [],
+      "target_tool": "GetWeatherForCoordinates",
+      "api_names": [
+        "GetWeatherForCoordinates",
+        "GetUserLocation"
+      ],
+      "parameter_sources": {
+        "latitude": {
+          "source": "lookup",
+          "api_name": "GetUserLocation",
+          "output_field": "latitude"
+        },
+        "longitude": {
+          "source": "lookup",
+          "api_name": "GetUserLocation",
+          "output_field": "longitude"
+        }
+      },
+      "expected": {
+        "kind": "lookup",
+        "api_name": "GetUserLocation",
+        "arguments": {},
+        "mock_output": {
+          "latitude": 32.72,
+          "longitude": -117.16
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "lookup"
+      }
+    }
+  ],
+  "test": [
+    {
+      "task_id": "test-sleep-study-trials-missing",
+      "base_task_id": "sleep-study-trials",
+      "requirement": "Search for clinical trials for sleep apnea near where I live.",
+      "history": [],
+      "target_tool": "ClinicalTrialSearcher",
+      "api_names": [
+        "ClinicalTrialSearcher"
+      ],
+      "parameter_sources": {
+        "condition": {
+          "source": "requirement",
+          "value": "sleep apnea"
+        },
+        "location": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "location"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "condition": [
+          "medical condition",
+          "condition",
+          "what health issue"
+        ],
+        "location": [
+          "location",
+          "city",
+          "where",
+          "town",
+          "region"
+        ]
+      }
+    },
+    {
+      "task_id": "test-sleep-study-trials-complete",
+      "base_task_id": "sleep-study-trials",
+      "requirement": "Search for clinical trials for sleep apnea near where I live, in Porto.",
+      "history": [],
+      "target_tool": "ClinicalTrialSearcher",
+      "api_names": [
+        "ClinicalTrialSearcher"
+      ],
+      "parameter_sources": {
+        "condition": {
+          "source": "requirement",
+          "value": "sleep apnea"
+        },
+        "location": {
+          "source": "requirement",
+          "value": "Porto"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "ClinicalTrialSearcher",
+        "arguments": {
+          "condition": "sleep apnea",
+          "location": "Porto"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-boise-procedure-quote-missing",
+      "base_task_id": "boise-procedure-quote",
+      "requirement": "Get an estimate of how much my procedure would cost in Boise.",
+      "history": [],
+      "target_tool": "HealthcareCostEstimator",
+      "api_names": [
+        "HealthcareCostEstimator"
+      ],
+      "parameter_sources": {
+        "location": {
+          "source": "requirement",
+          "value": "Boise"
+        },
+        "procedure": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "procedure"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "location": [
+          "location",
+          "city",
+          "where",
+          "town",
+          "region"
+        ],
+        "procedure": [
+          "procedure",
+          "operation",
+          "surgery",
+          "treatment"
+        ]
+      }
+    },
+    {
+      "task_id": "test-boise-procedure-quote-complete",
+      "base_task_id": "boise-procedure-quote",
+      "requirement": "Get an estimate of how much my procedure, a cataract extraction, would cost in Boise.",
+      "history": [],
+      "target_tool": "HealthcareCostEstimator",
+      "api_names": [
+        "HealthcareCostEstimator"
+      ],
+      "parameter_sources": {
+        "location": {
+          "source": "requirement",
+          "value": "Boise"
+        },
+        "procedure": {
+          "source": "requirement",
+          "value": "cataract extraction"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "HealthcareCostEstimator",
+        "arguments": {
+          "location": "Boise",
+          "procedure": "cataract extraction"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-pinefield-booking-missing",
+      "base_task_id": "pinefield-booking",
+      "requirement": "Make an appointment for \"mobility assessment\" with Pinefield Therapy.",
+      "history": [],
+      "target_tool": "BookingScheduler",
+      "api_names": [
+        "BookingScheduler"
+      ],
+      "parameter_sources": {
+        "service_name": {
+          "source": "requirement",
+          "value": "mobility assessment"
+        },
+        "service_provider": {
+          "source": "requirement",
+          "value": "Pinefield Therapy"
+        },
+        "time_slot": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "time_slot"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "service_name": [
+          "service name",
+          "name of the service",
+          "which service",
+          "what service"
+        ],
+        "service_provider": [
+          "service provider",
+          "provider",
+          "clinic name"
+        ],
+        "time_slot": [
+          "time slot",
+          "slot",
+          "time",
+          "date",
+          "when"
+        ]
+      }
+    },
+    {
+      "task_id": "test-pinefield-booking-complete",
+      "base_task_id": "pinefield-booking",
+      "requirement": "Make an appointment for \"mobility assessment\" with Pinefield Therapy at 2027-03-22 11:40.",
+      "history": [],
+      "target_tool": "BookingScheduler",
+      "api_names": [
+        "BookingScheduler"
+      ],
+      "parameter_sources": {
+        "service_name": {
+          "source": "requirement",
+          "value": "mobility assessment"
+        },
+        "service_provider": {
+          "source": "requirement",
+          "value": "Pinefield Therapy"
+        },
+        "time_slot": {
+          "source": "requirement",
+          "value": "2027-03-22 11:40:00"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "BookingScheduler",
+        "arguments": {
+          "service_name": "mobility assessment",
+          "service_provider": "Pinefield Therapy",
+          "time_slot": "2027-03-22 11:40:00"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-raleigh-physician-filter-missing",
+      "base_task_id": "raleigh-physician-filter",
+      "requirement": "Find physicians in Raleigh that meet my minimum star rating.",
+      "history": [],
+      "target_tool": "PhysicianRatingsAPI",
+      "api_names": [
+        "PhysicianRatingsAPI"
+      ],
+      "parameter_sources": {
+        "location": {
+          "source": "requirement",
+          "value": "Raleigh"
+        },
+        "rating": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "rating"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "location": [
+          "location",
+          "city",
+          "where",
+          "town",
+          "region"
+        ],
+        "rating": [
+          "minimum rating",
+          "rating",
+          "stars",
+          "star rating",
+          "threshold",
+          "cutoff"
+        ]
+      }
+    },
+    {
+      "task_id": "test-raleigh-physician-filter-complete",
+      "base_task_id": "raleigh-physician-filter",
+      "requirement": "Find physicians in Raleigh that meet my minimum star rating of 4.6.",
+      "history": [],
+      "target_tool": "PhysicianRatingsAPI",
+      "api_names": [
+        "PhysicianRatingsAPI"
+      ],
+      "parameter_sources": {
+        "location": {
+          "source": "requirement",
+          "value": "Raleigh"
+        },
+        "rating": {
+          "source": "requirement",
+          "value": 4.6
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "PhysicianRatingsAPI",
+        "arguments": {
+          "location": "Raleigh",
+          "rating": 4.6
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-aurora-study-registration-missing",
+      "base_task_id": "aurora-study-registration",
+      "requirement": "Register me for the \"Aurora Sleep Study\" using my registration details.",
+      "history": [],
+      "target_tool": "MedicalResearchStudyRegistration",
+      "api_names": [
+        "MedicalResearchStudyRegistration"
+      ],
+      "parameter_sources": {
+        "study_name": {
+          "source": "requirement",
+          "value": "Aurora Sleep Study"
+        },
+        "user_details": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "user_details"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "study_name": [
+          "study name",
+          "which study",
+          "what study"
+        ],
+        "user_details": [
+          "user details",
+          "personal information",
+          "personal details",
+          "contact information",
+          "contact details",
+          "registration details",
+          "your details",
+          "your full name",
+          "your name",
+          "your email",
+          "phone number",
+          "participant information",
+          "participant details"
+        ]
+      }
+    },
+    {
+      "task_id": "test-aurora-study-registration-complete",
+      "base_task_id": "aurora-study-registration",
+      "requirement": "Register me for the \"Aurora Sleep Study\" using these exact registration details: \"Name: Arden Vale; email: arden@example.test\".",
+      "history": [],
+      "target_tool": "MedicalResearchStudyRegistration",
+      "api_names": [
+        "MedicalResearchStudyRegistration"
+      ],
+      "parameter_sources": {
+        "study_name": {
+          "source": "requirement",
+          "value": "Aurora Sleep Study"
+        },
+        "user_details": {
+          "source": "requirement",
+          "value": "Name: Arden Vale; email: arden@example.test"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "MedicalResearchStudyRegistration",
+        "arguments": {
+          "study_name": "Aurora Sleep Study",
+          "user_details": "Name: Arden Vale; email: arden@example.test"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-bergen-eye-exam-missing",
+      "base_task_id": "bergen-eye-exam",
+      "requirement": "I am looking for eye exam time slots in Bergen for the day I can attend.",
+      "history": [],
+      "target_tool": "EyeExamTimeSlots",
+      "api_names": [
+        "EyeExamTimeSlots"
+      ],
+      "parameter_sources": {
+        "location": {
+          "source": "requirement",
+          "value": "Bergen"
+        },
+        "appointment_date": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "appointment_date"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "location": [
+          "location",
+          "city",
+          "where",
+          "town",
+          "region"
+        ],
+        "appointment_date": [
+          "appointment date",
+          "date",
+          "day",
+          "when"
+        ]
+      }
+    },
+    {
+      "task_id": "test-bergen-eye-exam-complete",
+      "base_task_id": "bergen-eye-exam",
+      "requirement": "I am looking for eye exam time slots in Bergen for the day I can attend, 2027-07-13.",
+      "history": [],
+      "target_tool": "EyeExamTimeSlots",
+      "api_names": [
+        "EyeExamTimeSlots"
+      ],
+      "parameter_sources": {
+        "location": {
+          "source": "requirement",
+          "value": "Bergen"
+        },
+        "appointment_date": {
+          "source": "requirement",
+          "value": "2027-07-13"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "EyeExamTimeSlots",
+        "arguments": {
+          "location": "Bergen",
+          "appointment_date": "2027-07-13"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-remote-evacuation-drill-missing",
+      "base_task_id": "remote-evacuation-drill",
+      "requirement": "For an evacuation drill, plan a route from the site whose latitude is 38.125.",
+      "history": [],
+      "target_tool": "EvacuationRoutePlanner",
+      "api_names": [
+        "EvacuationRoutePlanner"
+      ],
+      "parameter_sources": {
+        "latitude": {
+          "source": "requirement",
+          "value": 38.125
+        },
+        "longitude": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "longitude"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "latitude": [
+          "latitude"
+        ],
+        "longitude": [
+          "longitude",
+          "east-west coordinate"
+        ]
+      }
+    },
+    {
+      "task_id": "test-remote-evacuation-drill-complete",
+      "base_task_id": "remote-evacuation-drill",
+      "requirement": "For an evacuation drill, plan a route from the site whose latitude is 38.125 and longitude is -120.74.",
+      "history": [],
+      "target_tool": "EvacuationRoutePlanner",
+      "api_names": [
+        "EvacuationRoutePlanner"
+      ],
+      "parameter_sources": {
+        "latitude": {
+          "source": "requirement",
+          "value": 38.125
+        },
+        "longitude": {
+          "source": "requirement",
+          "value": -120.74
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "EvacuationRoutePlanner",
+        "arguments": {
+          "latitude": 38.125,
+          "longitude": -120.74
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-medication-price-check-missing",
+      "base_task_id": "medication-price-check",
+      "requirement": "Compare the prices of the two prescription medicines on my list.",
+      "history": [],
+      "target_tool": "MedicationPriceComparer",
+      "api_names": [
+        "MedicationPriceComparer"
+      ],
+      "parameter_sources": {
+        "medication_names": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "medication_names"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "medication_names": [
+          "medication names",
+          "prescription medicines",
+          "medications",
+          "medicines",
+          "names of the medications",
+          "which medications",
+          "what medications",
+          "which drugs",
+          "what drugs",
+          "drug names",
+          "which medicine",
+          "what medicine",
+          "which prescriptions",
+          "list of medications",
+          "names of the prescriptions"
+        ]
+      }
+    },
+    {
+      "task_id": "test-medication-price-check-complete",
+      "base_task_id": "medication-price-check",
+      "requirement": "Compare the prices of the two prescription medicines on my list: cetirizine and loratadine.",
+      "history": [],
+      "target_tool": "MedicationPriceComparer",
+      "api_names": [
+        "MedicationPriceComparer"
+      ],
+      "parameter_sources": {
+        "medication_names": {
+          "source": "requirement",
+          "value": [
+            "cetirizine",
+            "loratadine"
+          ]
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "MedicationPriceComparer",
+        "arguments": {
+          "medication_names": [
+            "cetirizine",
+            "loratadine"
+          ]
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-home-endurance-equipment-missing",
+      "base_task_id": "home-endurance-equipment",
+      "requirement": "Recommend equipment for my fitness goal of building endurance, taking my equipment preferences into account.",
+      "history": [],
+      "target_tool": "EquipmentRecommendation",
+      "api_names": [
+        "EquipmentRecommendation"
+      ],
+      "parameter_sources": {
+        "goals": {
+          "source": "requirement",
+          "value": "building endurance"
+        },
+        "preferences": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "preferences"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "goals": [
+          "goals",
+          "objectives",
+          "what are you trying to achieve"
+        ],
+        "preferences": [
+          "preferences",
+          "prefer",
+          "preferences or constraints",
+          "requirements",
+          "constraints",
+          "restrictions",
+          "what kind of equipment",
+          "what type of equipment"
+        ]
+      }
+    },
+    {
+      "task_id": "test-home-endurance-equipment-complete",
+      "base_task_id": "home-endurance-equipment",
+      "requirement": "Recommend equipment for my fitness goal of building endurance. My equipment preferences are \"quiet and foldable\".",
+      "history": [],
+      "target_tool": "EquipmentRecommendation",
+      "api_names": [
+        "EquipmentRecommendation"
+      ],
+      "parameter_sources": {
+        "goals": {
+          "source": "requirement",
+          "value": "building endurance"
+        },
+        "preferences": {
+          "source": "requirement",
+          "value": "quiet and foldable"
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "EquipmentRecommendation",
+        "arguments": {
+          "goals": "building endurance",
+          "preferences": "quiet and foldable"
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    },
+    {
+      "task_id": "test-stillwater-retreat-quote-missing",
+      "base_task_id": "stillwater-retreat-quote",
+      "requirement": "Calculate the total price of a wellness retreat including tax and fees. The quoted base price is 180.50 per person.",
+      "history": [],
+      "target_tool": "TotalCostCalculator",
+      "api_names": [
+        "TotalCostCalculator"
+      ],
+      "parameter_sources": {
+        "price": {
+          "source": "requirement",
+          "value": 180.5
+        },
+        "num_of_people": {
+          "source": "missing"
+        }
+      },
+      "expected": {
+        "kind": "clarify",
+        "fields": [
+          "num_of_people"
+        ]
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "missing"
+      },
+      "clarification_aliases": {
+        "price": [
+          "price",
+          "base price",
+          "listed price",
+          "cost per person",
+          "per-person rate"
+        ],
+        "num_of_people": [
+          "number of people",
+          "people",
+          "participants",
+          "guests",
+          "party size",
+          "group size",
+          "how many",
+          "number of attendees"
+        ]
+      }
+    },
+    {
+      "task_id": "test-stillwater-retreat-quote-complete",
+      "base_task_id": "stillwater-retreat-quote",
+      "requirement": "Calculate the total price of a wellness retreat including tax and fees. The quoted base price is 180.50 per person and our party has six people.",
+      "history": [],
+      "target_tool": "TotalCostCalculator",
+      "api_names": [
+        "TotalCostCalculator"
+      ],
+      "parameter_sources": {
+        "price": {
+          "source": "requirement",
+          "value": 180.5
+        },
+        "num_of_people": {
+          "source": "requirement",
+          "value": 6
+        }
+      },
+      "expected": {
+        "kind": "call",
+        "api_name": "TotalCostCalculator",
+        "arguments": {
+          "price": 180.5,
+          "num_of_people": 6
+        }
+      },
+      "provenance": {
+        "scenario": "controlled_author_created",
+        "variant": "complete"
+      }
+    }
+  ]
+}

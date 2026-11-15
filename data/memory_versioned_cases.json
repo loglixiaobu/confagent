@@ -1,0 +1,2387 @@
+{
+  "version": "cross-session-versioned-memory-v1",
+  "provenance": {
+    "construction": "40 independent synthetic tool-task families authored before model inference, with original API-Bank tool schemas and new scenario IDs.",
+    "history": "All events contain explicit synthetic user authorizations and assistant acknowledgements. Chronological sequence and physical record order differ by design.",
+    "allocation": "Twelve retention cases, twenty revised-fact cases, and eight integrity controls. Some revised-fact cases contain later wrong-profile or wrong-slot distractors.",
+    "memory_boundary": "Prior events and answer annotations are separate from the current follow-up. Revocation invalidates prior saves, and profiles and fact slots are isolated."
+  },
+  "schemas": {
+    "AddMeeting": {
+      "corpus": "level3",
+      "record_index": 10
+    },
+    "GetTreadmillPrices": {
+      "corpus": "level3_train_response",
+      "record_index": 67
+    },
+    "DoctorAvailabilityChecker": {
+      "corpus": "level3_train_response",
+      "record_index": 40
+    },
+    "DepressionResourceDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 218
+    },
+    "MedicalTreatmentInfo": {
+      "corpus": "level3_train_response",
+      "record_index": 30
+    },
+    "FitnessEquipmentSearch": {
+      "corpus": "level3_train_response",
+      "record_index": 232
+    },
+    "AppointmentReminder": {
+      "corpus": "level3_train_response",
+      "record_index": 4
+    },
+    "FlightSearch": {
+      "corpus": "level3",
+      "record_index": 35
+    },
+    "HealthcareProviderRating": {
+      "corpus": "level3_train_response",
+      "record_index": 75
+    },
+    "MRIScanDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 208
+    },
+    "PlanEvaluator": {
+      "corpus": "level3_train_response",
+      "record_index": 121
+    },
+    "MedicineInformation": {
+      "corpus": "level3_train_response",
+      "record_index": 306
+    },
+    "AutoInsuranceCoverageLimit": {
+      "corpus": "level3_train_response",
+      "record_index": 258
+    },
+    "BookingScheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 55
+    },
+    "BMICalculator": {
+      "corpus": "level3_train_response",
+      "record_index": 276
+    },
+    "EyeExamTimeSlots": {
+      "corpus": "level3_train_response",
+      "record_index": 193
+    },
+    "InsurancePlanFinder": {
+      "corpus": "level3_train_response",
+      "record_index": 121
+    },
+    "ClinicSearchAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 303
+    },
+    "EmailReminder": {
+      "corpus": "level3",
+      "record_index": 0
+    },
+    "EquipmentRentalAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 49
+    },
+    "WellnessRetreatsInBali": {
+      "corpus": "level3_train_response",
+      "record_index": 1
+    },
+    "AlternativeMedicineDB": {
+      "corpus": "level3_train_response",
+      "record_index": 117
+    },
+    "AppointmentScheduler": {
+      "corpus": "level3_train_response",
+      "record_index": 313
+    },
+    "ClothingRecommendation": {
+      "corpus": "level3",
+      "record_index": 5
+    },
+    "GetWeatherForCoordinates": {
+      "corpus": "level3",
+      "record_index": 5
+    },
+    "ClinicalTrialSearcher": {
+      "corpus": "level3_train_response",
+      "record_index": 133
+    },
+    "ResearchParticipantFetcher": {
+      "corpus": "level3_train_response",
+      "record_index": 69
+    },
+    "HealthcareCostEstimator": {
+      "corpus": "level3_train_response",
+      "record_index": 84
+    },
+    "NearbyRestaurants": {
+      "corpus": "level3",
+      "record_index": 15
+    },
+    "HospitalDetails": {
+      "corpus": "level3_train_response",
+      "record_index": 107
+    },
+    "HospitalInformationAPI": {
+      "corpus": "level3_train_response",
+      "record_index": 330
+    },
+    "MedicalExpertConsultation": {
+      "corpus": "level3_train_response",
+      "record_index": 30
+    },
+    "HealthcareServiceSearch": {
+      "corpus": "level3_train_response",
+      "record_index": 55
+    },
+    "DepressionResourcesLocator": {
+      "corpus": "level3_train_response",
+      "record_index": 218
+    },
+    "HealthcareProviderSearch": {
+      "corpus": "level3_train_response",
+      "record_index": 101
+    },
+    "FindNearbyHospital": {
+      "corpus": "level3_train_response",
+      "record_index": 116
+    },
+    "HealthcareProviderAppointmentChecker": {
+      "corpus": "level3_train_response",
+      "record_index": 0
+    },
+    "MedicalSpecialistFinder": {
+      "corpus": "level3_train_response",
+      "record_index": 313
+    },
+    "AvailabilityChecker": {
+      "corpus": "level3_train_response",
+      "record_index": 313
+    },
+    "AlternativeMedicineRecommendation": {
+      "corpus": "level3_train_response",
+      "record_index": 71
+    }
+  },
+  "validation": [
+    {
+      "task_id": "versioned-revoked-rehab-city-followup",
+      "base_task_id": "versioned-revoked-rehab-city",
+      "target_tool": "HealthcareServiceSearch",
+      "profile_id": "versioned-revoked-rehab-city-profile",
+      "requested_slot": "requested-location",
+      "memory_field": "location",
+      "requirement": "Find cardiac rehabilitation services near the city I had on file for service searches.",
+      "known_arguments": {
+        "service_type": "cardiac rehabilitation"
+      },
+      "condition": "revoked",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-revoked-rehab-city-event-2",
+          "profile_id": "versioned-revoked-rehab-city-profile",
+          "slot": "requested-location",
+          "kind": "revoke",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Delete the city from my cardiac rehabilitation service search record. I revoke permission to use it."
+            },
+            {
+              "role": "assistant",
+              "content": "I removed that saved detail from your profile."
+            }
+          ]
+        },
+        {
+          "record_id": "versioned-revoked-rehab-city-event-1",
+          "profile_id": "versioned-revoked-rehab-city-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My city for cardiac rehabilitation service searches is Salinas."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Salinas"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "versioned-revoked-resource-directory-city-followup",
+      "base_task_id": "versioned-revoked-resource-directory-city",
+      "target_tool": "DepressionResourcesLocator",
+      "profile_id": "versioned-revoked-resource-directory-city-profile",
+      "requested_slot": "requested-city",
+      "memory_field": "city",
+      "requirement": "Search the depression resource directory in the city I used to have on record.",
+      "known_arguments": {},
+      "condition": "revoked",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-revoked-resource-directory-city-event-1",
+          "profile_id": "versioned-revoked-resource-directory-city-profile",
+          "slot": "requested-city",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My city for depression resource directory searches is Binghamton."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Binghamton"
+        },
+        {
+          "record_id": "versioned-revoked-resource-directory-city-event-2",
+          "profile_id": "versioned-revoked-resource-directory-city-profile",
+          "slot": "requested-city",
+          "kind": "revoke",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Forget my depression resource search city. Please remove it from my records and do not use it again."
+            },
+            {
+              "role": "assistant",
+              "content": "I removed that saved detail from your profile."
+            }
+          ]
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "versioned-provider-search-foreign-city-followup",
+      "base_task_id": "versioned-provider-search-foreign-city",
+      "target_tool": "HealthcareProviderSearch",
+      "profile_id": "versioned-provider-search-foreign-city-profile",
+      "requested_slot": "requested-city",
+      "memory_field": "city",
+      "requirement": "Search for healthcare providers in the city on my provider-discovery profile.",
+      "known_arguments": {},
+      "condition": "wrong_profile",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-provider-search-foreign-city-event-1",
+          "profile_id": "versioned-provider-search-foreign-city-other-profile",
+          "slot": "requested-city",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The city on my provider-discovery profile is Clovis."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Clovis"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "versioned-hospital-lookup-foreign-city-followup",
+      "base_task_id": "versioned-hospital-lookup-foreign-city",
+      "target_tool": "FindNearbyHospital",
+      "profile_id": "versioned-hospital-lookup-foreign-city-profile",
+      "requested_slot": "requested-location",
+      "memory_field": "location",
+      "requirement": "Find hospitals around the place on my nearby-hospital profile.",
+      "known_arguments": {},
+      "condition": "wrong_profile",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-hospital-lookup-foreign-city-event-1",
+          "profile_id": "versioned-hospital-lookup-foreign-city-other-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The place on my nearby-hospital profile is Brookings."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Brookings"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "versioned-appointment-check-wrong-specialty-slot-followup",
+      "base_task_id": "versioned-appointment-check-wrong-specialty-slot",
+      "target_tool": "HealthcareProviderAppointmentChecker",
+      "profile_id": "versioned-appointment-check-wrong-specialty-slot-profile",
+      "requested_slot": "requested-specialty",
+      "memory_field": "specialty",
+      "requirement": "Check healthcare appointments in Worcester for the specialty noted in my workplace screening plan.",
+      "known_arguments": {
+        "location": "Worcester"
+      },
+      "condition": "wrong_slot",
+      "aliases": [
+        "specialty",
+        "specialization",
+        "type of provider",
+        "what kind",
+        "which type"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-appointment-check-wrong-specialty-slot-event-1",
+          "profile_id": "versioned-appointment-check-wrong-specialty-slot-profile",
+          "slot": "unrelated-specialty",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The specialty for my family referral plan is neurology."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "neurology"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "versioned-injury-search-wrong-slot-followup",
+      "base_task_id": "versioned-injury-search-wrong-slot",
+      "target_tool": "MedicalSpecialistFinder",
+      "profile_id": "versioned-injury-search-wrong-slot-profile",
+      "requested_slot": "requested-injury",
+      "memory_field": "injury",
+      "requirement": "Find a sports injury specialist in Edmonton for the injury recorded in my winter training report.",
+      "known_arguments": {
+        "location": "Edmonton"
+      },
+      "condition": "wrong_slot",
+      "aliases": [
+        "injury",
+        "type of injury",
+        "which injury",
+        "what injury",
+        "kind of injury"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-injury-search-wrong-slot-event-1",
+          "profile_id": "versioned-injury-search-wrong-slot-profile",
+          "slot": "unrelated-injury",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The injury in my summer training report is a dislocated shoulder."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "a dislocated shoulder"
+        }
+      ],
+      "permitted_memory_ids": []
+    },
+    {
+      "task_id": "versioned-current-availability-specialist-followup",
+      "base_task_id": "versioned-current-availability-specialist",
+      "target_tool": "AvailabilityChecker",
+      "profile_id": "versioned-current-availability-specialist-profile",
+      "requested_slot": "requested-specialist",
+      "memory_field": "specialist",
+      "requirement": "For this request check Ezra Flint's availability on 2028-04-03 from 13:00 to 14:00. Use Ezra Flint even if an earlier specialist is on file.",
+      "known_arguments": {
+        "start_time": "2028-04-03 13:00:00",
+        "end_time": "2028-04-03 14:00:00"
+      },
+      "condition": "current_update",
+      "aliases": [
+        "provider",
+        "who",
+        "name of",
+        "which",
+        "specialist",
+        "doctor",
+        "whose"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-current-availability-specialist-event-1",
+          "profile_id": "versioned-current-availability-specialist-profile",
+          "slot": "requested-specialist",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My saved specialist for availability checks is Dina Quill."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Dina Quill"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-current-availability-specialist-event-1"
+      ],
+      "current_value": "Ezra Flint"
+    },
+    {
+      "task_id": "versioned-current-literature-condition-followup",
+      "base_task_id": "versioned-current-literature-condition",
+      "target_tool": "AlternativeMedicineRecommendation",
+      "profile_id": "versioned-current-literature-condition-profile",
+      "requested_slot": "requested-health_condition",
+      "memory_field": "health_condition",
+      "requirement": "For this literature example, query alternative medicine for chronic insomnia. The active condition for this request is chronic insomnia.",
+      "known_arguments": {},
+      "condition": "current_update",
+      "aliases": [
+        "condition",
+        "topic",
+        "which condition",
+        "health concern",
+        "health issue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-current-literature-condition-event-1",
+          "profile_id": "versioned-current-literature-condition-profile",
+          "slot": "requested-health_condition",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My saved condition for the alternative medicine literature example is motion sickness."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "motion sickness"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-current-literature-condition-event-1"
+      ],
+      "current_value": "chronic insomnia"
+    }
+  ],
+  "replication": [
+    {
+      "task_id": "versioned-lantern-meetup-room-followup",
+      "base_task_id": "versioned-lantern-meetup-room",
+      "target_tool": "AddMeeting",
+      "profile_id": "versioned-lantern-meetup-room-profile",
+      "requested_slot": "requested-location",
+      "memory_field": "location",
+      "requirement": "Book 'Lantern print run' on 2028-05-09 from 14:00 to 14:45, for Rowan Moss and Sel Reed. Put it in the rehearsal room on my record.",
+      "known_arguments": {
+        "meeting_topic": "Lantern print run",
+        "start_time": "2028-05-09 14:00:00",
+        "end_time": "2028-05-09 14:45:00",
+        "attendees": [
+          "Rowan Moss",
+          "Sel Reed"
+        ]
+      },
+      "condition": "saved",
+      "aliases": [
+        "room",
+        "meeting room",
+        "venue",
+        "where",
+        "meeting location",
+        "which room"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-lantern-meetup-room-event-1",
+          "profile_id": "versioned-lantern-meetup-room-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My rehearsal room is Studio Alder 2."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Studio Alder 2"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-lantern-meetup-room-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-treadmill-price-monitor-followup",
+      "base_task_id": "versioned-treadmill-price-monitor",
+      "target_tool": "GetTreadmillPrices",
+      "profile_id": "versioned-treadmill-price-monitor-profile",
+      "requested_slot": "requested-location",
+      "memory_field": "location",
+      "requirement": "Pull current treadmill rental prices for the city on my price-monitoring record.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-treadmill-price-monitor-event-1",
+          "profile_id": "versioned-treadmill-price-monitor-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The city for my treadmill price monitoring is Duluth."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Duluth"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-treadmill-price-monitor-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-care-campus-doctor-list-followup",
+      "base_task_id": "versioned-care-campus-doctor-list",
+      "target_tool": "DoctorAvailabilityChecker",
+      "profile_id": "versioned-care-campus-doctor-list-profile",
+      "requested_slot": "requested-hospital",
+      "memory_field": "hospital",
+      "requirement": "Check doctor availability at the hospital noted in my care-campus lookup.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "hospital",
+        "hospital name",
+        "which hospital",
+        "facility",
+        "medical centre"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-care-campus-doctor-list-event-1",
+          "profile_id": "versioned-care-campus-doctor-list-profile",
+          "slot": "requested-hospital",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My care-campus lookup is for Amber Ridge Hospital."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Amber Ridge Hospital"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-care-campus-doctor-list-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-archive-mental-health-resource-followup",
+      "base_task_id": "versioned-archive-mental-health-resource",
+      "target_tool": "DepressionResourceDetails",
+      "profile_id": "versioned-archive-mental-health-resource-profile",
+      "requested_slot": "requested-resource_name",
+      "memory_field": "resource_name",
+      "requirement": "Open the detailed entry for the depression resource from my reading archive.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "resource name",
+        "name of",
+        "which resource",
+        "what resource",
+        "resource did"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-archive-mental-health-resource-event-1",
+          "profile_id": "versioned-archive-mental-health-resource-profile",
+          "slot": "requested-resource_name",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The depression resource in my reading archive is North Pier Listening Guide."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "North Pier Listening Guide"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-archive-mental-health-resource-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-library-treatment-brief-followup",
+      "base_task_id": "versioned-library-treatment-brief",
+      "target_tool": "MedicalTreatmentInfo",
+      "profile_id": "versioned-library-treatment-brief-profile",
+      "requested_slot": "requested-condition",
+      "memory_field": "condition",
+      "requirement": "Pull a treatment-options brief for the subject in my draft notes.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "condition",
+        "topic",
+        "which condition",
+        "health concern",
+        "health issue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-library-treatment-brief-event-1",
+          "profile_id": "versioned-library-treatment-brief-profile",
+          "slot": "requested-condition",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The medical subject of my treatment-options draft is cluster headaches."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "cluster headaches"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-library-treatment-brief-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-workspace-equipment-research-followup",
+      "base_task_id": "versioned-workspace-equipment-research",
+      "target_tool": "FitnessEquipmentSearch",
+      "profile_id": "versioned-workspace-equipment-research-profile",
+      "requested_slot": "requested-equipment_type",
+      "memory_field": "equipment_type",
+      "requirement": "Look up information on the exercise equipment type from my workspace inventory notes.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "equipment type",
+        "what equipment",
+        "which equipment",
+        "machine",
+        "equipment would",
+        "type of equipment"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-workspace-equipment-research-event-1",
+          "profile_id": "versioned-workspace-equipment-research-profile",
+          "slot": "requested-equipment_type",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The fitness equipment category in my workspace inventory notes is recumbent exercise bikes."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "recumbent exercise bikes"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-workspace-equipment-research-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-reminder-signal-time-followup",
+      "base_task_id": "versioned-reminder-signal-time",
+      "target_tool": "AppointmentReminder",
+      "profile_id": "versioned-reminder-signal-time-profile",
+      "requested_slot": "requested-reminder_time",
+      "memory_field": "reminder_time",
+      "requirement": "Set a reminder for my garden-plan appointment at 2028-06-18 17:20 using the notification time on file.",
+      "known_arguments": {
+        "appointment_time": "2028-06-18 17:20:00"
+      },
+      "condition": "saved",
+      "aliases": [
+        "reminder",
+        "notification",
+        "when",
+        "which time",
+        "remind",
+        "time to send"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-reminder-signal-time-event-1",
+          "profile_id": "versioned-reminder-signal-time-profile",
+          "slot": "requested-reminder_time",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The notification for the garden-plan appointment should go out at 2028-06-18 16:35:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "2028-06-18 16:35:00"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-reminder-signal-time-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-departure-hub-ferry-trip-followup",
+      "base_task_id": "versioned-departure-hub-ferry-trip",
+      "target_tool": "FlightSearch",
+      "profile_id": "versioned-departure-hub-ferry-trip-profile",
+      "requested_slot": "requested-source",
+      "memory_field": "source",
+      "requirement": "Look for flights to Bergen on 2028-09-11. My departure hub is in my itinerary preferences.",
+      "known_arguments": {
+        "destination": "Bergen",
+        "travel_dates": "2028-09-11"
+      },
+      "condition": "saved",
+      "aliases": [
+        "departure",
+        "origin",
+        "source",
+        "where are you",
+        "depart from",
+        "flying from",
+        "airport"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-departure-hub-ferry-trip-event-1",
+          "profile_id": "versioned-departure-hub-ferry-trip-profile",
+          "slot": "requested-source",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The departure hub in my itinerary preferences is Amsterdam."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Amsterdam"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-departure-hub-ferry-trip-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-provider-rating-role-audit-followup",
+      "base_task_id": "versioned-provider-rating-role-audit",
+      "target_tool": "HealthcareProviderRating",
+      "profile_id": "versioned-provider-rating-role-audit-profile",
+      "requested_slot": "requested-specialization",
+      "memory_field": "specialization",
+      "requirement": "Pull healthcare provider ratings in Truro for the specialty recorded in my shortlist notes.",
+      "known_arguments": {
+        "location": "Truro"
+      },
+      "condition": "saved",
+      "aliases": [
+        "specialization",
+        "specialty",
+        "type of provider",
+        "which profession",
+        "provider type",
+        "what kind of provider"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-provider-rating-role-audit-event-1",
+          "profile_id": "versioned-provider-rating-role-audit-profile",
+          "slot": "requested-specialization",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The specialty for my provider rating shortlist is audiology."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "audiology"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-provider-rating-role-audit-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-imaging-explainer-file-followup",
+      "base_task_id": "versioned-imaging-explainer-file",
+      "target_tool": "MRIScanDetails",
+      "profile_id": "versioned-imaging-explainer-file-profile",
+      "requested_slot": "requested-procedure_type",
+      "memory_field": "procedure_type",
+      "requirement": "Get the MRI explainer for the scan type in my project note.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "procedure type",
+        "scan type",
+        "type of mri",
+        "which mri",
+        "what type",
+        "kind of mri",
+        "kind of scan"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-imaging-explainer-file-event-1",
+          "profile_id": "versioned-imaging-explainer-file-profile",
+          "slot": "requested-procedure_type",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The scan type in my imaging explainer project note is contrast-enhanced lumbar MRI."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "contrast-enhanced lumbar MRI"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-imaging-explainer-file-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-screening-two-plan-evaluation-followup",
+      "base_task_id": "versioned-screening-two-plan-evaluation",
+      "target_tool": "PlanEvaluator",
+      "profile_id": "versioned-screening-two-plan-evaluation-profile",
+      "requested_slot": "requested-plan_details",
+      "memory_field": "plan_details",
+      "requirement": "Evaluate the two health plan entries in my screening notes.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "plan details",
+        "plan names",
+        "health plan entries",
+        "which plans",
+        "the two plans",
+        "insurance plans",
+        "plan information"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-screening-two-plan-evaluation-event-1",
+          "profile_id": "versioned-screening-two-plan-evaluation-profile",
+          "slot": "requested-plan_details",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The two health plan entries on my screening list are exactly \"Marsh Bronze HMO\" and \"Alder Standard PPO\"."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": [
+            "Marsh Bronze HMO",
+            "Alder Standard PPO"
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-screening-two-plan-evaluation-event-1"
+      ]
+    },
+    {
+      "task_id": "versioned-reference-index-medicine-followup",
+      "base_task_id": "versioned-reference-index-medicine",
+      "target_tool": "MedicineInformation",
+      "profile_id": "versioned-reference-index-medicine-profile",
+      "requested_slot": "requested-medicine",
+      "memory_field": "medicine",
+      "requirement": "Fetch a medicine-information entry for the drug in my reference index.",
+      "known_arguments": {},
+      "condition": "saved",
+      "aliases": [
+        "medicine",
+        "drug",
+        "medication",
+        "medicine name",
+        "drug name",
+        "name of the medication"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-reference-index-medicine-event-1",
+          "profile_id": "versioned-reference-index-medicine-profile",
+          "slot": "requested-medicine",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The drug in my medicine reference index is sumatriptan."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "sumatriptan"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-reference-index-medicine-event-1"
+      ]
+    }
+  ],
+  "updated": [
+    {
+      "task_id": "versioned-coverage-state-record-followup",
+      "base_task_id": "versioned-coverage-state-record",
+      "target_tool": "AutoInsuranceCoverageLimit",
+      "profile_id": "versioned-coverage-state-record-profile",
+      "requested_slot": "requested-state",
+      "memory_field": "state",
+      "requirement": "Look up the comprehensive coverage limit for the state in the latest version of my policy notes.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "state",
+        "jurisdiction",
+        "which state"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-coverage-state-record-event-2",
+          "profile_id": "versioned-coverage-state-record-profile",
+          "slot": "requested-state",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My policy now applies in Kansas."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "Kansas"
+        },
+        {
+          "record_id": "versioned-coverage-state-record-event-1",
+          "profile_id": "versioned-coverage-state-record-profile",
+          "slot": "requested-state",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The state for my policy coverage notes is Oklahoma."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Oklahoma"
+        },
+        {
+          "record_id": "versioned-coverage-state-record-event-3",
+          "profile_id": "versioned-coverage-state-record-profile",
+          "slot": "unrelated-state",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The state for my vehicle registration file is Idaho."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Idaho"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-coverage-state-record-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-new-bike-fit-booking-slot-followup",
+      "base_task_id": "versioned-new-bike-fit-booking-slot",
+      "target_tool": "BookingScheduler",
+      "profile_id": "versioned-new-bike-fit-booking-slot-profile",
+      "requested_slot": "requested-time_slot",
+      "memory_field": "time_slot",
+      "requirement": "Book a bike fit with Quartz Cycle Lab using the time in my revised booking note.",
+      "known_arguments": {
+        "service_name": "bike fit",
+        "service_provider": "Quartz Cycle Lab"
+      },
+      "condition": "updated",
+      "aliases": [
+        "date",
+        "when",
+        "appointment date",
+        "appointment time",
+        "time slot",
+        "desired time",
+        "preferred time"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-new-bike-fit-booking-slot-event-2",
+          "profile_id": "versioned-new-bike-fit-booking-slot-profile",
+          "slot": "requested-time_slot",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My revised bike fitting booking time is 2028-02-26 15:15:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "2028-02-26 15:15:00"
+        },
+        {
+          "record_id": "versioned-new-bike-fit-booking-slot-event-1",
+          "profile_id": "versioned-new-bike-fit-booking-slot-profile",
+          "slot": "requested-time_slot",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My bike fitting booking time is 2028-02-20 12:00:00."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "2028-02-20 12:00:00"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-new-bike-fit-booking-slot-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-rechecked-standing-height-followup",
+      "base_task_id": "versioned-rechecked-standing-height",
+      "target_tool": "BMICalculator",
+      "profile_id": "versioned-rechecked-standing-height-profile",
+      "requested_slot": "requested-height",
+      "memory_field": "height",
+      "requirement": "Calculate my BMI for 66.3 kilograms. Take my height from the corrected measurement in my notes.",
+      "known_arguments": {
+        "weight": 66.3
+      },
+      "condition": "updated",
+      "aliases": [
+        "height",
+        "how tall",
+        "meters tall",
+        "height measurement"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-rechecked-standing-height-event-1",
+          "profile_id": "versioned-rechecked-standing-height-profile",
+          "slot": "requested-height",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My standing height measurement is 1.62 meters."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": 1.62
+        },
+        {
+          "record_id": "versioned-rechecked-standing-height-event-2",
+          "profile_id": "versioned-rechecked-standing-height-profile",
+          "slot": "requested-height",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My corrected standing height measurement is 1.68 meters."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": 1.68
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-rechecked-standing-height-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-revised-eye-exam-date-followup",
+      "base_task_id": "versioned-revised-eye-exam-date",
+      "target_tool": "EyeExamTimeSlots",
+      "profile_id": "versioned-revised-eye-exam-date-profile",
+      "requested_slot": "requested-appointment_date",
+      "memory_field": "appointment_date",
+      "requirement": "Check eye exam slots in Swansea for the updated date in my appointment note.",
+      "known_arguments": {
+        "location": "Swansea"
+      },
+      "condition": "updated",
+      "aliases": [
+        "date",
+        "when",
+        "appointment date",
+        "appointment time",
+        "time slot"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-revised-eye-exam-date-event-1",
+          "profile_id": "versioned-revised-eye-exam-date-profile",
+          "slot": "requested-appointment_date",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My Swansea eye exam date is 2028-07-13."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "2028-07-13"
+        },
+        {
+          "record_id": "versioned-revised-eye-exam-date-event-2",
+          "profile_id": "versioned-revised-eye-exam-date-profile",
+          "slot": "requested-appointment_date",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The date I now want to use for the Swansea eye exam is 2028-07-21."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "2028-07-21"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-revised-eye-exam-date-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-revised-health-plan-household-followup",
+      "base_task_id": "versioned-revised-health-plan-household",
+      "target_tool": "InsurancePlanFinder",
+      "profile_id": "versioned-revised-health-plan-household-profile",
+      "requested_slot": "requested-family_size",
+      "memory_field": "family_size",
+      "requirement": "Find family health insurance in Kenosha and use the revised household size on my profile.",
+      "known_arguments": {
+        "location": "Kenosha"
+      },
+      "condition": "updated",
+      "aliases": [
+        "family size",
+        "household size",
+        "how many",
+        "size of your family",
+        "number of people",
+        "members",
+        "family members"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-revised-health-plan-household-event-2",
+          "profile_id": "versioned-revised-health-plan-household-profile",
+          "slot": "requested-family_size",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My household size for this health insurance search is now 6."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": 6
+        },
+        {
+          "record_id": "versioned-revised-health-plan-household-event-1",
+          "profile_id": "versioned-revised-health-plan-household-profile",
+          "slot": "requested-family_size",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My family size for this health insurance search is 3."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": 3
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-revised-health-plan-household-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-clinic-rating-floor-revision-followup",
+      "base_task_id": "versioned-clinic-rating-floor-revision",
+      "target_tool": "ClinicSearchAPI",
+      "profile_id": "versioned-clinic-rating-floor-revision-profile",
+      "requested_slot": "requested-ratings",
+      "memory_field": "ratings",
+      "requirement": "Show clinics in Monterrey that meet the new rating cutoff on my profile.",
+      "known_arguments": {
+        "location": "Monterrey"
+      },
+      "condition": "updated",
+      "aliases": [
+        "rating",
+        "ratings",
+        "cutoff",
+        "threshold",
+        "how many stars",
+        "minimum stars"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-clinic-rating-floor-revision-event-3",
+          "profile_id": "versioned-clinic-rating-floor-revision-other-profile",
+          "slot": "requested-ratings",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My minimum clinic rating for searches is 4.2 stars."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": 4.2
+        },
+        {
+          "record_id": "versioned-clinic-rating-floor-revision-event-1",
+          "profile_id": "versioned-clinic-rating-floor-revision-profile",
+          "slot": "requested-ratings",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My minimum clinic rating for searches is 3.8 stars."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": 3.8
+        },
+        {
+          "record_id": "versioned-clinic-rating-floor-revision-event-2",
+          "profile_id": "versioned-clinic-rating-floor-revision-profile",
+          "slot": "requested-ratings",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My minimum clinic rating for searches is now 4.6 stars."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": 4.6
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-clinic-rating-floor-revision-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-revised-exhibit-recipient-followup",
+      "base_task_id": "versioned-revised-exhibit-recipient",
+      "target_tool": "EmailReminder",
+      "profile_id": "versioned-revised-exhibit-recipient-profile",
+      "requested_slot": "requested-recipient",
+      "memory_field": "recipient",
+      "requirement": "In the simulated system, send the exact note \"Bring the folded kiosk plan.\" as a meeting reminder for 2028-08-25 09:30 in Gallery Four. Address it to the recipient in my revised exhibit record.",
+      "known_arguments": {
+        "content": "Bring the folded kiosk plan.",
+        "time": "2028-08-25 09:30:00",
+        "location": "Gallery Four"
+      },
+      "condition": "updated",
+      "aliases": [
+        "recipient",
+        "email address",
+        "email for",
+        "who should",
+        "whom",
+        "address to",
+        "send it to",
+        "send the reminder to"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-revised-exhibit-recipient-event-2",
+          "profile_id": "versioned-revised-exhibit-recipient-profile",
+          "slot": "requested-recipient",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The revised recipient for my exhibit reminder is site-desk@example.test."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "site-desk@example.test"
+        },
+        {
+          "record_id": "versioned-revised-exhibit-recipient-event-1",
+          "profile_id": "versioned-revised-exhibit-recipient-profile",
+          "slot": "requested-recipient",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The recipient for my exhibit reminder is planning-team@example.test."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "planning-team@example.test"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-revised-exhibit-recipient-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-equipment-market-location-revision-followup",
+      "base_task_id": "versioned-equipment-market-location-revision",
+      "target_tool": "EquipmentRentalAPI",
+      "profile_id": "versioned-equipment-market-location-revision-profile",
+      "requested_slot": "requested-location",
+      "memory_field": "location",
+      "requirement": "Show exercise equipment rentals. Use the corrected city in my market comparison record.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-equipment-market-location-revision-event-2",
+          "profile_id": "versioned-equipment-market-location-revision-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My corrected exercise rental market comparison city is Salem."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "Salem"
+        },
+        {
+          "record_id": "versioned-equipment-market-location-revision-event-1",
+          "profile_id": "versioned-equipment-market-location-revision-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My exercise rental market comparison city is Eugene."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Eugene"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-equipment-market-location-revision-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-bali-retreat-area-revision-followup",
+      "base_task_id": "versioned-bali-retreat-area-revision",
+      "target_tool": "WellnessRetreatsInBali",
+      "profile_id": "versioned-bali-retreat-area-revision-profile",
+      "requested_slot": "requested-location",
+      "memory_field": "location",
+      "requirement": "Find wellness retreats in the area from my revised Bali retreat itinerary.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where",
+        "region",
+        "district",
+        "part of bali"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-bali-retreat-area-revision-event-2",
+          "profile_id": "versioned-bali-retreat-area-revision-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My Bali retreat search area is now Sanur."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "Sanur"
+        },
+        {
+          "record_id": "versioned-bali-retreat-area-revision-event-3",
+          "profile_id": "versioned-bali-retreat-area-revision-profile",
+          "slot": "unrelated-location",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My Bali hotel search area is Uluwatu."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Uluwatu"
+        },
+        {
+          "record_id": "versioned-bali-retreat-area-revision-event-1",
+          "profile_id": "versioned-bali-retreat-area-revision-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My Bali retreat search area is Canggu."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Canggu"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-bali-retreat-area-revision-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-alternative-treatment-literature-followup",
+      "base_task_id": "versioned-alternative-treatment-literature",
+      "target_tool": "AlternativeMedicineDB",
+      "profile_id": "versioned-alternative-treatment-literature-profile",
+      "requested_slot": "requested-condition",
+      "memory_field": "condition",
+      "requirement": "In this literature exercise, search the alternative-treatment database for the updated condition in my chapter notes.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "condition",
+        "topic",
+        "which condition",
+        "health concern",
+        "health issue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-alternative-treatment-literature-event-1",
+          "profile_id": "versioned-alternative-treatment-literature-profile",
+          "slot": "requested-condition",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The condition for my literature chapter is tension headaches."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "tension headaches"
+        },
+        {
+          "record_id": "versioned-alternative-treatment-literature-event-2",
+          "profile_id": "versioned-alternative-treatment-literature-profile",
+          "slot": "requested-condition",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The updated condition for my literature chapter is seasonal allergic rhinitis."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "seasonal allergic rhinitis"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-alternative-treatment-literature-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-reassigned-provider-appointment-followup",
+      "base_task_id": "versioned-reassigned-provider-appointment",
+      "target_tool": "AppointmentScheduler",
+      "profile_id": "versioned-reassigned-provider-appointment-profile",
+      "requested_slot": "requested-specialist",
+      "memory_field": "specialist",
+      "requirement": "In the training system, schedule the visit from 2028-03-02 08:00 to 08:35 with the specialist in my reassignment note.",
+      "known_arguments": {
+        "start_time": "2028-03-02 08:00:00",
+        "end_time": "2028-03-02 08:35:00"
+      },
+      "condition": "updated",
+      "aliases": [
+        "provider",
+        "who",
+        "name of",
+        "which",
+        "specialist",
+        "clinician",
+        "doctor"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-reassigned-provider-appointment-event-2",
+          "profile_id": "versioned-reassigned-provider-appointment-profile",
+          "slot": "requested-specialist",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The latest assigned specialist for my 2028-03-02 visit is Noa Fenn."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "Noa Fenn"
+        },
+        {
+          "record_id": "versioned-reassigned-provider-appointment-event-1",
+          "profile_id": "versioned-reassigned-provider-appointment-profile",
+          "slot": "requested-specialist",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The assigned specialist for my 2028-03-02 visit is Ren Sage."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Ren Sage"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-reassigned-provider-appointment-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-harbor-outdoor-humidity-revision-followup",
+      "base_task_id": "versioned-harbor-outdoor-humidity-revision",
+      "target_tool": "ClothingRecommendation",
+      "profile_id": "versioned-harbor-outdoor-humidity-revision-profile",
+      "requested_slot": "requested-humidity",
+      "memory_field": "humidity",
+      "requirement": "Suggest clothing for the harbor picnic. It is overcast and 18 degrees Celsius. Use the corrected humidity from my outdoor forecast note.",
+      "known_arguments": {
+        "temperature": 18.0,
+        "weather_conditions": "overcast"
+      },
+      "condition": "updated",
+      "aliases": [
+        "humidity",
+        "relative humidity",
+        "percentage",
+        "how humid"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-harbor-outdoor-humidity-revision-event-2",
+          "profile_id": "versioned-harbor-outdoor-humidity-revision-profile",
+          "slot": "requested-humidity",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The corrected relative humidity in my harbor picnic outdoor forecast is 72 percent."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": 72
+        },
+        {
+          "record_id": "versioned-harbor-outdoor-humidity-revision-event-1",
+          "profile_id": "versioned-harbor-outdoor-humidity-revision-profile",
+          "slot": "requested-humidity",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The relative humidity in my harbor picnic outdoor forecast is 47 percent."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": 47
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-harbor-outdoor-humidity-revision-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-weather-pin-corrected-longitude-followup",
+      "base_task_id": "versioned-weather-pin-corrected-longitude",
+      "target_tool": "GetWeatherForCoordinates",
+      "profile_id": "versioned-weather-pin-corrected-longitude-profile",
+      "requested_slot": "requested-longitude",
+      "memory_field": "longitude",
+      "requirement": "Get weather for my marked coordinate at latitude 38.104. Use the corrected longitude on record for that coordinate.",
+      "known_arguments": {
+        "latitude": 38.104
+      },
+      "condition": "updated",
+      "aliases": [
+        "longitude",
+        "east-west",
+        "longitudinal coordinate",
+        "second coordinate"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-weather-pin-corrected-longitude-event-1",
+          "profile_id": "versioned-weather-pin-corrected-longitude-profile",
+          "slot": "requested-longitude",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The longitude of the pin at latitude 38.104 is -121.16."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": -121.16
+        },
+        {
+          "record_id": "versioned-weather-pin-corrected-longitude-event-2",
+          "profile_id": "versioned-weather-pin-corrected-longitude-profile",
+          "slot": "requested-longitude",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The corrected longitude of the pin at latitude 38.104 is -121.54."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": -121.54
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-weather-pin-corrected-longitude-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-revised-trial-search-condition-followup",
+      "base_task_id": "versioned-revised-trial-search-condition",
+      "target_tool": "ClinicalTrialSearcher",
+      "profile_id": "versioned-revised-trial-search-condition-profile",
+      "requested_slot": "requested-condition",
+      "memory_field": "condition",
+      "requirement": "Search for trials around Durham for the condition in my revised research tracking record.",
+      "known_arguments": {
+        "location": "Durham"
+      },
+      "condition": "updated",
+      "aliases": [
+        "condition",
+        "topic",
+        "which condition",
+        "health concern",
+        "health issue"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-revised-trial-search-condition-event-2",
+          "profile_id": "versioned-revised-trial-search-condition-profile",
+          "slot": "requested-condition",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My revised trial search condition is persistent tinnitus."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "persistent tinnitus"
+        },
+        {
+          "record_id": "versioned-revised-trial-search-condition-event-1",
+          "profile_id": "versioned-revised-trial-search-condition-profile",
+          "slot": "requested-condition",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My trial search condition is restless legs syndrome."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "restless legs syndrome"
+        },
+        {
+          "record_id": "versioned-revised-trial-search-condition-event-3",
+          "profile_id": "versioned-revised-trial-search-condition-other-profile",
+          "slot": "requested-condition",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My trial search condition is migraine."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "migraine"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-revised-trial-search-condition-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-participant-study-rename-followup",
+      "base_task_id": "versioned-participant-study-rename",
+      "target_tool": "ResearchParticipantFetcher",
+      "profile_id": "versioned-participant-study-rename-profile",
+      "requested_slot": "requested-study",
+      "memory_field": "study",
+      "requirement": "Fetch the participant list using the newer study title in my project file.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "study title",
+        "study name",
+        "which study",
+        "trial name",
+        "project title",
+        "name of the study"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-participant-study-rename-event-1",
+          "profile_id": "versioned-participant-study-rename-profile",
+          "slot": "requested-study",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My participant-list study title is Atlas Moon Study."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Atlas Moon Study"
+        },
+        {
+          "record_id": "versioned-participant-study-rename-event-2",
+          "profile_id": "versioned-participant-study-rename-profile",
+          "slot": "requested-study",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The revised participant-list study title is Blue Marrow Study."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "Blue Marrow Study"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-participant-study-rename-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-cost-estimator-procedure-change-followup",
+      "base_task_id": "versioned-cost-estimator-procedure-change",
+      "target_tool": "HealthcareCostEstimator",
+      "profile_id": "versioned-cost-estimator-procedure-change-profile",
+      "requested_slot": "requested-procedure",
+      "memory_field": "procedure",
+      "requirement": "Estimate healthcare costs in Fargo for the procedure recorded after my correction.",
+      "known_arguments": {
+        "location": "Fargo"
+      },
+      "condition": "updated",
+      "aliases": [
+        "procedure",
+        "treatment",
+        "surgery",
+        "operation",
+        "which medical",
+        "what medical"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-cost-estimator-procedure-change-event-2",
+          "profile_id": "versioned-cost-estimator-procedure-change-profile",
+          "slot": "requested-procedure",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The corrected procedure for my cost estimate is arthroscopic shoulder repair."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "arthroscopic shoulder repair"
+        },
+        {
+          "record_id": "versioned-cost-estimator-procedure-change-event-1",
+          "profile_id": "versioned-cost-estimator-procedure-change-profile",
+          "slot": "requested-procedure",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The procedure for my cost estimate is inguinal hernia repair."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "inguinal hernia repair"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-cost-estimator-procedure-change-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-restaurant-radius-adjustment-followup",
+      "base_task_id": "versioned-restaurant-radius-adjustment",
+      "target_tool": "NearbyRestaurants",
+      "profile_id": "versioned-restaurant-radius-adjustment-profile",
+      "requested_slot": "requested-distance",
+      "memory_field": "distance",
+      "requirement": "Find restaurants near latitude 39.105 and longitude -77.628. Use my revised search radius.",
+      "known_arguments": {
+        "latitude": 39.105,
+        "longitude": -77.628
+      },
+      "condition": "updated",
+      "aliases": [
+        "distance",
+        "radius",
+        "how far",
+        "meters",
+        "metres",
+        "range"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-restaurant-radius-adjustment-event-2",
+          "profile_id": "versioned-restaurant-radius-adjustment-profile",
+          "slot": "requested-distance",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My revised restaurant search radius is 1250 meters."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": 1250
+        },
+        {
+          "record_id": "versioned-restaurant-radius-adjustment-event-1",
+          "profile_id": "versioned-restaurant-radius-adjustment-profile",
+          "slot": "requested-distance",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My restaurant search radius is 800 meters."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": 800
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-restaurant-radius-adjustment-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-updated-hospital-directory-followup",
+      "base_task_id": "versioned-updated-hospital-directory",
+      "target_tool": "HospitalDetails",
+      "profile_id": "versioned-updated-hospital-directory-profile",
+      "requested_slot": "requested-hospital_name",
+      "memory_field": "hospital_name",
+      "requirement": "Open the detailed directory entry for the referral hospital recorded after my switch.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "hospital",
+        "hospital name",
+        "facility",
+        "which hospital",
+        "which site",
+        "hospital's name"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-updated-hospital-directory-event-1",
+          "profile_id": "versioned-updated-hospital-directory-profile",
+          "slot": "requested-hospital_name",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The hospital in my referral directory record is Juniper Field Hospital."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Juniper Field Hospital"
+        },
+        {
+          "record_id": "versioned-updated-hospital-directory-event-2",
+          "profile_id": "versioned-updated-hospital-directory-profile",
+          "slot": "requested-hospital_name",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The revised hospital in my referral directory record is Osprey Run Hospital."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "Osprey Run Hospital"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-updated-hospital-directory-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-hospital-search-relocation-followup",
+      "base_task_id": "versioned-hospital-search-relocation",
+      "target_tool": "HospitalInformationAPI",
+      "profile_id": "versioned-hospital-search-relocation-profile",
+      "requested_slot": "requested-location",
+      "memory_field": "location",
+      "requirement": "Get hospital information for the current city in my relocation plan.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "city",
+        "location",
+        "which city",
+        "town",
+        "area",
+        "where"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-hospital-search-relocation-event-3",
+          "profile_id": "versioned-hospital-search-relocation-profile",
+          "slot": "unrelated-location",
+          "kind": "save",
+          "sequence": 3,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My dental provider search city for my work profile is Mobile."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Mobile"
+        },
+        {
+          "record_id": "versioned-hospital-search-relocation-event-2",
+          "profile_id": "versioned-hospital-search-relocation-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. My current relocation plan city for hospital searches is Gainesville."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": "Gainesville"
+        },
+        {
+          "record_id": "versioned-hospital-search-relocation-event-1",
+          "profile_id": "versioned-hospital-search-relocation-profile",
+          "slot": "requested-location",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. My relocation plan city for hospital searches is Macon."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": "Macon"
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-hospital-search-relocation-event-2"
+      ]
+    },
+    {
+      "task_id": "versioned-revised-treatment-list-simulation-followup",
+      "base_task_id": "versioned-revised-treatment-list-simulation",
+      "target_tool": "MedicalExpertConsultation",
+      "profile_id": "versioned-revised-treatment-list-simulation-profile",
+      "requested_slot": "requested-treatment_options",
+      "memory_field": "treatment_options",
+      "requirement": "In the training system, request a consultation based on the revised shortlist in my case file.",
+      "known_arguments": {},
+      "condition": "updated",
+      "aliases": [
+        "options",
+        "treatment choices",
+        "which treatments",
+        "treatment list",
+        "which options"
+      ],
+      "memory_events": [
+        {
+          "record_id": "versioned-revised-treatment-list-simulation-event-2",
+          "profile_id": "versioned-revised-treatment-list-simulation-profile",
+          "slot": "requested-treatment_options",
+          "kind": "save",
+          "sequence": 2,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Update the earlier value in my saved record. The revised consultation shortlist contains exactly \"bracing\" and \"guided rehabilitation\"."
+            },
+            {
+              "role": "assistant",
+              "content": "I replaced the earlier detail in your saved record."
+            }
+          ],
+          "value": [
+            "bracing",
+            "guided rehabilitation"
+          ]
+        },
+        {
+          "record_id": "versioned-revised-treatment-list-simulation-event-1",
+          "profile_id": "versioned-revised-treatment-list-simulation-profile",
+          "slot": "requested-treatment_options",
+          "kind": "save",
+          "sequence": 1,
+          "observation": [
+            {
+              "role": "user",
+              "content": "Please keep this detail for my later requests. The old consultation shortlist contains exactly \"conservative management\" and \"physiotherapy\"."
+            },
+            {
+              "role": "assistant",
+              "content": "I saved that detail in your profile for later."
+            }
+          ],
+          "value": [
+            "conservative management",
+            "physiotherapy"
+          ]
+        }
+      ],
+      "permitted_memory_ids": [
+        "versioned-revised-treatment-list-simulation-event-2"
+      ]
+    }
+  ]
+}

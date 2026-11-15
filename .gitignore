@@ -49,3 +49,19 @@ outputs/**/cpu_validation.log
 !mid_presentation/data/
 !mid_presentation/data/*.json
 !mid_presentation/data/*.csv
+
+# Local memory runs and user-provided corpora
+/runs/
+/outputs/missing_parameter_memory_v*/
+/outputs/profile_fact_memory_v*/
+/data/api-bank/
+!/data/
+/data/*
+!/data/memory_grounding_cases.json
+!/data/memory_grounding_stress_cases.json
+!/data/memory_grounding_confirmation_cases.json
+!/data/memory_factual_cases.json
+!/data/memory_versioned_cases.json
+!/data/memory_versioned_boundaries_cases.json
+!/data/memory_versioned_provenance_cases.json
+!/data/memory_multislot_cases.json

@@ -1,78 +1,125 @@
-#!/bin/bash
-PROJECT_ROOT="${PROJECT_ROOT:-$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)}"
-# ============================================================================
-# 在指定的 GPU 组上启动多个 vLLM 副本（每个副本独占一张卡，端口递增）
-#
-# 用法：
-#   bash launch_replicas.sh "0 1 2 3"        # GPU 0-3，端口 8000-8003
-#   bash launch_replicas.sh "4 5 6 7" 8004   # GPU 4-7，端口 8004-8007
-#
-# 设计意图（温度管理）：
-#   4 张一组轮换使用，另一组 4 张在批次间得到降温时间，避免持续满载过热。
-# ============================================================================
+#!/usr/bin/env bash
+# Run each local vLLM replica on one caller-selected GPU.
+set -euo pipefail
 
-set -u
+code_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+project_dir=$(dirname -- "$code_dir")
+python_cmd=$(command -v "${CONFAGENT_PYTHON:-python3}") ||
+  { echo 'Set CONFAGENT_PYTHON to an interpreter with vLLM installed.' >&2; exit 2; }
+export PATH="$(dirname -- "$python_cmd"):$PATH"
+export VLLM_USE_FLASHINFER_SAMPLER="${VLLM_USE_FLASHINFER_SAMPLER:-0}"
 
-GPUS="${1:-0 1 2 3}"
-BASE_PORT="${2:-8000}"
+model_path=${MODEL_PATH:-"$project_dir/models/Qwen3-8B"}
+[[ -d "$model_path" ]] || { echo 'Set MODEL_PATH to a local Qwen3-8B checkpoint.' >&2; exit 2; }
+model_path=$(cd -- "$model_path" && pwd -P)
+served_name=${SERVED_NAME:-Qwen3-8B}
+log_dir=${CONFAGENT_SERVICE_LOG_DIR:-"$project_dir/logs"}
+mkdir -p -- "$log_dir"
+log_dir=$(cd -- "$log_dir" && pwd -P)
 
-source "${CONDA_SH:-$HOME/miniconda3/etc/profile.d/conda.sh}"
-conda activate confagent
+read -r -a gpus <<< "${1:-0 1}"
+base_port=${2:-18000}
+if [[ ${#gpus[@]} -eq 0 || ! "$base_port" =~ ^[0-9]{1,5}$ ]]; then
+  echo 'Usage: bash code/launch_replicas.sh "0 1" 18000' >&2
+  exit 2
+fi
+base_port=$((10#$base_port))
+if (( base_port < 1024 || base_port + ${#gpus[@]} - 1 > 65535 )); then
+  echo 'Replica ports must be between 1024 and 65535.' >&2
+  exit 2
+fi
 
-MODEL_PATH="${MODEL_PATH:-${PROJECT_ROOT}/models/Qwen3-8B}"
-# 注意：不要在这里设 CUDA_DEVICE_ORDER=PCI_BUS_ID。
-# 2026-10-14 实测：在本机（已有 GPU 掉出总线）设置该变量并不能修正设备映射，
-# 反而会引入额外的初始化失败风险。保持默认顺序即可。
-SERVED_NAME="${SERVED_NAME:-Qwen3-8B}"
-MAX_LEN="${MAX_LEN:-16384}"
-GMU="${GMU:-0.90}"
-LOGDIR=${PROJECT_ROOT}/logs
-mkdir -p "$LOGDIR"
+exec 9>"$log_dir/.replicas.lock"
+flock -n 9 || { echo 'A launcher already owns this log directory.' >&2; exit 2; }
 
-echo "=============================================="
-echo " 启动副本   GPU 组: $GPUS   起始端口: $BASE_PORT"
-echo " （使用 vllm_serve_patched.py 以容忍故障 GPU）"
-echo "=============================================="
+declare -A seen
+for index in "${!gpus[@]}"; do
+  gpu=${gpus[$index]}
+  if [[ ! "$gpu" =~ ^(0|[1-9][0-9]*)$ || -n "${seen[$gpu]:-}" ]]; then
+    echo "Invalid or repeated GPU index: $gpu" >&2
+    exit 2
+  fi
+  seen[$gpu]=1
+  port=$((base_port + index))
+  "$python_cmd" - "$port" <<'PY'
+import socket
+import sys
 
-i=0
-PORTS=""
-for g in $GPUS; do
-  port=$((BASE_PORT + i))
-  PORTS="$PORTS $port"
-  log="$LOGDIR/vllm_gpu${g}_port${port}.log"
-  echo "  GPU $g -> port $port  (log: $log)"
-  CUDA_VISIBLE_DEVICES="$g" nohup python ${PROJECT_ROOT}/code/vllm_serve_patched.py serve "$MODEL_PATH" \
-    --served-model-name "$SERVED_NAME" \
-    --host 0.0.0.0 --port "$port" \
-    --dtype bfloat16 --max-model-len "$MAX_LEN" \
-    --gpu-memory-utilization "$GMU" \
-    --enable-auto-tool-choice --tool-call-parser hermes \
-    > "$log" 2>&1 &
-  i=$((i + 1))
-  sleep 2
+port = int(sys.argv[1])
+with socket.socket() as listener:
+    listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    try:
+        listener.bind(("127.0.0.1", port))
+    except OSError as exc:
+        raise SystemExit(f"Port {port} is unavailable: {exc}") from None
+PY
+  compute_pids=$(nvidia-smi -i "$gpu" --query-compute-apps=pid --format=csv,noheader)
+  [[ -z "$compute_pids" ]] || { echo "GPU $gpu already has a compute process." >&2; exit 2; }
+  uuid=$(nvidia-smi -i "$gpu" --query-gpu=uuid --format=csv,noheader)
+  CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES="$gpu" "$python_cmd" - "$uuid" <<'PY'
+import sys
+import torch
+
+actual = str(torch.cuda.get_device_properties(0).uuid)
+expected = sys.argv[1].strip()
+actual = actual[4:] if actual.startswith("GPU-") else actual
+expected = expected[4:] if expected.startswith("GPU-") else expected
+if actual != expected:
+    raise SystemExit("CUDA and NVIDIA device indices do not match.")
+PY
 done
 
-echo
-echo "等待全部副本就绪（最多 420 秒）..."
-for t in $(seq 1 84); do
+launch_id=$("$python_cmd" -c 'import uuid; print(uuid.uuid4().hex)')
+cleanup_failed_launch() {
+  if [[ $? -ne 0 ]]; then
+    CONFAGENT_PYTHON="$python_cmd" CONFAGENT_SERVICE_LOG_DIR="$log_dir" \
+      CONFAGENT_STOP_RUN_ID="$launch_id" bash "$code_dir/stop_replicas.sh" || true
+  fi
+}
+trap cleanup_failed_launch EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+pids=()
+for index in "${!gpus[@]}"; do
+  gpu=${gpus[$index]}
+  port=$((base_port + index))
+  state_path="$log_dir/confagent_gpu${gpu}_port${port}.pid"
+  log_path="$log_dir/vllm_gpu${gpu}_port${port}.log"
+  CUDA_DEVICE_ORDER=PCI_BUS_ID CUDA_VISIBLE_DEVICES="$gpu" CONFAGENT_SERVICE_ROOT="$project_dir" \
+    CONFAGENT_SERVICE_LOG_DIR="$log_dir" CONFAGENT_SERVICE_RUN_ID="$launch_id" SPT_NOENV=1 \
+    nohup "$python_cmd" -m vllm.entrypoints.cli.main serve \
+      "$model_path" --served-model-name "$served_name" \
+      --host 127.0.0.1 --port "$port" --dtype bfloat16 \
+      --max-model-len "${MAX_LEN:-8192}" --gpu-memory-utilization "${GMU:-0.85}" \
+      --max-num-seqs 2 --enable-auto-tool-choice --tool-call-parser hermes \
+      --generation-config vllm > "$log_path" 2>&1 < /dev/null 9>&- &
+  pid=$!
+  pids+=("$pid")
+  printf '%s %s\n' "$pid" "$launch_id" > "$state_path"
+  printf 'Started GPU %s on port %s. Log: %s\n' "$gpu" "$port" "$log_path"
+done
+
+for ((attempt = 0; attempt < 84; attempt++)); do
   ready=0
-  for p in $PORTS; do
-    if curl -s --max-time 2 "http://localhost:${p}/v1/models" > /dev/null 2>&1; then
+  for index in "${!pids[@]}"; do
+    port=$((base_port + index))
+    if ! kill -0 "${pids[$index]}" 2>/dev/null; then
+      echo "Replica on port $port exited. Check its log in $log_dir." >&2
+      exit 1
+    fi
+    if curl --fail --silent --noproxy '*' --max-time 2 "http://127.0.0.1:$port/v1/models" >/dev/null; then
       ready=$((ready + 1))
     fi
   done
-  if [ "$ready" -eq "$i" ]; then
-    echo "全部 $ready 个副本已就绪（约 $((t*5)) 秒）"
-    echo "ENDPOINTS=$(echo $PORTS | tr ' ' ',' | sed 's/^,//' | sed 's/,/&localhost:/g' | sed 's/localhost:/,/g' | cut -c2-)"
-    echo
-    echo "就绪端口:$PORTS"
+  if [[ "$ready" -eq "${#pids[@]}" ]]; then
+    printf 'Ready:'
+    for index in "${!pids[@]}"; do
+      printf ' http://127.0.0.1:%s/v1' "$((base_port + index))"
+    done
+    printf '\n'
     exit 0
   fi
   sleep 5
 done
-
-echo "[WARN] 超时，已就绪 $ready/$i 个副本。检查日志："
-for g in $GPUS; do
-  echo "  tail -30 $LOGDIR/vllm_gpu${g}_port*.log"
-done
+echo "Replica startup timed out. Check logs in $log_dir." >&2
 exit 1

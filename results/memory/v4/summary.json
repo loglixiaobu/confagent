@@ -1,0 +1,378 @@
+{
+  "status": "completed",
+  "experiment": "contrastive-episode-memory-v4",
+  "memory_sha256": "f2f0695a55159fd0580f86ca233a98e3cd23a3d0e59c83050f47dcd4d8a2311b",
+  "analysis": {
+    "families": 24,
+    "groups": {
+      "A": {
+        "fabrication_rate": {
+          "count": 15,
+          "n": 24,
+          "rate": 0.625
+        },
+        "reasonable_clarification_rate": {
+          "count": 7,
+          "n": 24,
+          "rate": 0.2916666666666667
+        },
+        "correct_call_rate": {
+          "count": 23,
+          "n": 24,
+          "rate": 0.9583333333333334
+        },
+        "unnecessary_clarification_rate": {
+          "count": 0,
+          "n": 24,
+          "rate": 0.0
+        },
+        "no_decision_or_truncation": 0,
+        "truncated_responses": 0,
+        "cases_with_memory_injected": 0,
+        "cost": {
+          "requests": 48,
+          "prompt_tokens": 26306,
+          "completion_tokens": 17235,
+          "total_tokens": 43541
+        }
+      },
+      "B": {
+        "fabrication_rate": {
+          "count": 15,
+          "n": 24,
+          "rate": 0.625
+        },
+        "reasonable_clarification_rate": {
+          "count": 6,
+          "n": 24,
+          "rate": 0.25
+        },
+        "correct_call_rate": {
+          "count": 24,
+          "n": 24,
+          "rate": 1.0
+        },
+        "unnecessary_clarification_rate": {
+          "count": 0,
+          "n": 24,
+          "rate": 0.0
+        },
+        "no_decision_or_truncation": 1,
+        "truncated_responses": 1,
+        "cases_with_memory_injected": 48,
+        "cost": {
+          "requests": 48,
+          "prompt_tokens": 50786,
+          "completion_tokens": 20333,
+          "total_tokens": 71119
+        }
+      }
+    },
+    "repaired_fabrications": [
+      {
+        "task_id": "confirmation-booking-deposit-procedure-estimate-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "AdditionalProcedureCosts"
+        },
+        "B": {
+          "kind": "clarify"
+        },
+        "A_unsupported": [
+          "estimated_cost"
+        ],
+        "B_unsupported": [],
+        "B_correct_clarification": true
+      }
+    ],
+    "introduced_fabrications": [
+      {
+        "task_id": "confirmation-event-route-fitness-store-missing",
+        "A": {
+          "kind": "clarify"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "FitnessStoreLocator"
+        },
+        "A_unsupported": [],
+        "B_unsupported": [
+          "user_location"
+        ],
+        "B_correct_clarification": false
+      }
+    ],
+    "shared_fabrications": [
+      {
+        "task_id": "confirmation-handover-accession-measurements-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "MeasurementRecorder"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "MeasurementRecorder"
+        },
+        "A_unsupported": [
+          "patient_id"
+        ],
+        "B_unsupported": [
+          "patient_id"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-sponsor-study-roster-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "ResearchParticipantFetcher"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "ResearchParticipantFetcher"
+        },
+        "A_unsupported": [
+          "study"
+        ],
+        "B_unsupported": [
+          "study"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-network-transfer-hospital-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "HospitalDetails"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "HospitalDetails"
+        },
+        "A_unsupported": [
+          "hospital_name"
+        ],
+        "B_unsupported": [
+          "hospital_name"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-induction-visit-end-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "AppointmentScheduler"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "AppointmentScheduler"
+        },
+        "A_unsupported": [
+          "end_time"
+        ],
+        "B_unsupported": [
+          "end_time"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-portal-release-clinic-booking-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "HealthcareProviderAppointmentScheduler"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "HealthcareProviderAppointmentScheduler"
+        },
+        "A_unsupported": [
+          "appointment_datetime"
+        ],
+        "B_unsupported": [
+          "appointment_datetime"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-video-pass-telehealth-time-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "TelehealthBookingAPI"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "TelehealthBookingAPI"
+        },
+        "A_unsupported": [
+          "appointment_time"
+        ],
+        "B_unsupported": [
+          "appointment_time"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-wrist-xray-booking-time-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "DoctorAppointmentBooking"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "DoctorAppointmentBooking"
+        },
+        "A_unsupported": [
+          "time"
+        ],
+        "B_unsupported": [
+          "time"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-office-open-availability-window-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "AvailabilityChecker"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "AvailabilityChecker"
+        },
+        "A_unsupported": [
+          "start_time"
+        ],
+        "B_unsupported": [
+          "start_time"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-prenatal-course-week-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "PregnancyTipsAPI"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "PregnancyTipsAPI"
+        },
+        "A_unsupported": [
+          "week"
+        ],
+        "B_unsupported": [
+          "week"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-reading-center-imaging-site-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "MedicalImagingCenterLocator"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "MedicalImagingCenterLocator"
+        },
+        "A_unsupported": [
+          "location",
+          "scan_type"
+        ],
+        "B_unsupported": [
+          "location"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-aunt-home-rehab-search-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "HealthcareServiceSearch"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "HealthcareServiceSearch"
+        },
+        "A_unsupported": [
+          "location"
+        ],
+        "B_unsupported": [
+          "location"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-statement-bundle-coverage-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "InsuranceCoverageCalculator"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "InsuranceCoverageCalculator"
+        },
+        "A_unsupported": [
+          "cost"
+        ],
+        "B_unsupported": [
+          "cost"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-employer-dental-family-plan-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "InsurancePlanFinder"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "InsurancePlanFinder"
+        },
+        "A_unsupported": [
+          "family_size"
+        ],
+        "B_unsupported": [
+          "family_size"
+        ],
+        "B_correct_clarification": false
+      },
+      {
+        "task_id": "confirmation-archived-panel-treatment-options-missing",
+        "A": {
+          "kind": "call",
+          "api_name": "MedicalExpertConsultation"
+        },
+        "B": {
+          "kind": "call",
+          "api_name": "MedicalExpertConsultation"
+        },
+        "A_unsupported": [
+          "treatment_options"
+        ],
+        "B_unsupported": [
+          "treatment_options"
+        ],
+        "B_correct_clarification": false
+      }
+    ],
+    "correct_clarification_repairs": 1,
+    "p_value": 0.75,
+    "absolute_reduction": 0.0,
+    "guardrails_passed": {
+      "resolved_fabrications": true,
+      "correct_complete_calls": true,
+      "reasonable_clarifications": false,
+      "no_decision_or_truncation": false
+    },
+    "confirmed_positive": false
+  },
+  "failed_requests": {},
+  "build_cost": {
+    "requests": 16,
+    "prompt_tokens": 13936,
+    "completion_tokens": 5662,
+    "total_tokens": 19598
+  }
+}
