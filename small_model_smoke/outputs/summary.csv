@@ -1,0 +1,3 @@
+﻿condition,n_tasks,success_rate,replay_success_rate,verification_rate,verification_available_rate,usable_verification_rate,error_to_correct,correct_to_error,avg_model_calls,avg_verification_calls,avg_tool_calls,avg_latency_ms
+vanilla,3,1.0,1.0,0.0,,0.0,0,0,2.3333333333333335,0.0,1.3333333333333333,6635.0
+always,3,1.0,1.0,1.0,1.0,1.0,0,0,3.6666666666666665,1.3333333333333333,1.3333333333333333,12435.0
