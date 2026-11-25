@@ -1,0 +1,851 @@
+{
+  "version": "cross-session-multislot-boundary-v1",
+  "provenance": {
+    "purpose": "A unified dual-field boundary cohort with eight development tasks and twelve independent test tasks.",
+    "relationship_to_v9": "Independent extension only; the frozen V9 validation and test partitions are unchanged.",
+    "gold_isolation": "case_input is a V9 source record used by the scoped-memory resolver, not a prompt. Only the gold-free output of load_boundary_model_inputs may be passed to an agent or verifier. answer_key is evaluator-only. offline_candidates exist only in development and are evaluator-only; test has no pre-generated candidates.",
+    "category_allocation": {
+      "development": {"both_grounded": 2, "one_missing": 2, "revoked_or_identity_mismatch": 2, "current_override": 2},
+      "test": {"both_grounded": 3, "one_missing": 3, "revoked_or_identity_mismatch": 3, "current_override": 3}
+    }
+  },
+  "schemas": {
+    "DocumentQA": {"corpus": "level1_response", "record_index": 258},
+    "BMICalculator": {"corpus": "level3_train_response", "record_index": 276},
+    "MedicalImagingCenterLocator": {"corpus": "level3_train_response", "record_index": 278},
+    "TotalCostCalculator": {"corpus": "level3_train_response", "record_index": 1},
+    "SendEmail": {"corpus": "level1_response", "record_index": 310},
+    "HealthcareProviderAppointmentScheduler": {"corpus": "level3_train_response", "record_index": 0},
+    "FlightSearch": {"corpus": "level3", "record_index": 35},
+    "QueryStock": {"corpus": "level1_response", "record_index": 19},
+    "BookHotel": {"corpus": "level1_response", "record_index": 234},
+    "TimedSwitch": {"corpus": "level1_response", "record_index": 237},
+    "NearbyRestaurants": {"corpus": "level3", "record_index": 15},
+    "AddAgenda": {"corpus": "level1_response", "record_index": 18},
+    "AppointmentRescheduler": {"corpus": "level3_train_response", "record_index": 40},
+    "InsurancePlanFinder": {"corpus": "level3_train_response", "record_index": 121},
+    "ModifyRegistration": {"corpus": "level1_response", "record_index": 0},
+    "ClothingRecommendation": {"corpus": "level3", "record_index": 5},
+    "RecordHealthData": {"corpus": "level1_response", "record_index": 5},
+    "BookingScheduler": {"corpus": "level3_train_response", "record_index": 55},
+    "BackPainExerciseRecommendations": {"corpus": "level3_train_response", "record_index": 222},
+    "JoinFitnessChallengeAPI": {"corpus": "level3_train_response", "record_index": 294}
+  },
+  "tool_documents": {
+    "DocumentQA": {
+      "name": "DocumentQA",
+      "description": "Answer a question using a document at a supplied URL.",
+      "input_parameters": {
+        "url": {"type": "str", "description": "URL of the document."},
+        "question": {"type": "str", "description": "Question to answer from the document."}
+      }
+    },
+    "BMICalculator": {
+      "name": "BMICalculator",
+      "description": "Calculate body mass index from weight and height.",
+      "input_parameters": {
+        "weight": {"type": "float", "description": "Weight in kilograms."},
+        "height": {"type": "float", "description": "Height in metres."}
+      }
+    },
+    "MedicalImagingCenterLocator": {
+      "name": "MedicalImagingCenterLocator",
+      "description": "Find medical imaging centers for a location and scan type.",
+      "input_parameters": {
+        "location": {"type": "str", "description": "City or area to search."},
+        "scan_type": {"type": "str", "description": "Required medical scan type."}
+      }
+    },
+    "TotalCostCalculator": {
+      "name": "TotalCostCalculator",
+      "description": "Calculate total cost from a unit price and number of people.",
+      "input_parameters": {
+        "price": {"type": "float", "description": "Price per person."},
+        "num_of_people": {"type": "int", "description": "Number of people."}
+      }
+    },
+    "SendEmail": {
+      "name": "SendEmail",
+      "description": "Send an email to a receiver with a subject and content.",
+      "input_parameters": {
+        "receiver": {"type": "str", "description": "Recipient email address."},
+        "subject": {"type": "str", "description": "Email subject."},
+        "content": {"type": "str", "description": "Email body."}
+      }
+    },
+    "HealthcareProviderAppointmentScheduler": {
+      "name": "HealthcareProviderAppointmentScheduler",
+      "description": "Schedule an appointment with a healthcare provider.",
+      "input_parameters": {
+        "healthcare_provider": {"type": "str", "description": "Healthcare provider name."},
+        "appointment_datetime": {"type": "str", "description": "Requested appointment date and time."}
+      }
+    },
+    "FlightSearch": {
+      "name": "FlightSearch",
+      "description": "Search for flights between a source and destination on given dates.",
+      "input_parameters": {
+        "source": {"type": "str", "description": "Departure airport or city."},
+        "destination": {"type": "str", "description": "Arrival airport or city."},
+        "travel_dates": {"type": "str", "description": "Travel date."}
+      }
+    },
+    "QueryStock": {
+      "name": "QueryStock",
+      "description": "Query a stock price by stock code and date.",
+      "input_parameters": {
+        "stock_code": {"type": "str", "description": "Stock ticker code."},
+        "date": {"type": "str", "description": "Date to query."}
+      }
+    },
+    "BookHotel": {
+      "name": "BookHotel", "description": "Book hotel rooms for specified dates and party size.",
+      "input_parameters": {"hotel_name": {"type": "str"}, "room_count": {"type": "int"}, "adult_count": {"type": "int"}, "child_count": {"type": "int"}, "check_in_time": {"type": "str"}, "check_out_time": {"type": "str"}}
+    },
+    "TimedSwitch": {
+      "name": "TimedSwitch", "description": "Schedule a named device to switch on or off.",
+      "input_parameters": {"on": {"type": "bool"}, "name": {"type": "str"}, "time": {"type": "str"}}
+    },
+    "NearbyRestaurants": {
+      "name": "NearbyRestaurants", "description": "Find restaurants near coordinates within a distance.",
+      "input_parameters": {"distance": {"type": "int"}, "latitude": {"type": "float"}, "longitude": {"type": "float"}}
+    },
+    "AddAgenda": {
+      "name": "AddAgenda", "description": "Add a timed agenda item.",
+      "input_parameters": {"time": {"type": "str"}, "token": {"type": "str"}, "content": {"type": "str"}, "location": {"type": "str"}}
+    },
+    "AppointmentRescheduler": {
+      "name": "AppointmentRescheduler", "description": "Reschedule an existing medical appointment.",
+      "input_parameters": {"hospital": {"type": "str"}, "doctor": {"type": "str"}, "current_appointment": {"type": "str"}, "new_appointment": {"type": "str"}}
+    },
+    "InsurancePlanFinder": {
+      "name": "InsurancePlanFinder", "description": "Find insurance plans for a family and location.",
+      "input_parameters": {"family_size": {"type": "int"}, "location": {"type": "str"}}
+    },
+    "ModifyRegistration": {
+      "name": "ModifyRegistration", "description": "Modify an appointment registration.",
+      "input_parameters": {"new_appointment_doctor": {"type": "str"}, "appointment_id": {"type": "str"}, "new_appointment_date": {"type": "str"}}
+    },
+    "ClothingRecommendation": {
+      "name": "ClothingRecommendation", "description": "Recommend clothing from current weather readings.",
+      "input_parameters": {"weather_conditions": {"type": "str"}, "temperature": {"type": "float"}, "humidity": {"type": "float"}}
+    },
+    "RecordHealthData": {
+      "name": "RecordHealthData", "description": "Record health observations for a user at a time.",
+      "input_parameters": {"health_data": {"type": "list"}, "user_id": {"type": "str"}, "time": {"type": "str"}}
+    },
+    "BookingScheduler": {
+      "name": "BookingScheduler", "description": "Schedule a service with a provider.",
+      "input_parameters": {"time_slot": {"type": "str"}, "service_name": {"type": "str"}, "service_provider": {"type": "str"}}
+    },
+    "BackPainExerciseRecommendations": {
+      "name": "BackPainExerciseRecommendations", "description": "Recommend exercises based on pain type and body region.",
+      "input_parameters": {"pain_type": {"type": "str"}, "body_part": {"type": "str"}}
+    },
+    "JoinFitnessChallengeAPI": {
+      "name": "JoinFitnessChallengeAPI", "description": "Register a participant for a fitness challenge.",
+      "input_parameters": {"name": {"type": "str"}, "email": {"type": "str"}, "phone_number": {"type": "str"}, "challenge_name": {"type": "str"}, "start_date": {"type": "str"}}
+    }
+  },
+  "development": [
+    {
+      "case_id": "q2-boundary-estuary-document",
+      "category": "both_grounded",
+      "case_input": {
+        "task_id": "q2-boundary-estuary-document-next",
+        "base_task_id": "q2-boundary-estuary-document",
+        "profile_id": "q2-boundary-estuary-document-profile",
+        "target_tool": "DocumentQA",
+        "requirement": "Answer my saved estuary archive question using my saved estuary archive document link.",
+        "condition": "saved",
+        "known_arguments": {},
+        "natural_details": {"url": "estuary archive document link", "question": "estuary archive question"},
+        "memory_fields": {"url": "q2-boundary-estuary-document-url-slot", "question": "q2-boundary-estuary-document-question-slot"},
+        "field_aliases": {
+          "url": ["document link", "document url", "source link", "url"],
+          "question": ["archive question", "document question", "question"]
+        },
+        "memory_events": [
+          {
+            "profile_id": "q2-boundary-estuary-document-profile",
+            "slot": "q2-boundary-estuary-document-url-slot",
+            "record_id": "q2-boundary-estuary-document-url-record",
+            "kind": "save",
+            "sequence": 1,
+            "value": "https://archive.example.test/estuary-restoration-notes.txt",
+            "observation": [
+              {"role": "user", "content": "Please save this detail for later. My estuary archive document link is https://archive.example.test/estuary-restoration-notes.txt."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          },
+          {
+            "profile_id": "q2-boundary-estuary-document-profile",
+            "slot": "q2-boundary-estuary-document-question-slot",
+            "record_id": "q2-boundary-estuary-document-question-record",
+            "kind": "save",
+            "sequence": 2,
+            "value": "Which three monitoring indicators are recommended?",
+            "observation": [
+              {"role": "user", "content": "Remember this separately for the future. My estuary archive question is: Which three monitoring indicators are recommended?"},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          }
+        ],
+        "permitted_memory_ids": ["q2-boundary-estuary-document-url-record", "q2-boundary-estuary-document-question-record"]
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "DocumentQA", "arguments": {"url": "https://archive.example.test/estuary-restoration-notes.txt", "question": "Which three monitoring indicators are recommended?"}},
+        "parameter_sources": {
+          "url": {"source": "history", "value": "https://archive.example.test/estuary-restoration-notes.txt", "evidence_id": "q2-boundary-estuary-document-url-record"},
+          "question": {"source": "history", "value": "Which three monitoring indicators are recommended?", "evidence_id": "q2-boundary-estuary-document-question-record"}
+        },
+        "clarification_fields": []
+      },
+      "offline_candidates": [
+        {"candidate_id": "correct", "expected_label": "correct", "error_type": null, "action": {"kind": "call", "api_name": "DocumentQA", "arguments": {"url": "https://archive.example.test/estuary-restoration-notes.txt", "question": "Which three monitoring indicators are recommended?"}}},
+        {"candidate_id": "swapped_fields", "expected_label": "incorrect", "error_type": "cross_field_value_swap", "action": {"kind": "call", "api_name": "DocumentQA", "arguments": {"url": "Which three monitoring indicators are recommended?", "question": "https://archive.example.test/estuary-restoration-notes.txt"}}}
+      ]
+    },
+    {
+      "case_id": "q2-boundary-stunt-bmi",
+      "category": "both_grounded",
+      "case_input": {
+        "task_id": "q2-boundary-stunt-bmi-next",
+        "base_task_id": "q2-boundary-stunt-bmi",
+        "profile_id": "q2-boundary-stunt-bmi-profile",
+        "target_tool": "BMICalculator",
+        "requirement": "Calculate the training BMI using my saved stunt rehearsal mass and my saved stunt rehearsal height.",
+        "condition": "saved",
+        "known_arguments": {},
+        "natural_details": {"weight": "stunt rehearsal mass", "height": "stunt rehearsal height"},
+        "memory_fields": {"weight": "q2-boundary-stunt-bmi-weight-slot", "height": "q2-boundary-stunt-bmi-height-slot"},
+        "field_aliases": {
+          "weight": ["weight", "mass", "kilograms"],
+          "height": ["height", "metres", "meters"]
+        },
+        "memory_events": [
+          {
+            "profile_id": "q2-boundary-stunt-bmi-profile",
+            "slot": "q2-boundary-stunt-bmi-weight-slot",
+            "record_id": "q2-boundary-stunt-bmi-weight-record",
+            "kind": "save",
+            "sequence": 1,
+            "value": 72.4,
+            "observation": [
+              {"role": "user", "content": "Please save this detail for later. My stunt rehearsal mass is 72.4 kilograms."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          },
+          {
+            "profile_id": "q2-boundary-stunt-bmi-profile",
+            "slot": "q2-boundary-stunt-bmi-height-slot",
+            "record_id": "q2-boundary-stunt-bmi-height-record",
+            "kind": "save",
+            "sequence": 2,
+            "value": 1.78,
+            "observation": [
+              {"role": "user", "content": "Remember this separately for the future. My stunt rehearsal height is 1.78 metres."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          }
+        ],
+        "permitted_memory_ids": ["q2-boundary-stunt-bmi-weight-record", "q2-boundary-stunt-bmi-height-record"]
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "BMICalculator", "arguments": {"weight": 72.4, "height": 1.78}},
+        "parameter_sources": {
+          "weight": {"source": "history", "value": 72.4, "evidence_id": "q2-boundary-stunt-bmi-weight-record"},
+          "height": {"source": "history", "value": 1.78, "evidence_id": "q2-boundary-stunt-bmi-height-record"}
+        },
+        "clarification_fields": []
+      },
+      "offline_candidates": [
+        {"candidate_id": "correct", "expected_label": "correct", "error_type": null, "action": {"kind": "call", "api_name": "BMICalculator", "arguments": {"weight": 72.4, "height": 1.78}}},
+        {"candidate_id": "fabricated_defaults", "expected_label": "incorrect", "error_type": "unsupported_parameter_values", "action": {"kind": "call", "api_name": "BMICalculator", "arguments": {"weight": 70.0, "height": 1.75}}}
+      ]
+    },
+    {
+      "case_id": "q2-boundary-imaging-missing-scan",
+      "category": "one_missing",
+      "case_input": {
+        "task_id": "q2-boundary-imaging-missing-scan-next",
+        "base_task_id": "q2-boundary-imaging-missing-scan",
+        "profile_id": "q2-boundary-imaging-missing-scan-profile",
+        "target_tool": "MedicalImagingCenterLocator",
+        "requirement": "Find an imaging center using my saved documentary shoot city and my saved documentary scan type.",
+        "condition": "missing",
+        "known_arguments": {},
+        "natural_details": {"location": "documentary shoot city", "scan_type": "documentary scan type"},
+        "memory_fields": {"location": "q2-boundary-imaging-location-slot", "scan_type": "q2-boundary-imaging-scan-slot"},
+        "field_aliases": {
+          "location": ["city", "location", "area"],
+          "scan_type": ["scan type", "imaging type", "scan"]
+        },
+        "memory_events": [
+          {
+            "profile_id": "q2-boundary-imaging-missing-scan-profile",
+            "slot": "q2-boundary-imaging-location-slot",
+            "record_id": "q2-boundary-imaging-location-record",
+            "kind": "save",
+            "sequence": 1,
+            "value": "Dunedin",
+            "observation": [
+              {"role": "user", "content": "Please save this detail for later. My documentary shoot city is Dunedin."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          }
+        ],
+        "permitted_memory_ids": ["q2-boundary-imaging-location-record"],
+        "affected_field": "scan_type"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["scan_type"]},
+        "parameter_sources": {
+          "location": {"source": "history", "value": "Dunedin", "evidence_id": "q2-boundary-imaging-location-record"},
+          "scan_type": {"source": "missing", "evidence_id": null}
+        },
+        "clarification_fields": ["scan_type"]
+      },
+      "offline_candidates": [
+        {"candidate_id": "correct_question", "expected_label": "correct", "error_type": null, "action": {"kind": "clarify", "text": "Please provide the scan type."}},
+        {"candidate_id": "guessed_scan", "expected_label": "incorrect", "error_type": "missing_field_fabrication", "action": {"kind": "call", "api_name": "MedicalImagingCenterLocator", "arguments": {"location": "Dunedin", "scan_type": "MRI"}}}
+      ]
+    },
+    {
+      "case_id": "q2-boundary-catering-missing-count",
+      "category": "one_missing",
+      "case_input": {
+        "task_id": "q2-boundary-catering-missing-count-next",
+        "base_task_id": "q2-boundary-catering-missing-count",
+        "profile_id": "q2-boundary-catering-missing-count-profile",
+        "target_tool": "TotalCostCalculator",
+        "requirement": "Calculate the workshop catering total using my saved printmaking meal price and my saved printmaking attendee count.",
+        "condition": "missing",
+        "known_arguments": {},
+        "natural_details": {"price": "printmaking meal price", "num_of_people": "printmaking attendee count"},
+        "memory_fields": {"price": "q2-boundary-catering-price-slot", "num_of_people": "q2-boundary-catering-count-slot"},
+        "field_aliases": {
+          "price": ["price", "meal price", "price per person"],
+          "num_of_people": ["attendee count", "number of people", "how many people"]
+        },
+        "memory_events": [
+          {
+            "profile_id": "q2-boundary-catering-missing-count-profile",
+            "slot": "q2-boundary-catering-price-slot",
+            "record_id": "q2-boundary-catering-price-record",
+            "kind": "save",
+            "sequence": 1,
+            "value": 18.75,
+            "observation": [
+              {"role": "user", "content": "Please save this detail for later. My printmaking meal price is 18.75 per person."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          }
+        ],
+        "permitted_memory_ids": ["q2-boundary-catering-price-record"],
+        "affected_field": "num_of_people"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["num_of_people"]},
+        "parameter_sources": {
+          "price": {"source": "history", "value": 18.75, "evidence_id": "q2-boundary-catering-price-record"},
+          "num_of_people": {"source": "missing", "evidence_id": null}
+        },
+        "clarification_fields": ["num_of_people"]
+      },
+      "offline_candidates": [
+        {"candidate_id": "correct_question", "expected_label": "correct", "error_type": null, "action": {"kind": "clarify", "text": "How many people will attend?"}},
+        {"candidate_id": "guessed_count", "expected_label": "incorrect", "error_type": "missing_field_fabrication", "action": {"kind": "call", "api_name": "TotalCostCalculator", "arguments": {"price": 18.75, "num_of_people": 12}}}
+      ]
+    },
+    {
+      "case_id": "q2-boundary-email-revoked-subject",
+      "category": "revoked_or_identity_mismatch",
+      "case_input": {
+        "task_id": "q2-boundary-email-revoked-subject-next",
+        "base_task_id": "q2-boundary-email-revoked-subject",
+        "profile_id": "q2-boundary-email-revoked-subject-profile",
+        "target_tool": "SendEmail",
+        "requirement": "Send the loading-bay notice to my saved exhibition logistics recipient with my saved exhibition logistics subject.",
+        "condition": "revoked",
+        "known_arguments": {"content": "The loading bay will open at 14:00 for the exhibition delivery."},
+        "natural_details": {"receiver": "exhibition logistics recipient", "subject": "exhibition logistics subject"},
+        "memory_fields": {"receiver": "q2-boundary-email-receiver-slot", "subject": "q2-boundary-email-subject-slot"},
+        "field_aliases": {
+          "receiver": ["recipient", "receiver", "email address"],
+          "subject": ["subject", "subject line", "email subject"],
+          "content": []
+        },
+        "memory_events": [
+          {
+            "profile_id": "q2-boundary-email-revoked-subject-profile",
+            "slot": "q2-boundary-email-receiver-slot",
+            "record_id": "q2-boundary-email-receiver-record",
+            "kind": "save",
+            "sequence": 1,
+            "value": "gallery-logistics@example.test",
+            "observation": [
+              {"role": "user", "content": "Please save this detail for later. My exhibition logistics recipient is gallery-logistics@example.test."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          },
+          {
+            "profile_id": "q2-boundary-email-revoked-subject-profile",
+            "slot": "q2-boundary-email-subject-slot",
+            "record_id": "q2-boundary-email-subject-record",
+            "kind": "save",
+            "sequence": 2,
+            "value": "Loading Dock Access Update",
+            "observation": [
+              {"role": "user", "content": "Remember this separately for the future. My exhibition logistics subject is Loading Dock Access Update."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          },
+          {
+            "profile_id": "q2-boundary-email-revoked-subject-profile",
+            "slot": "q2-boundary-email-subject-slot",
+            "record_id": "q2-boundary-email-subject-revocation",
+            "kind": "revoke",
+            "sequence": 3,
+            "observation": [
+              {"role": "user", "content": "Please remove my exhibition logistics subject from memory. I no longer authorize reuse of it."},
+              {"role": "assistant", "content": "I removed that subject while retaining your other authorized detail."}
+            ]
+          }
+        ],
+        "permitted_memory_ids": ["q2-boundary-email-receiver-record"],
+        "affected_field": "subject"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["subject"]},
+        "parameter_sources": {
+          "receiver": {"source": "history", "value": "gallery-logistics@example.test", "evidence_id": "q2-boundary-email-receiver-record"},
+          "subject": {"source": "missing", "evidence_id": null},
+          "content": {"source": "requirement", "value": "The loading bay will open at 14:00 for the exhibition delivery.", "evidence_id": "current_request"}
+        },
+        "clarification_fields": ["subject"]
+      },
+      "offline_candidates": [
+        {"candidate_id": "correct_question", "expected_label": "correct", "error_type": null, "action": {"kind": "clarify", "text": "Please provide the email subject."}},
+        {"candidate_id": "uses_revoked_subject", "expected_label": "incorrect", "error_type": "revoked_memory_use", "action": {"kind": "call", "api_name": "SendEmail", "arguments": {"receiver": "gallery-logistics@example.test", "subject": "Loading Dock Access Update", "content": "The loading bay will open at 14:00 for the exhibition delivery."}}}
+      ]
+    },
+    {
+      "case_id": "q2-boundary-provider-wrong-profile",
+      "category": "revoked_or_identity_mismatch",
+      "case_input": {
+        "task_id": "q2-boundary-provider-wrong-profile-next",
+        "base_task_id": "q2-boundary-provider-wrong-profile",
+        "profile_id": "q2-boundary-provider-wrong-profile-profile",
+        "target_tool": "HealthcareProviderAppointmentScheduler",
+        "requirement": "Schedule my mock consultation using my saved oral-history provider and my saved oral-history appointment time.",
+        "condition": "wrong_profile",
+        "known_arguments": {},
+        "natural_details": {"healthcare_provider": "oral-history provider", "appointment_datetime": "oral-history appointment time"},
+        "memory_fields": {"healthcare_provider": "q2-boundary-provider-name-slot", "appointment_datetime": "q2-boundary-provider-time-slot"},
+        "field_aliases": {
+          "healthcare_provider": ["provider", "provider name", "healthcare provider"],
+          "appointment_datetime": ["appointment time", "appointment date", "date and time"]
+        },
+        "memory_events": [
+          {
+            "profile_id": "q2-boundary-provider-wrong-profile-other-profile",
+            "slot": "q2-boundary-provider-name-slot",
+            "record_id": "q2-boundary-provider-foreign-name-record",
+            "kind": "save",
+            "sequence": 1,
+            "value": "Dr. Maren Vale",
+            "observation": [
+              {"role": "user", "content": "Please save this detail for later. My oral-history provider is Dr. Maren Vale."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          },
+          {
+            "profile_id": "q2-boundary-provider-wrong-profile-profile",
+            "slot": "q2-boundary-provider-time-slot",
+            "record_id": "q2-boundary-provider-time-record",
+            "kind": "save",
+            "sequence": 2,
+            "value": "2033-03-07 10:30:00",
+            "observation": [
+              {"role": "user", "content": "Remember this separately for the future. My oral-history appointment time is 2033-03-07 10:30:00."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          }
+        ],
+        "permitted_memory_ids": ["q2-boundary-provider-time-record"],
+        "affected_field": "healthcare_provider"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["healthcare_provider"]},
+        "parameter_sources": {
+          "healthcare_provider": {"source": "missing", "evidence_id": null},
+          "appointment_datetime": {"source": "history", "value": "2033-03-07 10:30:00", "evidence_id": "q2-boundary-provider-time-record"}
+        },
+        "clarification_fields": ["healthcare_provider"]
+      },
+      "offline_candidates": [
+        {"candidate_id": "correct_question", "expected_label": "correct", "error_type": null, "action": {"kind": "clarify", "text": "Which healthcare provider should I use?"}},
+        {"candidate_id": "uses_foreign_provider", "expected_label": "incorrect", "error_type": "wrong_profile_memory_use", "action": {"kind": "call", "api_name": "HealthcareProviderAppointmentScheduler", "arguments": {"healthcare_provider": "Dr. Maren Vale", "appointment_datetime": "2033-03-07 10:30:00"}}}
+      ]
+    },
+    {
+      "case_id": "q2-boundary-flight-current-source",
+      "category": "current_override",
+      "case_input": {
+        "task_id": "q2-boundary-flight-current-source-next",
+        "base_task_id": "q2-boundary-flight-current-source",
+        "profile_id": "q2-boundary-flight-current-source-profile",
+        "target_tool": "FlightSearch",
+        "requirement": "Search flights for 2033-04-18 using my birding exchange departure airport and my saved birding exchange arrival city. For this trip, use Helsinki instead of my saved birding exchange departure airport.",
+        "condition": "current_update",
+        "known_arguments": {"travel_dates": "2033-04-18"},
+        "natural_details": {"source": "birding exchange departure airport", "destination": "birding exchange arrival city"},
+        "memory_fields": {"source": "q2-boundary-flight-source-slot", "destination": "q2-boundary-flight-destination-slot"},
+        "field_aliases": {
+          "source": ["source", "departure airport", "departure city", "from"],
+          "destination": ["destination", "arrival city", "arrival airport", "to"],
+          "travel_dates": []
+        },
+        "memory_events": [
+          {
+            "profile_id": "q2-boundary-flight-current-source-profile",
+            "slot": "q2-boundary-flight-source-slot",
+            "record_id": "q2-boundary-flight-source-record",
+            "kind": "save",
+            "sequence": 1,
+            "value": "Oslo",
+            "observation": [
+              {"role": "user", "content": "Please save this detail for later. My birding exchange departure airport is Oslo."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          },
+          {
+            "profile_id": "q2-boundary-flight-current-source-profile",
+            "slot": "q2-boundary-flight-destination-slot",
+            "record_id": "q2-boundary-flight-destination-record",
+            "kind": "save",
+            "sequence": 2,
+            "value": "Tallinn",
+            "observation": [
+              {"role": "user", "content": "Remember this separately for the future. My birding exchange arrival city is Tallinn."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          }
+        ],
+        "permitted_memory_ids": ["q2-boundary-flight-source-record", "q2-boundary-flight-destination-record"],
+        "affected_field": "source",
+        "current_overrides": {"source": "Helsinki"}
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "FlightSearch", "arguments": {"travel_dates": "2033-04-18", "source": "Helsinki", "destination": "Tallinn"}},
+        "parameter_sources": {
+          "travel_dates": {"source": "requirement", "value": "2033-04-18", "evidence_id": "current_request"},
+          "source": {"source": "requirement", "value": "Helsinki", "evidence_id": "current_request"},
+          "destination": {"source": "history", "value": "Tallinn", "evidence_id": "q2-boundary-flight-destination-record"}
+        },
+        "clarification_fields": []
+      },
+      "offline_candidates": [
+        {"candidate_id": "correct", "expected_label": "correct", "error_type": null, "action": {"kind": "call", "api_name": "FlightSearch", "arguments": {"travel_dates": "2033-04-18", "source": "Helsinki", "destination": "Tallinn"}}},
+        {"candidate_id": "stale_source", "expected_label": "incorrect", "error_type": "current_request_override_ignored", "action": {"kind": "call", "api_name": "FlightSearch", "arguments": {"travel_dates": "2033-04-18", "source": "Oslo", "destination": "Tallinn"}}}
+      ]
+    },
+    {
+      "case_id": "q2-boundary-stock-current-date",
+      "category": "current_override",
+      "case_input": {
+        "task_id": "q2-boundary-stock-current-date-next",
+        "base_task_id": "q2-boundary-stock-current-date",
+        "profile_id": "q2-boundary-stock-current-date-profile",
+        "target_tool": "QueryStock",
+        "requirement": "Look up the closing price using my saved student fund ticker and my paper trading date. Use 2033-05-12 instead of my saved paper trading date.",
+        "condition": "current_update",
+        "known_arguments": {},
+        "natural_details": {"stock_code": "student fund ticker", "date": "paper trading date"},
+        "memory_fields": {"stock_code": "q2-boundary-stock-code-slot", "date": "q2-boundary-stock-date-slot"},
+        "field_aliases": {
+          "stock_code": ["stock code", "ticker", "symbol"],
+          "date": ["date", "trading date", "price date"]
+        },
+        "memory_events": [
+          {
+            "profile_id": "q2-boundary-stock-current-date-profile",
+            "slot": "q2-boundary-stock-code-slot",
+            "record_id": "q2-boundary-stock-code-record",
+            "kind": "save",
+            "sequence": 1,
+            "value": "ACME",
+            "observation": [
+              {"role": "user", "content": "Please save this detail for later. My student fund ticker is ACME."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          },
+          {
+            "profile_id": "q2-boundary-stock-current-date-profile",
+            "slot": "q2-boundary-stock-date-slot",
+            "record_id": "q2-boundary-stock-date-record",
+            "kind": "save",
+            "sequence": 2,
+            "value": "2033-05-10",
+            "observation": [
+              {"role": "user", "content": "Remember this separately for the future. My paper trading date is 2033-05-10."},
+              {"role": "assistant", "content": "I've saved that detail in the record you specified."}
+            ]
+          }
+        ],
+        "permitted_memory_ids": ["q2-boundary-stock-code-record", "q2-boundary-stock-date-record"],
+        "affected_field": "date",
+        "current_overrides": {"date": "2033-05-12"}
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "QueryStock", "arguments": {"stock_code": "ACME", "date": "2033-05-12"}},
+        "parameter_sources": {
+          "stock_code": {"source": "history", "value": "ACME", "evidence_id": "q2-boundary-stock-code-record"},
+          "date": {"source": "requirement", "value": "2033-05-12", "evidence_id": "current_request"}
+        },
+        "clarification_fields": []
+      },
+      "offline_candidates": [
+        {"candidate_id": "correct", "expected_label": "correct", "error_type": null, "action": {"kind": "call", "api_name": "QueryStock", "arguments": {"stock_code": "ACME", "date": "2033-05-12"}}},
+        {"candidate_id": "stale_date", "expected_label": "incorrect", "error_type": "current_request_override_ignored", "action": {"kind": "call", "api_name": "QueryStock", "arguments": {"stock_code": "ACME", "date": "2033-05-10"}}}
+      ]
+    }
+  ],
+  "test": [
+    {
+      "case_id": "q2-test-hotel-residency-dates", "category": "both_grounded",
+      "case_input": {
+        "task_id": "q2-test-hotel-residency-dates-next", "base_task_id": "q2-test-hotel-residency-dates", "profile_id": "q2-test-hotel-residency-dates-profile", "target_tool": "BookHotel",
+        "requirement": "Book the residency lodging using my saved restoration residency arrival date and my saved restoration residency departure date.", "condition": "saved",
+        "known_arguments": {"hotel_name": "Harbor Glass Hotel", "room_count": 2, "adult_count": 3, "child_count": 0},
+        "natural_details": {"check_in_time": "restoration residency arrival date", "check_out_time": "restoration residency departure date"},
+        "memory_fields": {"check_in_time": "q2-test-hotel-arrival-slot", "check_out_time": "q2-test-hotel-departure-slot"},
+        "field_aliases": {"hotel_name": [], "room_count": [], "adult_count": [], "child_count": [], "check_in_time": ["check-in", "arrival date"], "check_out_time": ["check-out", "departure date"]},
+        "memory_events": [
+          {"profile_id": "q2-test-hotel-residency-dates-profile", "slot": "q2-test-hotel-arrival-slot", "record_id": "q2-test-hotel-arrival-record", "kind": "save", "sequence": 1, "value": "2034-02-11", "observation": [{"role": "user", "content": "Save this for later: my restoration residency arrival date is 2034-02-11."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-hotel-residency-dates-profile", "slot": "q2-test-hotel-departure-slot", "record_id": "q2-test-hotel-departure-record", "kind": "save", "sequence": 2, "value": "2034-02-16", "observation": [{"role": "user", "content": "Save separately: my restoration residency departure date is 2034-02-16."}, {"role": "assistant", "content": "Saved."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-hotel-arrival-record", "q2-test-hotel-departure-record"]
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "BookHotel", "arguments": {"hotel_name": "Harbor Glass Hotel", "room_count": 2, "adult_count": 3, "child_count": 0, "check_in_time": "2034-02-11", "check_out_time": "2034-02-16"}},
+        "parameter_sources": {"hotel_name": {"source": "requirement", "value": "Harbor Glass Hotel", "evidence_id": "current_request"}, "room_count": {"source": "requirement", "value": 2, "evidence_id": "current_request"}, "adult_count": {"source": "requirement", "value": 3, "evidence_id": "current_request"}, "child_count": {"source": "requirement", "value": 0, "evidence_id": "current_request"}, "check_in_time": {"source": "history", "value": "2034-02-11", "evidence_id": "q2-test-hotel-arrival-record"}, "check_out_time": {"source": "history", "value": "2034-02-16", "evidence_id": "q2-test-hotel-departure-record"}},
+        "clarification_fields": []
+      }
+    },
+    {
+      "case_id": "q2-test-museum-timed-switch", "category": "both_grounded",
+      "case_input": {
+        "task_id": "q2-test-museum-timed-switch-next", "base_task_id": "q2-test-museum-timed-switch", "profile_id": "q2-test-museum-timed-switch-profile", "target_tool": "TimedSwitch",
+        "requirement": "Turn on my saved conservation room device at my saved conservation room activation time.", "condition": "saved", "known_arguments": {"on": true},
+        "natural_details": {"name": "conservation room device", "time": "conservation room activation time"},
+        "memory_fields": {"name": "q2-test-switch-device-slot", "time": "q2-test-switch-time-slot"},
+        "field_aliases": {"on": [], "name": ["device name", "device"], "time": ["activation time", "time"]},
+        "memory_events": [
+          {"profile_id": "q2-test-museum-timed-switch-profile", "slot": "q2-test-switch-device-slot", "record_id": "q2-test-switch-device-record", "kind": "save", "sequence": 1, "value": "Archive Dehumidifier B", "observation": [{"role": "user", "content": "Remember that my conservation room device is Archive Dehumidifier B."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-museum-timed-switch-profile", "slot": "q2-test-switch-time-slot", "record_id": "q2-test-switch-time-record", "kind": "save", "sequence": 2, "value": "2034-03-04 06:40:00", "observation": [{"role": "user", "content": "Remember that my conservation room activation time is 2034-03-04 06:40:00."}, {"role": "assistant", "content": "Saved."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-switch-device-record", "q2-test-switch-time-record"]
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "TimedSwitch", "arguments": {"on": true, "name": "Archive Dehumidifier B", "time": "2034-03-04 06:40:00"}},
+        "parameter_sources": {"on": {"source": "requirement", "value": true, "evidence_id": "current_request"}, "name": {"source": "history", "value": "Archive Dehumidifier B", "evidence_id": "q2-test-switch-device-record"}, "time": {"source": "history", "value": "2034-03-04 06:40:00", "evidence_id": "q2-test-switch-time-record"}},
+        "clarification_fields": []
+      }
+    },
+    {
+      "case_id": "q2-test-field-survey-restaurants", "category": "both_grounded",
+      "case_input": {
+        "task_id": "q2-test-field-survey-restaurants-next", "base_task_id": "q2-test-field-survey-restaurants", "profile_id": "q2-test-field-survey-restaurants-profile", "target_tool": "NearbyRestaurants",
+        "requirement": "Find lunch options near my saved wetland survey latitude and my saved wetland survey longitude.", "condition": "saved", "known_arguments": {"distance": 1200},
+        "natural_details": {"latitude": "wetland survey latitude", "longitude": "wetland survey longitude"},
+        "memory_fields": {"latitude": "q2-test-restaurants-latitude-slot", "longitude": "q2-test-restaurants-longitude-slot"},
+        "field_aliases": {"distance": [], "latitude": ["latitude", "north-south coordinate"], "longitude": ["longitude", "east-west coordinate"]},
+        "memory_events": [
+          {"profile_id": "q2-test-field-survey-restaurants-profile", "slot": "q2-test-restaurants-latitude-slot", "record_id": "q2-test-restaurants-latitude-record", "kind": "save", "sequence": 1, "value": 45.5231, "observation": [{"role": "user", "content": "Store my wetland survey latitude as 45.5231."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-field-survey-restaurants-profile", "slot": "q2-test-restaurants-longitude-slot", "record_id": "q2-test-restaurants-longitude-record", "kind": "save", "sequence": 2, "value": -122.6765, "observation": [{"role": "user", "content": "Store my wetland survey longitude as -122.6765."}, {"role": "assistant", "content": "Saved."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-restaurants-latitude-record", "q2-test-restaurants-longitude-record"]
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "NearbyRestaurants", "arguments": {"distance": 1200, "latitude": 45.5231, "longitude": -122.6765}},
+        "parameter_sources": {"distance": {"source": "requirement", "value": 1200, "evidence_id": "current_request"}, "latitude": {"source": "history", "value": 45.5231, "evidence_id": "q2-test-restaurants-latitude-record"}, "longitude": {"source": "history", "value": -122.6765, "evidence_id": "q2-test-restaurants-longitude-record"}},
+        "clarification_fields": []
+      }
+    },
+    {
+      "case_id": "q2-test-agenda-missing-location", "category": "one_missing",
+      "case_input": {
+        "task_id": "q2-test-agenda-missing-location-next", "base_task_id": "q2-test-agenda-missing-location", "profile_id": "q2-test-agenda-missing-location-profile", "target_tool": "AddAgenda",
+        "requirement": "Add my saved oral-history agenda content at my saved oral-history agenda location.", "condition": "missing", "known_arguments": {"time": "2034-04-09 14:20:00", "token": "SIM-OH-904"},
+        "natural_details": {"content": "oral-history agenda content", "location": "oral-history agenda location"},
+        "memory_fields": {"content": "q2-test-agenda-content-slot", "location": "q2-test-agenda-location-slot"},
+        "field_aliases": {"time": [], "token": [], "content": ["agenda content", "entry text"], "location": ["agenda location", "room"]},
+        "memory_events": [{"profile_id": "q2-test-agenda-missing-location-profile", "slot": "q2-test-agenda-content-slot", "record_id": "q2-test-agenda-content-record", "kind": "save", "sequence": 1, "value": "Interview equipment calibration", "observation": [{"role": "user", "content": "Save my oral-history agenda content as Interview equipment calibration."}, {"role": "assistant", "content": "Saved."}]}],
+        "permitted_memory_ids": ["q2-test-agenda-content-record"], "affected_field": "location"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["location"]},
+        "parameter_sources": {"time": {"source": "requirement", "value": "2034-04-09 14:20:00", "evidence_id": "current_request"}, "token": {"source": "requirement", "value": "SIM-OH-904", "evidence_id": "current_request"}, "content": {"source": "history", "value": "Interview equipment calibration", "evidence_id": "q2-test-agenda-content-record"}, "location": {"source": "missing", "evidence_id": null}},
+        "clarification_fields": ["location"]
+      }
+    },
+    {
+      "case_id": "q2-test-reschedule-missing-new-time", "category": "one_missing",
+      "case_input": {
+        "task_id": "q2-test-reschedule-missing-new-time-next", "base_task_id": "q2-test-reschedule-missing-new-time", "profile_id": "q2-test-reschedule-missing-new-time-profile", "target_tool": "AppointmentRescheduler",
+        "requirement": "Reschedule from my saved audiology current appointment to my saved audiology replacement appointment.", "condition": "missing", "known_arguments": {"hospital": "Riverbend Clinic", "doctor": "Dr. Imani Frost"},
+        "natural_details": {"current_appointment": "audiology current appointment", "new_appointment": "audiology replacement appointment"},
+        "memory_fields": {"current_appointment": "q2-test-reschedule-current-slot", "new_appointment": "q2-test-reschedule-new-slot"},
+        "field_aliases": {"hospital": [], "doctor": [], "current_appointment": ["current appointment", "old time"], "new_appointment": ["replacement appointment", "new time"]},
+        "memory_events": [{"profile_id": "q2-test-reschedule-missing-new-time-profile", "slot": "q2-test-reschedule-current-slot", "record_id": "q2-test-reschedule-current-record", "kind": "save", "sequence": 1, "value": "2034-05-02 09:10:00", "observation": [{"role": "user", "content": "Remember my audiology current appointment is 2034-05-02 09:10:00."}, {"role": "assistant", "content": "Saved."}]}],
+        "permitted_memory_ids": ["q2-test-reschedule-current-record"], "affected_field": "new_appointment"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["new_appointment"]},
+        "parameter_sources": {"hospital": {"source": "requirement", "value": "Riverbend Clinic", "evidence_id": "current_request"}, "doctor": {"source": "requirement", "value": "Dr. Imani Frost", "evidence_id": "current_request"}, "current_appointment": {"source": "history", "value": "2034-05-02 09:10:00", "evidence_id": "q2-test-reschedule-current-record"}, "new_appointment": {"source": "missing", "evidence_id": null}},
+        "clarification_fields": ["new_appointment"]
+      }
+    },
+    {
+      "case_id": "q2-test-insurance-missing-location", "category": "one_missing",
+      "case_input": {
+        "task_id": "q2-test-insurance-missing-location-next", "base_task_id": "q2-test-insurance-missing-location", "profile_id": "q2-test-insurance-missing-location-profile", "target_tool": "InsurancePlanFinder",
+        "requirement": "Find coverage using my saved cooperative household size and my saved cooperative household location.", "condition": "missing", "known_arguments": {},
+        "natural_details": {"family_size": "cooperative household size", "location": "cooperative household location"},
+        "memory_fields": {"family_size": "q2-test-insurance-size-slot", "location": "q2-test-insurance-location-slot"},
+        "field_aliases": {"family_size": ["household size", "family size"], "location": ["household location", "city"]},
+        "memory_events": [{"profile_id": "q2-test-insurance-missing-location-profile", "slot": "q2-test-insurance-size-slot", "record_id": "q2-test-insurance-size-record", "kind": "save", "sequence": 1, "value": 5, "observation": [{"role": "user", "content": "Remember my cooperative household size is 5."}, {"role": "assistant", "content": "Saved."}]}],
+        "permitted_memory_ids": ["q2-test-insurance-size-record"], "affected_field": "location"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["location"]},
+        "parameter_sources": {"family_size": {"source": "history", "value": 5, "evidence_id": "q2-test-insurance-size-record"}, "location": {"source": "missing", "evidence_id": null}},
+        "clarification_fields": ["location"]
+      }
+    },
+    {
+      "case_id": "q2-test-registration-revoked-date", "category": "revoked_or_identity_mismatch",
+      "case_input": {
+        "task_id": "q2-test-registration-revoked-date-next", "base_task_id": "q2-test-registration-revoked-date", "profile_id": "q2-test-registration-revoked-date-profile", "target_tool": "ModifyRegistration",
+        "requirement": "Modify my saved community clinic registration using my saved community clinic replacement date.", "condition": "revoked", "known_arguments": {"new_appointment_doctor": "Dr. Celia Noor"},
+        "natural_details": {"appointment_id": "community clinic registration", "new_appointment_date": "community clinic replacement date"},
+        "memory_fields": {"appointment_id": "q2-test-registration-id-slot", "new_appointment_date": "q2-test-registration-date-slot"},
+        "field_aliases": {"new_appointment_doctor": [], "appointment_id": ["registration", "appointment ID"], "new_appointment_date": ["replacement date", "new date"]},
+        "memory_events": [
+          {"profile_id": "q2-test-registration-revoked-date-profile", "slot": "q2-test-registration-id-slot", "record_id": "q2-test-registration-id-record", "kind": "save", "sequence": 1, "value": "REG-73418", "observation": [{"role": "user", "content": "Save my community clinic registration as REG-73418."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-registration-revoked-date-profile", "slot": "q2-test-registration-date-slot", "record_id": "q2-test-registration-date-record", "kind": "save", "sequence": 2, "value": "2034-06-18", "observation": [{"role": "user", "content": "Save my community clinic replacement date as 2034-06-18."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-registration-revoked-date-profile", "slot": "q2-test-registration-date-slot", "record_id": "q2-test-registration-date-revoke", "kind": "revoke", "sequence": 3, "observation": [{"role": "user", "content": "Remove my community clinic replacement date and do not reuse it."}, {"role": "assistant", "content": "Removed."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-registration-id-record"], "affected_field": "new_appointment_date"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["new_appointment_date"]},
+        "parameter_sources": {"new_appointment_doctor": {"source": "requirement", "value": "Dr. Celia Noor", "evidence_id": "current_request"}, "appointment_id": {"source": "history", "value": "REG-73418", "evidence_id": "q2-test-registration-id-record"}, "new_appointment_date": {"source": "missing", "evidence_id": null}},
+        "clarification_fields": ["new_appointment_date"]
+      }
+    },
+    {
+      "case_id": "q2-test-clothing-foreign-humidity", "category": "revoked_or_identity_mismatch",
+      "case_input": {
+        "task_id": "q2-test-clothing-foreign-humidity-next", "base_task_id": "q2-test-clothing-foreign-humidity", "profile_id": "q2-test-clothing-foreign-humidity-profile", "target_tool": "ClothingRecommendation",
+        "requirement": "Recommend clothing using my saved outdoor rehearsal temperature and my saved outdoor rehearsal humidity.", "condition": "wrong_profile", "known_arguments": {"weather_conditions": "windy"},
+        "natural_details": {"temperature": "outdoor rehearsal temperature", "humidity": "outdoor rehearsal humidity"},
+        "memory_fields": {"temperature": "q2-test-clothing-temperature-slot", "humidity": "q2-test-clothing-humidity-slot"},
+        "field_aliases": {"weather_conditions": [], "temperature": ["temperature", "degrees"], "humidity": ["humidity", "relative humidity"]},
+        "memory_events": [
+          {"profile_id": "q2-test-clothing-foreign-humidity-profile", "slot": "q2-test-clothing-temperature-slot", "record_id": "q2-test-clothing-temperature-record", "kind": "save", "sequence": 1, "value": 12.5, "observation": [{"role": "user", "content": "Save my outdoor rehearsal temperature as 12.5 degrees."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-clothing-someone-else-profile", "slot": "q2-test-clothing-humidity-slot", "record_id": "q2-test-clothing-foreign-humidity-record", "kind": "save", "sequence": 2, "value": 68.0, "observation": [{"role": "user", "content": "Save my outdoor rehearsal humidity as 68.0 percent."}, {"role": "assistant", "content": "Saved."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-clothing-temperature-record"], "affected_field": "humidity"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["humidity"]},
+        "parameter_sources": {"weather_conditions": {"source": "requirement", "value": "windy", "evidence_id": "current_request"}, "temperature": {"source": "history", "value": 12.5, "evidence_id": "q2-test-clothing-temperature-record"}, "humidity": {"source": "missing", "evidence_id": null}},
+        "clarification_fields": ["humidity"]
+      }
+    },
+    {
+      "case_id": "q2-test-health-record-revoked-time", "category": "revoked_or_identity_mismatch",
+      "case_input": {
+        "task_id": "q2-test-health-record-revoked-time-next", "base_task_id": "q2-test-health-record-revoked-time", "profile_id": "q2-test-health-record-revoked-time-profile", "target_tool": "RecordHealthData",
+        "requirement": "Record the oxygen reading for my saved expedition health account at my saved expedition measurement time.", "condition": "revoked", "known_arguments": {"health_data": [{"name": "oxygen_saturation", "value": "97"}]},
+        "natural_details": {"user_id": "expedition health account", "time": "expedition measurement time"},
+        "memory_fields": {"user_id": "q2-test-health-user-slot", "time": "q2-test-health-time-slot"},
+        "field_aliases": {"health_data": [], "user_id": ["health account", "user id"], "time": ["measurement time", "time"]},
+        "memory_events": [
+          {"profile_id": "q2-test-health-record-revoked-time-profile", "slot": "q2-test-health-user-slot", "record_id": "q2-test-health-user-record", "kind": "save", "sequence": 1, "value": "EXP-HEALTH-209", "observation": [{"role": "user", "content": "Remember my expedition health account is EXP-HEALTH-209."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-health-record-revoked-time-profile", "slot": "q2-test-health-time-slot", "record_id": "q2-test-health-time-record", "kind": "save", "sequence": 2, "value": "2034-07-03 07:25:00", "observation": [{"role": "user", "content": "Remember my expedition measurement time is 2034-07-03 07:25:00."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-health-record-revoked-time-profile", "slot": "q2-test-health-time-slot", "record_id": "q2-test-health-time-revoke", "kind": "revoke", "sequence": 3, "observation": [{"role": "user", "content": "Forget my expedition measurement time and do not use it again."}, {"role": "assistant", "content": "Removed."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-health-user-record"], "affected_field": "time"
+      },
+      "answer_key": {
+        "correct_action": {"kind": "clarify", "fields": ["time"]},
+        "parameter_sources": {"health_data": {"source": "requirement", "value": [{"name": "oxygen_saturation", "value": "97"}], "evidence_id": "current_request"}, "user_id": {"source": "history", "value": "EXP-HEALTH-209", "evidence_id": "q2-test-health-user-record"}, "time": {"source": "missing", "evidence_id": null}},
+        "clarification_fields": ["time"]
+      }
+    },
+    {
+      "case_id": "q2-test-bicycle-provider-override", "category": "current_override",
+      "case_input": {
+        "task_id": "q2-test-bicycle-provider-override-next", "base_task_id": "q2-test-bicycle-provider-override", "profile_id": "q2-test-bicycle-provider-override-profile", "target_tool": "BookingScheduler",
+        "requirement": "Book my saved bicycle repair service with my saved bicycle service provider, but use North Quay Cycles instead of the saved provider.", "condition": "current_update", "known_arguments": {"time_slot": "2034-08-12 11:30:00"},
+        "natural_details": {"service_name": "bicycle repair service", "service_provider": "bicycle service provider"},
+        "memory_fields": {"service_name": "q2-test-booking-service-slot", "service_provider": "q2-test-booking-provider-slot"},
+        "field_aliases": {"time_slot": [], "service_name": ["repair service", "service name"], "service_provider": ["service provider", "provider"]},
+        "memory_events": [
+          {"profile_id": "q2-test-bicycle-provider-override-profile", "slot": "q2-test-booking-service-slot", "record_id": "q2-test-booking-service-record", "kind": "save", "sequence": 1, "value": "Hydraulic brake inspection", "observation": [{"role": "user", "content": "Save my bicycle repair service as Hydraulic brake inspection."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-bicycle-provider-override-profile", "slot": "q2-test-booking-provider-slot", "record_id": "q2-test-booking-provider-record", "kind": "save", "sequence": 2, "value": "Old Mill Bicycle Works", "observation": [{"role": "user", "content": "Save my bicycle service provider as Old Mill Bicycle Works."}, {"role": "assistant", "content": "Saved."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-booking-service-record", "q2-test-booking-provider-record"], "affected_field": "service_provider", "current_overrides": {"service_provider": "North Quay Cycles"}
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "BookingScheduler", "arguments": {"time_slot": "2034-08-12 11:30:00", "service_name": "Hydraulic brake inspection", "service_provider": "North Quay Cycles"}},
+        "parameter_sources": {"time_slot": {"source": "requirement", "value": "2034-08-12 11:30:00", "evidence_id": "current_request"}, "service_name": {"source": "history", "value": "Hydraulic brake inspection", "evidence_id": "q2-test-booking-service-record"}, "service_provider": {"source": "requirement", "value": "North Quay Cycles", "evidence_id": "current_request"}},
+        "clarification_fields": []
+      }
+    },
+    {
+      "case_id": "q2-test-pain-region-override", "category": "current_override",
+      "case_input": {
+        "task_id": "q2-test-pain-region-override-next", "base_task_id": "q2-test-pain-region-override", "profile_id": "q2-test-pain-region-override-profile", "target_tool": "BackPainExerciseRecommendations",
+        "requirement": "Recommend exercises for my saved warehouse pain type and my saved warehouse affected region; today the affected region is upper back instead.", "condition": "current_update", "known_arguments": {},
+        "natural_details": {"pain_type": "warehouse pain type", "body_part": "warehouse affected region"},
+        "memory_fields": {"pain_type": "q2-test-pain-type-slot", "body_part": "q2-test-pain-region-slot"},
+        "field_aliases": {"pain_type": ["pain type", "classification"], "body_part": ["affected region", "body part"]},
+        "memory_events": [
+          {"profile_id": "q2-test-pain-region-override-profile", "slot": "q2-test-pain-type-slot", "record_id": "q2-test-pain-type-record", "kind": "save", "sequence": 1, "value": "acute", "observation": [{"role": "user", "content": "Remember my warehouse pain type is acute."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-pain-region-override-profile", "slot": "q2-test-pain-region-slot", "record_id": "q2-test-pain-region-record", "kind": "save", "sequence": 2, "value": "lower back", "observation": [{"role": "user", "content": "Remember my warehouse affected region is lower back."}, {"role": "assistant", "content": "Saved."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-pain-type-record", "q2-test-pain-region-record"], "affected_field": "body_part", "current_overrides": {"body_part": "upper back"}
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "BackPainExerciseRecommendations", "arguments": {"pain_type": "acute", "body_part": "upper back"}},
+        "parameter_sources": {"pain_type": {"source": "history", "value": "acute", "evidence_id": "q2-test-pain-type-record"}, "body_part": {"source": "requirement", "value": "upper back", "evidence_id": "current_request"}},
+        "clarification_fields": []
+      }
+    },
+    {
+      "case_id": "q2-test-fitness-challenge-override", "category": "current_override",
+      "case_input": {
+        "task_id": "q2-test-fitness-challenge-override-next", "base_task_id": "q2-test-fitness-challenge-override", "profile_id": "q2-test-fitness-challenge-override-profile", "target_tool": "JoinFitnessChallengeAPI",
+        "requirement": "Join my saved newsroom fitness challenge on my saved newsroom challenge date, but join the City Stair Climb instead of the saved challenge.", "condition": "current_update", "known_arguments": {"name": "Mira Sol", "email": "mira.sol@example.test", "phone_number": "202-555-0182"},
+        "natural_details": {"challenge_name": "newsroom fitness challenge", "start_date": "newsroom challenge date"},
+        "memory_fields": {"challenge_name": "q2-test-fitness-name-slot", "start_date": "q2-test-fitness-date-slot"},
+        "field_aliases": {"name": [], "email": [], "phone_number": [], "challenge_name": ["fitness challenge", "challenge name"], "start_date": ["challenge date", "start date"]},
+        "memory_events": [
+          {"profile_id": "q2-test-fitness-challenge-override-profile", "slot": "q2-test-fitness-name-slot", "record_id": "q2-test-fitness-name-record", "kind": "save", "sequence": 1, "value": "Riverside Relay", "observation": [{"role": "user", "content": "Save my newsroom fitness challenge as Riverside Relay."}, {"role": "assistant", "content": "Saved."}]},
+          {"profile_id": "q2-test-fitness-challenge-override-profile", "slot": "q2-test-fitness-date-slot", "record_id": "q2-test-fitness-date-record", "kind": "save", "sequence": 2, "value": "2034-09-21", "observation": [{"role": "user", "content": "Save my newsroom challenge date as 2034-09-21."}, {"role": "assistant", "content": "Saved."}]}
+        ],
+        "permitted_memory_ids": ["q2-test-fitness-name-record", "q2-test-fitness-date-record"], "affected_field": "challenge_name", "current_overrides": {"challenge_name": "City Stair Climb"}
+      },
+      "answer_key": {
+        "correct_action": {"kind": "call", "api_name": "JoinFitnessChallengeAPI", "arguments": {"name": "Mira Sol", "email": "mira.sol@example.test", "phone_number": "202-555-0182", "challenge_name": "City Stair Climb", "start_date": "2034-09-21"}},
+        "parameter_sources": {"name": {"source": "requirement", "value": "Mira Sol", "evidence_id": "current_request"}, "email": {"source": "requirement", "value": "mira.sol@example.test", "evidence_id": "current_request"}, "phone_number": {"source": "requirement", "value": "202-555-0182", "evidence_id": "current_request"}, "challenge_name": {"source": "requirement", "value": "City Stair Climb", "evidence_id": "current_request"}, "start_date": {"source": "history", "value": "2034-09-21", "evidence_id": "q2-test-fitness-date-record"}},
+        "clarification_fields": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "python": "3.11.1",
+  "torch": "2.2.1+cpu",
+  "torch_cuda_available": false,
+  "device": "cpu",
+  "dtype": "float32",
+  "model_dir": "E:\\projects\\confagent\\small_model_smoke\\models\\Qwen3-0.6B",
+  "model_dir_drive": "E:",
+  "cache_dir": "E:\\projects\\confagent\\small_model_smoke\\cache\\huggingface",
+  "fixture": "E:\\projects\\confagent\\small_model_smoke\\fixtures\\level3_smoke.json",
+  "conditions": [
+    "vanilla",
+    "always"
+  ],
+  "task_count": 3,
+  "seed": 7,
+  "note": "Engineering smoke test; not a formal benchmark result."
+}

@@ -65,3 +65,8 @@ outputs/**/cpu_validation.log
 !/data/memory_versioned_boundaries_cases.json
 !/data/memory_versioned_provenance_cases.json
 !/data/memory_multislot_cases.json
+!/data/memory_multislot_boundary_cases.json
+!/data/memory_multislot_boundary_cases.md
+
+# Local small-model smoke tests
+/small_model_smoke/
